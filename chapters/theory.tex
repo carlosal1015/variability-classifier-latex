@@ -1,0 +1,183 @@
+\section{Variable Objects in Astronomy}
+\label{sec:theory-variable-objects}
+
+% Periodic, non-periodic, semi-periodic
+
+\subsection{Intrinsic and extrinsic variability}
+\subsubsection{Quasi-Stellar radio sources (QSO)}
+\subsubsection{Pulsating variables}
+\subsubsection{$\delta$--Scutis}
+\subsubsection{RR Lyrae}
+\subsubsection{Eclipsing binaries}
+\subsubsection{Active stars, flares and spots}
+
+\subsection{Lightcurves of Variable Stars}
+
+\section{Statistical Analysis of Time Series}
+
+When observing one specific object over some time interval $\Delta t$, we can record its magnitude $m_i$ at time $t_i$ and obtain a so-called \emph{time series}.
+
+\begin{definition}[Time Series]
+A time series $\Tau$ is a sequence of $N$ datapoints $(t_i, y_i),\; t,y \in \mathbb{R}$ with $t_i < t_{i+1} \; \forall i = 1,\ldots,N$. We call $\Tau$ \emph{evenly--sampled} $\Leftrightarrow t_{i+1} - t_i = C \in \mathbb{R}$ where $C$ is constant. Otherwise, $\Tau$ is \emph{unevenly--sampled}.
+\end{definition}
+
+In section \ref{sec:theory-variable-objects}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct lightcurves, giving rise to discriminative features that can later be used for classification.
+
+\subsection{Period-finding algorithms}
+
+One very important feature of a periodic signal is, of course, its period $P$. However, reconstructing $P$ from the time series $\Tau$ is not trivial, especially if the data is very noisy. Traditionally, there are a variety of methods available to characterize the signal in frequency--domain, such as Fourier analysis, but it can be shown that these methods perform poorly on unevenly--sampled data\todo{Reference}. This work makes use of two popular methods devised for unenvenly--sampled data, namely the \emph{Lomb--Scargle periodogram} and one algorithm based on \emph{conditional entropy}.
+
+\subsubsection{Lomb--Scargle Periodogram}
+
+% Generalized and classical
+% Works good for unevenly sampled datapoints
+
+% \subsection{String--Length method}
+% \subsection{Conditional entropy}
+
+\subsubsection{Conditional Entropy}
+
+% Works good for evenly sampled datapoints
+% Discrete and continous, Fast Fourier Transformation (FFT)
+
+\subsection{Structure Function}
+
+\section{Statistical Inference using Machine Learning}
+
+\subsection{Introduction to Machine Learning}
+
+Machine Learning (ML), sometimes referred to as \emph{pattern recognition}, is a subfield of Artificial Intelligence (AI) primarily dealing with automated approaches to infer meaning from data in such a way that, after some training process, a model is obtained, that can later be used to make predictions or decisions on similar data or achieve some other kind of insight. This is a form of learning, because rather than explicitly programming certain decision rules, we want to generalize observations towards an underlying model that performs as good as possible when confronted with new data.\\
+
+Depending on the problem to be solved and the data available, machine learning algorithms can be divided into \emph{supervised}, \emph{unsupervised}, \emph{reinforcement} learning and some hybrid form of these. In supervised learning, we train our model by providing examples of the desired output, whereas in unsupervised learning, $\cdots$. \todo{} Reinforcement learning works by $\cdots$.\\
+
+There are a variety of learning problems, such as \emph{classification problems}, \emph{regression problems} and \emph{clustering}, but also \emph{dimensionality reduction} and \emph{density estimation} are subject to Machine Learning.\\
+
+% Explain classification, regression and clustering
+% Describe supervised, unsupervised and reinforcment learning
+% Large amounts of data, computationally efficient
+% Elaborate on why machine learning vs. directly programming decision rules
+% Also to given insight: Sometimes humans can not really describe how they are doing things
+% Overfitting, underfitting
+% Add some examples for machine learning problems
+
+Please note that in practise both $N$ and $d$ can be very large, and infering $\varphi$ from $\mathcal{D}$ directly can become computationally expensive or even unfeasible.
+
+\subsubsection{Classification and Regression}
+
+In this work, we are primarily interested in classfication and regression using supervised methods. Therefore, we are typically trying to solve the following problem: Given some training data
+
+\begin{equation}
+\mathcal{D} = \{ (\vec x_i, y_i) \, \mid \, \vec x_i \in \mathbb{R}^d, y_i \in \mathcal{C} \quad \forall i = 1,\ldots,N \}
+\end{equation}
+
+consisting of $N$ \emph{feature} vectors $\vec x_i \in \mathcal{X}$ of length $d$ and $N$ \emph{labels} or \emph{classes} $y_i \in \mathcal{C}$, find some mapping function $\varphi \colon \mathcal{X} \to \mathcal{C}$ such that
+
+\begin{equation}
+\varphi(\vec x_i) = y_i \in \mathcal{C} \quad \forall i = 1,\ldots,N,
+\end{equation}
+
+where $y_i$ denotes the true class of an arbitrary oberservation $\vec x$ out of all possible oberservations $\mathcal{X}$.
+
+\begin{definition}[Estimators]
+In any case, $\varphi$ is an \emph{estimator}. If the label $y_i$ is a discrete value, $\varphi$ will be called \emph{classifier}, if it is continous, $\varphi$ will be called \emph{regressor}.
+\end{definition}
+
+We consider $\varphi$ to be optimal if, confronted with some testing data,
+
+\begin{equation}
+\mathcal{T} = \{ (\vec x'_j) \, \mid \, \vec x'_j \in \mathbb{R}^d \quad \forall j = 1,\ldots,N \},
+\end{equation}
+
+the estimator yields
+
+\begin{equation}
+\hat y_j := \varphi({\vec x'_j}) = y_j \quad \forall j = 1,\ldots,N,
+\end{equation}
+
+where $\hat y_j$ is the estimators response, and $y_j$ denotes the true class of $\vec x'_j$.
+
+\subsubsection{Evaluating Models}
+
+% Write about generalization, overfitting and underfitting
+
+The estimators performance can be assessed by a variety of metrics: For classification, we define accuracy $A$, precision $P$ and recall $R$ as
+
+\begin{equation}
+A = \frac{T_p + T_n}{T_p + F_p + T_n + F_n}, \; P = \frac{T_p}{T_p + F_p}, \; R = \frac{T_p}{T_p + F_n},
+\end{equation}
+
+where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{false positives}, \emph{true negatives} and \emph{false negatives}\todo{}\footnote{Accuracy, precision and recall are sometimes also referred to as \emph{}, \emph{}, \emph{}}. For regression, we usually want to minimize some suitable loss-function $L$.
+
+\subsection{Algorithms for Classification and Regression}
+\subsubsection{Support Vector Machines (SVMs)}
+\subsubsection{Decision Trees and Random Forests}
+
+Decision trees are presumably the most intuitive way to subdivide data into different classes.
+
+\section{Dimensionality reduction on high-dimensional datasets}
+\label{sec:dimensionality-reduction}
+
+Often we are confronted with high--dimensional datasets that presumably contain a lot of redundancy. This means that the interesting data can be embedded in a lower--dimensional manifold (\emph{almost everywhere}). Therefore, before tackling the actual problem to be solved, often a so called dimensionality reduction is performed on the dataset. That is trying to find a lower--dimensional shadow of the data, which still contains most of the (relevant) information. Reasons to do this are manifold, but the dominant motivation is certainly to cut down on computation time and memory usage, which is often the limiting factor --- even on sophisticated high--performance platforms. Also, some algorithms used in machine learning suffer from the \emph{curse of dimensionality}. Another reason is that visualization is generally easier in a low--dimensional subspace.\\
+
+In the following we give a brief description of two standard methods that are later used to do dimensionality reduction on our dataset.
+
+\subsection{Principal component analysis (PCA)}
+\label{sec:theory:pca}
+
+Principal component analysis\footnote{Sometimes also referred to as \emph{Karhunen-Loève transformation}.} (PCA) is a standard method to reduce the number of variables in a dataset by trying to find linear combinations of features that maximize the total variance in the data, allowing for minimal loss of information. Since it does not care of the labels, PCA is considered as unsupervised learning. In terms of vector spaces, PCA performs a linear transformation of the data from a $d$--dimensional space to a $k$--dimensional subspace (in any case $k < d$), where the data is most spread out. This subspace can be identified as the span of the $k$ orthogonal dominant components --- therefore called \emph{principal components} ---, defining a new coordinate system. Because of the orthogonality, we find that the new features are linearly uncorrelated. Evidently, $k$ is a free parameter, that we need to choose small enough to obtain a significant data reduction, but not so small that important information is lost. In general, we say that a subspace describes the data well, if the eigenvalues of the scatter matrix $S$ (that we computed during the PCA) are similar of magnitude.\\
+
+There are essentially two similar ways to perform the PCA, one using the scatter matrix, the other one using the covariance matrix. We provide an algorithmic description using the former \citep{duda2001}.
+
+\subsubsection{Algorithmic description of PCA}
+\label{par:pca-algorithm}
+\begin{enumerate}
+\item \footnote{Since PCA is sensitive to the scaling of the data, often also a normalization is performed in advance (e.g. z--score). However, we do not consider this as part of the algorithm itself.}Find the $d$--dimensional mean vector
+\begin{equation}
+\label{eq:mean-vector}
+\vec \mu = \frac{1}{n} \sum_{i = 1}^n \vec x_i
+\end{equation}
+of all features $\vec x_i$ in the $n \times d$--dimensional dataset.
+\item Find the scatter matrix\footnote{Note that because $S$ is symmetric and $S_{ij} \in \mathbb{R} \, \forall i,j$, the eigenvectors are orthogonal.}
+\begin{equation}
+S = \sum_{i=1}^n (\vec x_i - \vec \mu) \, (\vec x_i - \vec \mu)^T
+\end{equation}
+and calculate eigenvectors and the respective eigenvalues.
+\item Take the $k$ eigenvectors with the $k$ largest eigenvalues and construct a $d \times k$--dimensional matrix $P$.
+\item Project the data into the new subspace using the linear transformation:
+\begin{equation}
+\vec y = P^T \cdot \vec x
+\end{equation}
+\end{enumerate}
+
+PCA is one of the simpler methods for dimensionality reduction based on eigenvectors. It is very straightforward to perform, but has some drawbacks, as well. For our task (classification), PCA is not the first choice, because it is not designed to maintain class separability.
+
+\subsection{Linear Discriminant Analysis (LDA)}
+\label{sec:theory:lda}
+
+Linear Discriminant Analysis (LDA) is another way of performing dimensionality reduction, this time, in contrast to PCA, a supervised learning algorithm that takes the labels into account\footnote{Note that LDA is also commonly used for classification.} Again we are trying to project into a lower--dimensional subspace, maximizing the scatter in feature space, but \emph{additionally} minimizing the in--class scatter, consequently keeping the class--discriminatory information. Ideally, each class degenerates to a cluster far away from other clusters in the new feature space with respect to an arbitrary metric.
+
+\subsubsection{Algorithmic description of LDA}
+\begin{enumerate}
+\item Find the $d$--dimensional mean vectors $\mu_i$ (see equation \ref{eq:mean-vector}) for each class
+\item Find the within--class scatter matrix
+\begin{equation}
+S_W = \sum_{i = 1}^m S_i,
+\end{equation}
+\begin{equation}
+S_i = \sum_{\vec x \in D_i}^n (\vec x - \vec \mu_i) \, (\vec x - \vec \mu_i)^T,
+\end{equation}
+where $m$ is the number of classes and $S_i$ is the scatter matrix of the $i$--th class.
+\item Find the between--class scatter matrix
+\begin{equation}
+S_B = \sum_{i = 1}^m N_i (\vec \mu_i - \vec \mu) \, (\vec \mu_i - \vec \mu)^T,
+\end{equation}
+where $\vec \mu$ denotes the mean vector of the whole dataset.
+\item Find (generalized) eigenvectors and the respective eigenvalues for $S := S_W^{-1} S_B$. These will be used as linear discriminants.
+\item Take the $k$ eigenvectors with the $k$ largest eigenvalues and construct a $d \times k$--dimensional matrix $P$.
+\item Project the data into the new subspace using the linear transformation:
+\begin{equation}
+\vec y = P^T \cdot \vec x
+\end{equation}
+\end{enumerate}
+
+In practise, we see that very often a combination of both procedures is performed, e.g. PCA followed by LDA. This is because LDA is computationally more expensive than PCA.
