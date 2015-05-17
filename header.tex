@@ -1,0 +1,143 @@
+\documentclass[a4paper,twoside,openright,12pt]{scrreprt}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Specify the font to be used
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Computer Modern Bright
+%\usepackage{cmbright}
+% Antykwa Toruńskafont
+%\usepackage[math]{anttor}
+% Antykwa Toruńska Light font
+%\usepackage[light,math]{anttor}
+% Antykwa Toruńska Light Condensed font
+%\usepackage[light,condensed,math]{anttor}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[round,sort,authoryear]{natbib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Headers and footers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+% Activate header and footer on chapter pages
+\newcommand{\helv}{\fontseries{a}\fontsize{9}{11}\selectfont}
+\fancypagestyle{plain}{
+	% No footer
+	\fancyfoot{}
+	% Chapters...
+	\fancyhead[RE]{\helv\leftmark}
+	% Sections...
+	\fancyhead[LO]{\helv\rightmark}
+	\fancyhead[RO,LE]{\thepage}
+}
+% Header and footer for all other pages
+\fancyfoot{}
+\fancyhead[RE]{\helv\leftmark}
+\fancyhead[LO]{\helv\rightmark}%alt:\fancyhead[LO]{\itshape\rightmark}
+\fancyhead[RO,LE]{\thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Textwidth, textheight and margins
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\textwidth}{15cm}
+\setlength{\textheight}{22cm}
+\setlength{\evensidemargin}{-2mm}
+\setlength{\oddsidemargin}{11mm}
+\setlength{\headwidth}{15cm}
+\setlength{\topmargin}{10mm}
+% No indentation for individual paragraphs
+\setlength{\parindent}{0pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make sure all figures are referenced in the text
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{refcheck}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proper support for units
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[]{units}
+
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{listings}
+\usepackage{todonotes}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage{url}
+
+% Make colored links from references
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={red!50!black},
+	citecolor={gray!80!black},
+	urlcolor={gray!80!black}
+}
+
+% Add some more symbols
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{marvosym}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Show paragraphs in table of contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorems
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtheorem{example}{Example}
+\newtheorem{problem}{Problem}
+\newtheorem{definition}{Definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\ref{#1} \nameref*{#1}}}
+\newcommand{\Tau}{\mathrm{T}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \usepackage{fourier}
+
+% \usepackage[round,sort,authoryear]{natbib}
+%
+% \usepackage{url}
+% \usepackage[protrusion=true,expansion=true]{microtype}
+% \usepackage{amsmath,amsfonts,amsthm}
+% \usepackage[pdftex]{graphicx}
+% \usepackage{subfigure}
+% \usepackage{longtable}
+% \usepackage{float}
+% \restylefloat{table}
+% \usepackage{tabularx}
+% \usepackage{todonotes}
+% \usepackage{booktabs}
+% \usepackage{framed}
+% \usepackage{listings}
+%
+%
+
