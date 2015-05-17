@@ -1,0 +1,44 @@
+\include{header}
+
+\title{...}
+\subtitle{Application of Random Forests and Support Vector Machines in Astronomy}
+
+\author{Markus Beuckelmann}
+\date{\today}
+
+\begin{document}
+
+\input{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\chapter{Introduction}
+\label{sec:introduction}
+\input{chapters/introduction}
+
+\chapter{Theoretical Background}
+\label{sec:theory}
+\input{chapters/theory}
+
+\chapter{Classification of Periodic Variables}
+\label{sec:main}
+\input{chapters/main}
+
+\chapter{Discussion}
+\label{sec:discussion}
+\input{chapters/discussion}
+
+\addcontentsline{toc}{section}{References}
+\nocite{*}
+\bibliography{bibliography.bib}
+\bibliographystyle{plainnat}
+
+\addcontentsline{toc}{section}{List of figures}
+\listoffigures
+
+\newpage
+\input{chapters/further-reading}
+
+\end{document}
