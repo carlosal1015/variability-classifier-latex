@@ -30,15 +30,18 @@
 \label{sec:discussion}
 \input{chapters/discussion}
 
-\addcontentsline{toc}{section}{References}
-\nocite{*}
-\bibliography{bibliography.bib}
-\bibliographystyle{plainnat}
-
-\addcontentsline{toc}{section}{List of figures}
+% List of figures
+\cleardoublepage
+\addcontentsline{toc}{chapter}{List of Figures}
 \listoffigures
 
-\newpage
-\input{chapters/further-reading}
+% References
+\addcontentsline{toc}{section}{References}
+\nocite{*}
+\bibliography{references.bib}
+\bibliographystyle{plainnat}
+
+%\newpage
+%\input{chapters/further-reading}
 
 \end{document}
