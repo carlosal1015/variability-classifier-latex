@@ -1,11 +1,14 @@
 \section{Variable Objects in Astronomy}
 \label{sec:theory-variable-objects}
 
+A lot of astronomical processes show periodic behaviour, that can be identified and characterized by long-term observation.
 % Periodic, non-periodic, semi-periodic
 
 \subsection{Intrinsic and extrinsic variability}
 \subsubsection{Quasi-Stellar radio sources (QSO)}
+% Stochastic variability
 \subsubsection{Pulsating variables}
+\subsubsection{Cepheids}
 \subsubsection{$\delta$--Scutis}
 \subsubsection{RR Lyrae}
 \subsubsection{Eclipsing binaries}
@@ -18,33 +21,88 @@
 When observing one specific object over some time interval $\Delta t$, we can record its magnitude $m_i$ at time $t_i$ and obtain a so-called \emph{time series}.
 
 \begin{definition}[Time Series]
-A time series $\Tau$ is a sequence of $N$ datapoints $(t_i, y_i),\; t,y \in \mathbb{R}$ with $t_i < t_{i+1} \; \forall i = 1,\ldots,N$. We call $\Tau$ \emph{evenly--sampled} $\Leftrightarrow t_{i+1} - t_i = C \in \mathbb{R}$ where $C$ is constant. Otherwise, $\Tau$ is \emph{unevenly--sampled}.
+A time series $\Tau$ is a sequence of $N$ data points $(t_i, \vec y_i),\; t_i,(y_i)_j \in \mathbb{R}$ with $t_i < t_{i+1} \; \forall i = 1,\ldots,N$. We call $\Tau$ \emph{evenly--sampled} $\Leftrightarrow t_{i+1} - t_i = C \in \mathbb{R}$ where $C$ is constant. Otherwise, $\Tau$ is \emph{unevenly--sampled}.
 \end{definition}
 
 In section \ref{sec:theory-variable-objects}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct lightcurves, giving rise to discriminative features that can later be used for classification.
 
 \subsection{Period-finding algorithms}
 
-One very important feature of a periodic signal is, of course, its period $P$. However, reconstructing $P$ from the time series $\Tau$ is not trivial, especially if the data is very noisy. Traditionally, there are a variety of methods available to characterize the signal in frequency--domain, such as Fourier analysis, but it can be shown that these methods perform poorly on unevenly--sampled data\todo{Reference}. This work makes use of two popular methods devised for unenvenly--sampled data, namely the \emph{Lomb--Scargle periodogram} and one algorithm based on \emph{conditional entropy}.
+One very important feature of a periodic signal is, of course, its period $T$. However, reconstructing $T$ from the time series $\Tau$ is not trivial, especially if the data is very noisy. Ultimately, this is a regression problem itself, see subsection \ref{sec:introduction-machine-learning}, however, we will not tackle this with Machine Learning, but rather make use of some well--known methods devised for this very problem. The ultimate objective is to find the \emph{periodogram} $P(\omega)$ of signal, which is an estimator for the \emph{spectral density} $P$ as a function of the angular frequency $\omega = \frac{2 \pi}{T}$\footnote{In this regard, the periodogram can be seen as spectrum (some quantity over frequency) of a time series $\Tau$.}. Traditionally, there are a variety of methods available to characterize the signal in frequency--domain, mostly Fourier analysis. In 1898, Arthur Schuster defined the \emph{Schuster periodogram}
+
+\begin{equation}
+\label{eg:schuster-periodogram}
+P_{\text{S}}(\omega) = \frac{1}{k} \, \biggl| \, \sum\limits_{i=1}^{k} y_i \mathrm{e}^{-\mathrm{i} \omega t_i} \, \biggr|^2,
+\end{equation}
+
+% Mention DFT and FFT, N*log(N)
+% https://charlesmartin14.wordpress.com/2012/11/05/noisy-time-series/
+% Reference for Schuster periodogram
+
+for a time series $(t_i, y_i)$ of length $k$. Note that equation \ref{eg:schuster-periodogram} is essentially given by $\| \mathcal{F}(\omega) \|_2 $, the $L^2$ norm of the discrete Fourier transform (DFT) $\mathcal{F}$ of the signal\todo{Check again}. Therefore, $P_{\text{S}}(\omega)$ can be approximated very efficiently when using the fast Fourier transform algorithm (FFT), which allows for a runtime complexity of $\mathcal{O}(N\log{(N)})$ instead of $\mathcal{O}(N^2)$. However, it can be shown that those Fourier transform--based methods perform poorly on unevenly--sampled data, because they tend to boost long--periodic noise \todo{Reference}. Since evenly--sampled data can be difficult to obtain, especially for earth--bound surveys in astronomy, a lot of effort was put into developing suitable methods that can cope with this kind of data. This work makes use of two popular methods devised for unevenly--sampled data, one based on least--squares spectral analysis (LSSA), namely the \emph{Lomb--Scargle periodogram}, and the other one based on the minimization of some metric for dispersion in phase space, in this case \emph{conditional entropy}. We provide a brief overview for both of them.
 
 \subsubsection{Lomb--Scargle Periodogram}
 
-% Generalized and classical
-% Works good for unevenly sampled datapoints
+The most prominent method for finding the period of an unevenly--sampled lightcurve was developed by \citet{lomb1976} and extended by \citet{scargle1982}. It is devised to find the period of a sinusoidal-shaped periodic signal. For a given time--series $(t_i, (y_i, \sigma_i))$ of length $k$ with arithmetic mean $\mu_y$ and variance of the noise $\sigma_y^2$, Scargle defines the \emph{normalized Lomb--Scargle peridogram} as
 
-% \subsection{String--Length method}
-% \subsection{Conditional entropy}
+\begin{equation}
+\label{eq:normalized-lomb-scargle}
+P^{\text{N}}_{\text{LS}}(\omega) = \frac{1}{2 \sigma_y^2} \Bigg\{ \frac{\big[\sum\limits_{i=1}^k (y_i - \mu_y) \cos(\omega(t_i - \tau))\big]^2}{\sum\limits_{i=1}^k \cos^2(\omega(t_i - \tau))} + \frac{\big[\sum\limits_{i=1}^k (y_i - \mu_y) \sin(\omega(t_i - \tau))\big]^2}{\sum\limits_{i=1}^k \sin^2(\omega(t_i - \tau))}\Bigg\},
+\end{equation}
+
+where $\tau$ is a time--offset defined by
+
+\begin{equation}
+\tan(2 \omega \tau) = \frac{\sum\limits_{i=1}^k \sin(2 \omega t_i)}{\sum\limits_{i=1}^k \cos(2 \omega t_i)},
+\end{equation}
+
+which makes the periodogram $P^{\text{N}}_{\text{LS}}(\omega)$ invariant for a translation in $t$. Furthermore, this time--offset $\tau$ makes the periodogram identical to least--squares fitting of a single--component sinusoidal model of the form $y(t) = A \sin(\omega t + \varphi)$ \citep{horne1986, vanderplas2015}. Additionally it can be shown that --- if the periodogram is properly normalized\footnote{There has been a lively discussion about the correct normalization of the periodogram, which retains above convenient statistical properties, see \citet{lomb1976,astroML,zechmeister2009}. The correct normalization factor in equation \ref{eq:normalized-lomb-scargle} is \emph{the total variance of the data}, as explained in detail in \citet{horne1986}.} --- $P^{\text{N}}_{\text{LS}}(\omega_0) \propto \exp(-x)$ for pure noise at any frequency $\omega_0$, where $x$ denotes the height of the peak. This exponential probability distribution gives rise to the \emph{false--alarm-probability (FAP)},
+
+\begin{equation}
+\text{FAP} = 1 - (1 - \mathrm{e}^{-x})^M,
+\end{equation}
+
+which is a suitable and convenient estimator for the significance\footnote{In this case: The probability that the peak is the product of a true signal, rather than the result of randomly distributed noise.} of a peak, and can be identified as the probability that a peak of at least height $x$ will occur in a periodogram on a grid of $M$ independent frequencies \emph{when evaluated on pure noise} \citep{horne1986}.\\
+
+In spite of its usefulness, there are some drawbacks of the normalized Lomb--Scargle periodogram in its original formulation:
+
+\begin{itemize}
+\item $P^{\text{N}}_{\text{LS}}(\omega)$ given by equation \ref{eq:normalized-lomb-scargle} does not account for measurement errors, \eg by introducing weights for all data points. This however ignores an important aspect of the measurement process, where some data points might in fact be more accurate than others, for example due to changing conditions in the measurement environment.
+\item Offset
+\end{itemize}
+
+This led to further generalization...
+The \emph{generalized Lomb--Scargle periodogram} is less prone to aliasing, and provides more accurate results (http://arxiv.org/abs/0901.2573).
+
+% Generalized and classical
+% Bayesian generalized Lomb-Scargle (Martiniee)
+% Single point estimate rather than a posterior probability distribution
+% Multi-band periodogram and matrix formalism
+% It is possible to carefully correct for such aliasing by iteratively removing contributions from the estimated window function (e.g. Roberts et al.1987), we’ll ignore this detail in the current work.
+% Discrete and continous, Fast Fourier Transformation (FFT)
+% Remarks concerning runtime N^2 and Nlog(N) implementations
 
 \subsubsection{Conditional Entropy}
 
+Using conditional entropy for period finding was first proposed by \citet{graham2013} as an extension of a similar algorithm developed by \citet{cincotta1995}. Both algorithms look at the problem from an information theory point of view. The fundamental idea is that the phase-folded lightcurve will form the most ordered arrangement of points in phase space when folded with the true period, whereas ...
+
+\begin{equation}
+H_S = - \sum_{i=1}^k \mu_i \ln(\mu_i)
+\end{equation}
+\begin{equation}
+H_c = \sum_{i,j} p(m_i, \phi_i) \ln(\frac{p(\phi_j)}{p(m_i, \phi_j)})
+\end{equation}
+
 % Works good for evenly sampled datapoints
-% Discrete and continous, Fast Fourier Transformation (FFT)
+
+We provide a fast \emph{Cython} implementation of the condition entropy period--finding algorithm.
 
 \subsection{Structure Function}
 
 \section{Statistical Inference using Machine Learning}
 
 \subsection{Introduction to Machine Learning}
+\label{sec:introduction-machine-learning}
 
 Machine Learning (ML), sometimes referred to as \emph{pattern recognition}, is a subfield of Artificial Intelligence (AI) primarily dealing with automated approaches to infer meaning from data in such a way that, after some training process, a model is obtained, that can later be used to make predictions or decisions on similar data or achieve some other kind of insight. This is a form of learning, because rather than explicitly programming certain decision rules, we want to generalize observations towards an underlying model that performs as good as possible when confronted with new data.\\
 
