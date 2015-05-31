@@ -1,10 +1,14 @@
 FILE = thesis
 
-all: thesis
+all: bib thesis
 
 thesis:
 
 	pdflatex $(FILE)
+
+bib:
+
+	bibtex $(FILE)
 
 show:
 
