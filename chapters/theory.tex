@@ -32,18 +32,19 @@ One very important feature of a periodic signal is, of course, its period $T$. H
 
 \begin{equation}
 \label{eg:schuster-periodogram}
-P_{\text{S}}(\omega) = \frac{1}{k} \, \biggl| \, \sum\limits_{i=1}^{k} y_i \mathrm{e}^{-\mathrm{i} \omega t_i} \, \biggr|^2,
+P_{\text{S}}(\omega) = \frac{1}{k} \, \biggl| \, \sum\limits_{i=1}^{k} y_i \euler^{-\mathrm{i} \omega t_i} \, \biggr|^2,
 \end{equation}
 
 % Mention DFT and FFT, N*log(N)
+% If omega0 is true period than e^{-i * omega0 * t_i} will have large contribution
 % https://charlesmartin14.wordpress.com/2012/11/05/noisy-time-series/
 % Reference for Schuster periodogram
 
-for a time series $(t_i, y_i)$ of length $k$. Note that equation \ref{eg:schuster-periodogram} is essentially given by $\| \mathcal{F}(\omega) \|_2 $, the $L^2$ norm of the discrete Fourier transform (DFT) $\mathcal{F}$ of the signal\todo{Check again}. Therefore, $P_{\text{S}}(\omega)$ can be approximated very efficiently when using the fast Fourier transform algorithm (FFT), which allows for a runtime complexity of $\mathcal{O}(N\log{(N)})$ instead of $\mathcal{O}(N^2)$. However, it can be shown that those Fourier transform--based methods perform poorly on unevenly--sampled data, because they tend to boost long--periodic noise \todo{Reference}. Since evenly--sampled data can be difficult to obtain, especially for earth--bound surveys in astronomy, a lot of effort was put into developing suitable methods that can cope with this kind of data. This work makes use of two popular methods devised for unevenly--sampled data, one based on least--squares spectral analysis (LSSA), namely the \emph{Lomb--Scargle periodogram}, and the other one based on the minimization of some metric for dispersion in phase space, in this case \emph{conditional entropy}. We provide a brief overview for both of them.
+for a time series $(t_i, y_i)$ of length $k$. Note that equation \ref{eg:schuster-periodogram} is essentially given by $\| \mathcal{F}(\omega) \|_2 $, the $L^2$ norm of the discrete Fourier transform (DFT) $\mathcal{F}$ of the signal\todo{Check again}. Therefore, $P_{\text{S}}(\omega)$ can be approximated very efficiently when using the fast Fourier transform algorithm (FFT) \citep{cooley1965}, which allows for a runtime complexity of $\mathcal{O}(N\log{(N)})$ instead of $\mathcal{O}(N^2)$. However, it can be shown that those Fourier transform--based methods perform poorly on unevenly--sampled data, because they tend to boost long--periodic noise \todo{Reference}. Since evenly--sampled data can be difficult to obtain, especially for earth--bound surveys in astronomy, a lot of effort was put into developing suitable methods that can cope with this kind of data. This work makes use of two popular methods devised for unevenly--sampled data, one based on least--squares spectral analysis (LSSA), namely the \emph{Lomb--Scargle periodogram}, and the other one based on the minimization of some metric for dispersion in phase space, in this case \emph{conditional entropy}. We provide a brief overview for both of them.
 
 \subsubsection{Lomb--Scargle Periodogram}
 
-The most prominent method for finding the period of an unevenly--sampled lightcurve was developed by \citet{lomb1976} and extended by \citet{scargle1982}. It is devised to find the period of a sinusoidal-shaped periodic signal. For a given time--series $(t_i, (y_i, \sigma_i))$ of length $k$ with arithmetic mean $\mu_y$ and variance of the noise $\sigma_y^2$, Scargle defines the \emph{normalized Lomb--Scargle peridogram} as
+The most prominent method for finding the period of an unevenly--sampled lightcurve was developed by \citet{lomb1976} and extended by \citet{scargle1982}. It is devised to find the period of a sinusoidal-shaped periodic signal. For a given time--series $(t_i, (y_i, \sigma_i))$ of length $k$ with arithmetic mean $\mu_y$ and variance of the noise $\sigma_y^2$, Scargle defines the \emph{normalized Lomb--Scargle periodogram} as
 
 \begin{equation}
 \label{eq:normalized-lomb-scargle}
@@ -59,7 +60,7 @@ where $\tau$ is a time--offset defined by
 which makes the periodogram $P^{\text{N}}_{\text{LS}}(\omega)$ invariant for a translation in $t$. Furthermore, this time--offset $\tau$ makes the periodogram identical to least--squares fitting of a single--component sinusoidal model of the form $y(t) = A \sin(\omega t + \varphi)$ \citep{horne1986, vanderplas2015}. Additionally it can be shown that --- if the periodogram is properly normalized\footnote{There has been a lively discussion about the correct normalization of the periodogram, which retains above convenient statistical properties, see \citet{lomb1976,astroML,zechmeister2009}. The correct normalization factor in equation \ref{eq:normalized-lomb-scargle} is \emph{the total variance of the data}, as explained in detail in \citet{horne1986}.} --- $P^{\text{N}}_{\text{LS}}(\omega_0) \propto \exp(-x)$ for pure noise at any frequency $\omega_0$, where $x$ denotes the height of the peak. This exponential probability distribution gives rise to the \emph{false--alarm-probability (FAP)},
 
 \begin{equation}
-\text{FAP} = 1 - (1 - \mathrm{e}^{-x})^M,
+\text{FAP}(x) = 1 - (1 - \euler^{-x})^M,
 \end{equation}
 
 which is a suitable and convenient estimator for the significance\footnote{In this case: The probability that the peak is the product of a true signal, rather than the result of randomly distributed noise.} of a peak, and can be identified as the probability that a peak of at least height $x$ will occur in a periodogram on a grid of $M$ independent frequencies \emph{when evaluated on pure noise} \citep{horne1986}.\\
@@ -95,7 +96,7 @@ H_c = \sum_{i,j} p(m_i, \phi_i) \ln(\frac{p(\phi_j)}{p(m_i, \phi_j)})
 
 % Works good for evenly sampled datapoints
 
-We provide a fast \emph{Cython} implementation of the condition entropy period--finding algorithm.
+We provide a runtime--optimized, fast \emph{Cython} implementation of the conditional entropy period--finding algorithm.
 
 \subsection{Structure Function}
 
@@ -118,32 +119,32 @@ There are a variety of learning problems, such as \emph{classification problems}
 % Overfitting, underfitting
 % Add some examples for machine learning problems
 
-Please note that in practise both $N$ and $d$ can be very large, and infering $\varphi$ from $\mathcal{D}$ directly can become computationally expensive or even unfeasible.
+Please note that in practise both $N$ and $d$ can be very large, and infering $\varphi$ from $\trainingdata$ directly can become computationally expensive or even unfeasible.
 
 \subsubsection{Classification and Regression}
 
-In this work, we are primarily interested in classfication and regression using supervised methods. Therefore, we are typically trying to solve the following problem: Given some training data
+In this work, we are primarily interested in classification and regression using supervised methods. Therefore, we are typically trying to solve the following problem: Given some training data
 
 \begin{equation}
-\mathcal{D} = \{ (\vec x_i, y_i) \, \mid \, \vec x_i \in \mathbb{R}^d, y_i \in \mathcal{C} \quad \forall i = 1,\ldots,N \}
+\trainingdata = \{ (\vec x_i, y_i) \where \vec x_i \in \mathbb{R}^d, y_i \in \classes \quad \forall i = 1,\ldots,N \},
 \end{equation}
 
-consisting of $N$ \emph{feature} vectors $\vec x_i \in \mathcal{X}$ of length $d$ and $N$ \emph{labels} or \emph{classes} $y_i \in \mathcal{C}$, find some mapping function $\varphi \colon \mathcal{X} \to \mathcal{C}$ such that
+consisting of $N$ \emph{feature} vectors $\vec x_i \in \observations$ of length $d$ and $N$ \emph{labels} or \emph{classes} $y_i \in \classes$, find some mapping function $\varphi \colon \observations \to \classes$ such that
 
 \begin{equation}
-\varphi(\vec x_i) = y_i \in \mathcal{C} \quad \forall i = 1,\ldots,N,
+\estimator(\vec x_i) = y_i \in \classes \quad \forall i = 1,\ldots,N,
 \end{equation}
 
-where $y_i$ denotes the true class of an arbitrary oberservation $\vec x$ out of all possible oberservations $\mathcal{X}$.
+where $y_i$ denotes the true class of an arbitrary observation $\vec x$ out of all possible oberservations $\observations$.
 
 \begin{definition}[Estimators]
-In any case, $\varphi$ is an \emph{estimator}. If the label $y_i$ is a discrete value, $\varphi$ will be called \emph{classifier}, if it is continous, $\varphi$ will be called \emph{regressor}.
-\end{definition}
+In any case, $\varphi$ is an \emph{estimator}. If the label $y_i$ is a discrete value, $\varphi$ will be called \emph{classifier}, if it is continuous, $\varphi$ will be called \emph{regressor}.
+\end{definition}\footnote{The term \emph{probabilistic classifier} stands for an estimator that assigns a probability $p_{\text{class}}$ for every class to the input vector. Based on this, classification can be conducted, \eg by maximum likelihood.}
 
 We consider $\varphi$ to be optimal if, confronted with some testing data,
 
 \begin{equation}
-\mathcal{T} = \{ (\vec x'_j) \, \mid \, \vec x'_j \in \mathbb{R}^d \quad \forall j = 1,\ldots,N \},
+\testingdata = \{ (\vec x'_j) \where \vec x'_j \in \mathbb{R}^d \quad \forall j = 1,\ldots,N \},
 \end{equation}
 
 the estimator yields
@@ -167,10 +168,68 @@ A = \frac{T_p + T_n}{T_p + F_p + T_n + F_n}, \; P = \frac{T_p}{T_p + F_p}, \; R 
 where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{false positives}, \emph{true negatives} and \emph{false negatives}\todo{}\footnote{Accuracy, precision and recall are sometimes also referred to as \emph{}, \emph{}, \emph{}}. For regression, we usually want to minimize some suitable loss-function $L$.
 
 \subsection{Algorithms for Classification and Regression}
-\subsubsection{Support Vector Machines (SVMs)}
+\subsubsection{Linear and Non--linear Support Vector Machines (SVMs)}
+
+Support Vector Machines (SVMs), originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the descision boundary \citep{hastie2001}.} Among all possible hyperplanes, the optimal SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
+
+% @TODO: Add image showing data points that are not linearly separable.
+
+\emph{If} the data is linearly separable, we fit a linear SVM, which finds the optimal decision boundary
+
+\begin{equation}
+\hat \hyperplane = \{ \vec x \where \vec x^T \vec \alpha + \alpha_0 = 0 \},
+\end{equation}
+
+with parameters $\vec \alpha, \alpha_0$, obtained by solving the optimization problem
+
+\begin{gather}
+\label{eq:svm-linear-hyperplane}
+\min_{\vec \alpha, \alpha_0} \frac{1}{2} \| \vec \alpha \|^2 \\
+\text{\st} y_i (\vec x_i^T \vec \alpha + \alpha_0) \ge 1 \quad \forall i = 1, \ldots, N,
+\end{gather}
+
+where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citep{vanderplas2015}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \cite{hastie2001}. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by \ref{eq:svm-linear-hyperplane}. For this purpose, we introduce the \emph{slack variables} $\xi_i$ and slightly modify our optimization problem to \\
+
+\begin{gather}
+\label{eq:svm-linear-hyperplane-relaxed}
+\min_{\vec \alpha, \alpha_0} \frac{1}{2} \| \vec \alpha \|^2 \\
+\text{\st} y_i (\vec x_i^T \vec \alpha + \alpha_0) \ge 1 - \xi_i \quad \forall i = 1, \ldots, N \text{\ and} \\
+\text{\st} \sum\limits_{i=1}^{N} \xi_i \le C \in \mathbb{R} \text{\ with\ } \xi_i \ge 0 \quad \forall i = 1, \ldots, N.
+\end{gather}
+
+Essentially, this will allow some points to be misclassified, $\cdots$\todo{Rephrase}. Note that we have added a free parameter $C$ to our model, that we need to adapt to our specific problem (see section hyperparamater optimization\todo{Add correct ref}).\\
+
+However, even with these relaxed constraints, if the underlying true model is not linear, training a linear model will never yield optimal results, consequently the classification performance will be poor. For this reason \citet{cortes1995} devised an enhancement of the original proposal, which maps the data into a high--dimensional feature space $\hdfeaturespace$ by some (non-linear) mapping function $\kernel \colon \mathbb{R}^{d_1} \to \mathbb{R}^{d_2}, d_1 < d_2$, hoping to be able to find a linear decision surface\footnote{Keep in mind that while $\hdhyperplane$ is linear in $\hdfeaturespace$, it will not be linear in $\featurespace$.} in this higher--dimensional representation of the data $\kernel(\vec x)$.\\
+ 
+A suitable choice for $\kernel$ does ultimately depend on the problem, but a very common choice for is the gaussian \emph{radial basis function} (RBF) kernel
+
+\begin{equation}
+\label{eq:rbf}
+\kernel_{\text{RBF}}(\vec x, \vec x') = \euler^{-\gamma \| \vec x - \vec x' \|^2},
+\end{equation}
+
+where $\gamma$ is $\cdots$. All radial basis functions $f$ must satisfy $f(\vec x) = f(\|\vec x\|) \; \forall \vec x$.\\
+
+Technically, SVMs are restricted to binary classification problems, that is data sets with only two distinct classes, but in practise every multi--class classification problem can be transformed into multiple binary classification problems, \eg by training multiple SVMs for either one class against all classes (\emph{one--vs.--all}), or every class against every other class (\emph{one--vs.--one}) \citep{knerr1990}. In the end, for $N$ classes, we would actually train $N \cdot \frac{N-1}{2}$ classifiers when using the \emph{one--vs.--all} approach.
+
+% Map to higher-dimensional space can make separation easier
+% Kernel trick
+% Chapter 5 in Hastie
+% Linear-classifier, (k-1)-dimensional hyperplane for k-dimensional features
+% Non-linear classification possible
+% Linear separability
+% Gaussian radial basis function, Hilbertspace
+% Extension of the perceptron, special case of Tikhonov regularization
+% Parameters C, gamma are derived from solving the optimization problem
+% Scale data
+
+% @TODO: Name advantages and disadvantages
+
 \subsubsection{Decision Trees and Random Forests}
 
 Decision trees are presumably the most intuitive way to subdivide data into different classes.
+
+% @TODO: Name advantages and disadvantages
 
 \section{Dimensionality reduction on high-dimensional datasets}
 \label{sec:dimensionality-reduction}
