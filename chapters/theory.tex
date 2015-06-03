@@ -170,9 +170,11 @@ where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{fal
 \subsection{Algorithms for Classification and Regression}
 \subsubsection{Linear and Non--linear Support Vector Machines (SVMs)}
 
-Support Vector Machines (SVMs), originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the descision boundary \citep{hastie2001}.} Among all possible hyperplanes, the optimal SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
+Support Vector Machines (SVMs)\footnote{A note to the terminology: Most literature refers to the linearly separable case as \emph{Support Vector classifier}, whereas the non--linear high--dimensional enhancement, incorporating kernel methods, are called \emph{Support Vector Machine}.}, originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the descision boundary \citep{hastie2001}.} Among all possible hyperplanes, the optimal SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
 
 % @TODO: Add image showing data points that are not linearly separable.
+
+%\paragraph{Support Vector Classifiers}
 
 \emph{If} the data is linearly separable, we fit a linear SVM, which finds the optimal decision boundary
 
@@ -188,39 +190,44 @@ with parameters $\vec \alpha, \alpha_0$, obtained by solving the optimization pr
 \text{\st} y_i (\vec x_i^T \vec \alpha + \alpha_0) \ge 1 \quad \forall i = 1, \ldots, N,
 \end{gather}
 
-where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citep{vanderplas2015}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \cite{hastie2001}. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by \ref{eq:svm-linear-hyperplane}. For this purpose, we introduce the \emph{slack variables} $\xi_i$ and slightly modify our optimization problem to \\
+where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citet{hastie2001}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \citet{vanderplas2015}. At this point, the classification problem is solved by $\estimator(\vec x) = \operatorname{sign}(x_i^T \vec \alpha + \alpha_0)$. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by equation \ref{eq:svm-linear-hyperplane}\todo{Fix number}. For this purpose, we introduce the non--negative \emph{slack variables} $\slack_i$ and slightly modify our optimization problem to \\
 
 \begin{gather}
 \label{eq:svm-linear-hyperplane-relaxed}
 \min_{\vec \alpha, \alpha_0} \frac{1}{2} \| \vec \alpha \|^2 \\
-\text{\st} y_i (\vec x_i^T \vec \alpha + \alpha_0) \ge 1 - \xi_i \quad \forall i = 1, \ldots, N \text{\ and} \\
-\text{\st} \sum\limits_{i=1}^{N} \xi_i \le C \in \mathbb{R} \text{\ with\ } \xi_i \ge 0 \quad \forall i = 1, \ldots, N.
+\text{\st} y_i (\vec x_i^T \vec \alpha + \alpha_0) \ge 1 - \slack_i \quad \forall i = 1, \ldots, N \text{\ and} \\
+\text{\st} \sum\limits_{i=1}^{N} \slack_i \le C \in \mathbb{R} \text{\ with\ } \slack_i \ge 0 \quad \forall i = 1, \ldots, N.
 \end{gather}
 
-Essentially, this will allow some points to be misclassified, $\cdots$\todo{Rephrase}. Note that we have added a free parameter $C$ to our model, that we need to adapt to our specific problem (see section hyperparamater optimization\todo{Add correct ref}).\\
+Essentially, this will allow some points to be misclassified, $\cdots$\todo{Rephrase}. This is referred to as \emph{soft--margin SVM}. Note that we have added a free parameter $C$ to our model, that we need to adapt to our specific problem (see section hyperparamater optimization\todo{Add correct ref}).\\
 
-However, even with these relaxed constraints, if the underlying true model is not linear, training a linear model will never yield optimal results, consequently the classification performance will be poor. For this reason \citet{cortes1995} devised an enhancement of the original proposal, which maps the data into a high--dimensional feature space $\hdfeaturespace$ by some (non-linear) mapping function $\kernel \colon \mathbb{R}^{d_1} \to \mathbb{R}^{d_2}, d_1 < d_2$, hoping to be able to find a linear decision surface\footnote{Keep in mind that while $\hdhyperplane$ is linear in $\hdfeaturespace$, it will not be linear in $\featurespace$.} in this higher--dimensional representation of the data $\kernel(\vec x)$.\\
+%\paragraph{Support Vector Machines}
+
+However, even with these relaxed constraints, if the underlying true model is not linear, training a linear model will never yield optimal results, consequently the classification performance will be poor. For this reason \citet{cortes1995} devised an enhancement of the original proposal, which maps the data into a high--dimensional feature space $\hdfeaturespace$ by some (non-linear) mapping function $\hdmapping \colon \mathbb{R}^{d_1} \to \mathbb{R}^{d_2}, d_1 < d_2$, hoping to be able to find a linear decision surface\footnote{Keep in mind that while $\hdhyperplane$ is linear in $\hdfeaturespace$, it will not be linear in $\featurespace$.} in this higher--dimensional representation of the data $\hdmapping(\vec x)$. Yet it is important to realize that $d_2$ can potentially become very large, \eg say that $d_2 \propto 2^{d_1}$, so actually carrying out the transformation $\Phi(\vec x)$ explicitly seems unfeasible due to memory constraints. Fortunately, there is a way to avoid this, known as the \emph{kernel trick}, originally proposed by \citet{aizerman1964}. In their work, \citet{cortes1995} show that in optimization problem \ref{eq:svm-linear-hyperplane-relaxed}, the data points only contribute to the solution in terms of pairwise dot products $\langle \vec x_i, \vec x_j \rangle$. Therefore, we introduce a \emph{kernel function}\footnote{$\kernel(\vec x, \vec x')$ can be seen as similarity measure for $\vec x, \vec x'$.} or \emph{kernel}
+
+\begin{equation}
+\label{eq:kernel-function}
+\kernel \colon \observations \times \observations \to \mathbb{R},\, (\vec x, \vec x') \mapsto \langle \phi(\vec x), \phi(\vec x') \rangle,
+\end{equation}\\
+
+where $\langle \cdot, \cdot \rangle$ denotes the dot product, and $\vec x'$ is generally the reference centre\todo{Rephase}, but in the process of training the SVM, $\vec x'$ will be the unlabelled data point under consideration. In light of equation \ref{eq:kernel-function}, $\kernel(\vec x, \vec x')$ can be expressed as dot product between the images of $\vec x$ \resp $\vec x'$ under $\phi$. We are not interested in any direct form of $\phi$, but its existence is assured by Mercer's theorem, which --- loosely speaking --- states that $\phi$ exists if and only if $\kernel(\vec x, \vec x')$ is continous, symmetric \emph{and} positive semi--definite \citep{mercer1909}, otherwise $\kernel(\vec x, \vec x')$ will not resemble a dot product. Finally, we see that we can have our SVM operate in $\hdfeaturespace$ instead of $\featurespace$ in a very efficient manner just by substituting all occurences of $\langle \vec x_i, \vec x_j \rangle$ in the corresponding dual formulation of \ref{eq:svm-linear-hyperplane-relaxed} with $\kernel({\vec x_i, \vec x_j})$ for all $i,j$. \\
  
-A suitable choice for $\kernel$ does ultimately depend on the problem, but a very common choice for is the gaussian \emph{radial basis function} (RBF) kernel
+A suitable choice for $\kernel$ does ultimately depend on the problem, ideally incorporating domain--knowledge, but a very common choice is the Gaussian \emph{radial basis function} (RBF)\footnote{All radial basis functions $f$ must satisfy $f(\vec x) = f(\|\vec x\|) \; \forall \vec x$.} kernel
 
 \begin{equation}
 \label{eq:rbf}
 \kernel_{\text{RBF}}(\vec x, \vec x') = \euler^{-\gamma \| \vec x - \vec x' \|^2},
 \end{equation}
 
-where $\gamma$ is $\cdots$. All radial basis functions $f$ must satisfy $f(\vec x) = f(\|\vec x\|) \; \forall \vec x$.\\
+with $\gamma = -\frac{1}{2 \sigma^2}$.\\
+
+% RBF -> Hilbert space
+% \Phi must be postive definite to ensure some properties
+% Kernel trick
+% List common choices for kernels
 
 Technically, SVMs are restricted to binary classification problems, that is data sets with only two distinct classes, but in practise every multi--class classification problem can be transformed into multiple binary classification problems, \eg by training multiple SVMs for either one class against all classes (\emph{one--vs.--all}), or every class against every other class (\emph{one--vs.--one}) \citep{knerr1990}. In the end, for $N$ classes, we would actually train $N \cdot \frac{N-1}{2}$ classifiers when using the \emph{one--vs.--all} approach.
 
-% Map to higher-dimensional space can make separation easier
-% Kernel trick
-% Chapter 5 in Hastie
-% Linear-classifier, (k-1)-dimensional hyperplane for k-dimensional features
-% Non-linear classification possible
-% Linear separability
-% Gaussian radial basis function, Hilbertspace
-% Extension of the perceptron, special case of Tikhonov regularization
-% Parameters C, gamma are derived from solving the optimization problem
 % Scale data
 
 % @TODO: Name advantages and disadvantages
