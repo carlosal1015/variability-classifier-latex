@@ -172,7 +172,8 @@ where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{fal
 
 Support Vector Machines (SVMs)\footnote{A note to the terminology: Most literature refers to the linearly separable case as \emph{Support Vector classifier}, whereas the non--linear high--dimensional enhancement, incorporating kernel methods, are called \emph{Support Vector Machine}.}, originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the descision boundary \citep{hastie2001}.} Among all possible hyperplanes, the optimal SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
 
-% @TODO: Add image showing data points that are not linearly separable.
+% @IMAGE: Add image showing data points that are not linearly separable.
+% @IMAGE: Add image showing how transformation to higher dimension can make the proble linearly separable
 
 %\paragraph{Support Vector Classifiers}
 
@@ -222,21 +223,65 @@ A suitable choice for $\kernel$ does ultimately depend on the problem, ideally i
 with $\gamma = -\frac{1}{2 \sigma^2}$.\\
 
 % RBF -> Hilbert space
-% \Phi must be postive definite to ensure some properties
-% Kernel trick
-% List common choices for kernels
 
 Technically, SVMs are restricted to binary classification problems, that is data sets with only two distinct classes, but in practise every multi--class classification problem can be transformed into multiple binary classification problems, \eg by training multiple SVMs for either one class against all classes (\emph{one--vs.--all}), or every class against every other class (\emph{one--vs.--one}) \citep{knerr1990}. In the end, for $N$ classes, we would actually train $N \cdot \frac{N-1}{2}$ classifiers when using the \emph{one--vs.--all} approach.
 
 % Scale data
+% List common choices for kernels
 
 % @TODO: Name advantages and disadvantages
 
 \subsubsection{Decision Trees and Random Forests}
 
-Decision trees are presumably the most intuitive way to subdivide data into different classes.
+Decision trees \citep{breiman1984} are presumably the most intuitive way to subdivide data into different classes.\\
+% Probably the way humans would do classification
 
-% @TODO: Name advantages and disadvantages
+There are a variety of metrics to access the impurity of every node in a classification tree. Let $p_i = \frac{1}{N} \sum\limits_{\vec x_i \in \classes_i}^N 1$ be the relative frequency of the $i^{\text{th}}$ class $\classes_i$ in the remaining set of $N$ observations. We define the \emph{Gini impurity} or \emph{Gini coefficient} for $k$ classes as
+
+\begin{equation}
+\label{eq:gini-impurity}
+G_{\text{I}} = \sum\limits_{i=1}^k p_i (1 - p_i).
+\end{equation}
+
+Furthermore we define the \emph{entropy} or \emph{deviance} of the remaining data as
+
+\begin{equation}
+\label{eq:entropy-impurity}
+E_{\text{I}} = - \sum\limits_{i=1}^k p_i \ln(p_i).
+\end{equation}
+% From this we can define the information gain...
+
+% @TODO: Name advantages and disadvantages for Decision trees (see e.g. http://scikit-learn.org/stable/modules/tree.html)
+
+%%%
+% DECISION TREES
+%%%
+
+
+% Subdivide (split) data at each branch into two sets
+% Boundaries axis aligned (so same split-feature at same level)
+% Recursive splitting until some stop--criteria is fulfiled (recursive partioning)
+% Top-down induction of decision trees 
+% CART: Classification And Regression Tree
+% Classification is performed by simpling walking down the tree
+% Leaf nodes determine label
+% Optimal depth of the tree needs to be determined
+% Normal decision trees are prone to overfitting
+% Very intuitive, very easy to interpret
+% Different split criteria: Gini coefficient, entropy (information gain)
+% Returns feature importance
+% Pruning
+% Bagging and Random Forests
+
+%%%
+% RANDOM FORESTS
+%%%
+
+% Ensemble Learning
+% Random Forests: Features on which to generate the tree on are randomly drawn
+% Random Forests: no axis alignment
+
+% @TODO: Name advantages and disadvantages for Random forests (see e.g. http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm)
 
 \section{Dimensionality reduction on high-dimensional datasets}
 \label{sec:dimensionality-reduction}
