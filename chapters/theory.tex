@@ -57,7 +57,7 @@ where $\tau$ is a time--offset defined by
 \tan(2 \omega \tau) = \frac{\sum\limits_{i=1}^k \sin(2 \omega t_i)}{\sum\limits_{i=1}^k \cos(2 \omega t_i)},
 \end{equation}
 
-which makes the periodogram $P^{\text{N}}_{\text{LS}}(\omega)$ invariant for a translation in $t$. Furthermore, this time--offset $\tau$ makes the periodogram identical to least--squares fitting of a single--component sinusoidal model of the form $y(t) = A \sin(\omega t + \varphi)$ \citep{horne1986, vanderplas2015}. Additionally it can be shown that --- if the periodogram is properly normalized\footnote{There has been a lively discussion about the correct normalization of the periodogram, which retains above convenient statistical properties, see \citet{lomb1976,astroML,zechmeister2009}. The correct normalization factor in equation \ref{eq:normalized-lomb-scargle} is \emph{the total variance of the data}, as explained in detail in \citet{horne1986}.} --- $P^{\text{N}}_{\text{LS}}(\omega_0) \propto \exp(-x)$ for pure noise at any frequency $\omega_0$, where $x$ denotes the height of the peak. This exponential probability distribution gives rise to the \emph{false--alarm-probability (FAP)},
+which makes the periodogram $P^{\text{N}}_{\text{LS}}(\omega)$ invariant for a translation in $t$. Furthermore, this time--offset $\tau$ makes the periodogram identical to least--squares fitting of a single--component sinusoidal model of the form $y(t) = A \sin(\omega t + \varphi)$ \citep{horne1986, vanderplas2015}. Additionally it can be shown that --- if the periodogram is properly normalized\footnote{There has been a lively discussion about the correct normalization of the periodogram, which retains above convenient statistical properties, see \citet{lomb1976,astroML,zechmeister2009}. The correct normalization factor in equation \eqref{eq:normalized-lomb-scargle} is \emph{the total variance of the data}, as explained in detail in \citet{horne1986}.} --- $P^{\text{N}}_{\text{LS}}(\omega_0) \propto \exp(-x)$ for pure noise at any frequency $\omega_0$, where $x$ denotes the height of the peak. This exponential probability distribution gives rise to the \emph{false--alarm-probability (FAP)},
 
 \begin{equation}
 \text{FAP}(x) = 1 - (1 - \euler^{-x})^M,
@@ -68,8 +68,8 @@ which is a suitable and convenient estimator for the significance\footnote{In th
 In spite of its usefulness, there are some drawbacks of the normalized Lomb--Scargle periodogram in its original formulation:
 
 \begin{itemize}
-\item $P^{\text{N}}_{\text{LS}}(\omega)$ given by equation \ref{eq:normalized-lomb-scargle} does not account for measurement errors, \eg by introducing weights for all data points. This however ignores an important aspect of the measurement process, where some data points might in fact be more accurate than others, for example due to changing conditions in the measurement environment.
-\item Offset
+\item $P^{\text{N}}_{\text{LS}}(\omega)$ given by equation \eqref{eq:normalized-lomb-scargle} does not account for measurement errors, \eg by introducing weights for all data points. This however ignores an important aspect of the measurement process, where some data points might in fact be more accurate than others, for example due to changing conditions in the measurement environment.
+\item Offset % @TODO: Elaborate on constant offset
 \end{itemize}
 
 This led to further generalization...
@@ -191,7 +191,7 @@ with parameters $\vec \alpha, \alpha_0$, obtained by solving the optimization pr
 \text{\st} y_i (\vec x_i^T \vec \alpha + \alpha_0) \ge 1 \quad \forall i = 1, \ldots, N,
 \end{gather}
 
-where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citet{hastie2001}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \citet{vanderplas2015}. At this point, the classification problem is solved by $\estimator(\vec x) = \operatorname{sign}(x_i^T \vec \alpha + \alpha_0)$. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by equation \ref{eq:svm-linear-hyperplane}\todo{Fix number}. For this purpose, we introduce the non--negative \emph{slack variables} $\slack_i$ and slightly modify our optimization problem to \\
+where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citet{hastie2001}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \citet{vanderplas2015}. At this point, the classification problem is solved by $\estimator(\vec x) = \operatorname{sign}(x_i^T \vec \alpha + \alpha_0)$. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by equation \eqref{eq:svm-linear-hyperplane}\todo{Fix number}. For this purpose, we introduce the non--negative \emph{slack variables} $\slack_i$ and slightly modify our optimization problem to \\
 
 \begin{gather}
 \label{eq:svm-linear-hyperplane-relaxed}
@@ -204,14 +204,14 @@ Essentially, this will allow some points to be misclassified, $\cdots$\todo{Reph
 
 %\paragraph{Support Vector Machines}
 
-However, even with these relaxed constraints, if the underlying true model is not linear, training a linear model will never yield optimal results, consequently the classification performance will be poor. For this reason \citet{cortes1995} devised an enhancement of the original proposal, which maps the data into a high--dimensional feature space $\hdfeaturespace$ by some (non-linear) mapping function $\hdmapping \colon \mathbb{R}^{d_1} \to \mathbb{R}^{d_2}, d_1 < d_2$, hoping to be able to find a linear decision surface\footnote{Keep in mind that while $\hdhyperplane$ is linear in $\hdfeaturespace$, it will not be linear in $\featurespace$.} in this higher--dimensional representation of the data $\hdmapping(\vec x)$. Yet it is important to realize that $d_2$ can potentially become very large, \eg say that $d_2 \propto 2^{d_1}$, so actually carrying out the transformation $\Phi(\vec x)$ explicitly seems unfeasible due to memory constraints. Fortunately, there is a way to avoid this, known as the \emph{kernel trick}, originally proposed by \citet{aizerman1964}. In their work, \citet{cortes1995} show that in optimization problem \ref{eq:svm-linear-hyperplane-relaxed}, the data points only contribute to the solution in terms of pairwise dot products $\langle \vec x_i, \vec x_j \rangle$. Therefore, we introduce a \emph{kernel function}\footnote{$\kernel(\vec x, \vec x')$ can be seen as similarity measure for $\vec x, \vec x'$.} or \emph{kernel}
+However, even with these relaxed constraints, if the underlying true model is not linear, training a linear model will never yield optimal results, consequently the classification performance will be poor. For this reason \citet{cortes1995} devised an enhancement of the original proposal, which maps the data into a high--dimensional feature space $\hdfeaturespace$ by some (non-linear) mapping function $\hdmapping \colon \mathbb{R}^{d_1} \to \mathbb{R}^{d_2}, d_1 < d_2$, hoping to be able to find a linear decision surface\footnote{Keep in mind that while $\hdhyperplane$ is linear in $\hdfeaturespace$, it will not be linear in $\featurespace$.} in this higher--dimensional representation of the data $\hdmapping(\vec x)$. Yet it is important to realize that $d_2$ can potentially become very large, \eg say that $d_2 \propto 2^{d_1}$, so actually carrying out the transformation $\Phi(\vec x)$ explicitly seems unfeasible due to memory constraints. Fortunately, there is a way to avoid this, known as the \emph{kernel trick}, originally proposed by \citet{aizerman1964}. In their work, \citet{cortes1995} show that in optimization problem \eqref{eq:svm-linear-hyperplane-relaxed}, the data points only contribute to the solution in terms of pairwise dot products $\langle \vec x_i, \vec x_j \rangle$. Therefore, we introduce a \emph{kernel function}\footnote{$\kernel(\vec x, \vec x')$ can be seen as similarity measure for $\vec x, \vec x'$.} or \emph{kernel}
 
 \begin{equation}
 \label{eq:kernel-function}
 \kernel \colon \observations \times \observations \to \mathbb{R},\, (\vec x, \vec x') \mapsto \langle \phi(\vec x), \phi(\vec x') \rangle,
 \end{equation}\\
 
-where $\langle \cdot, \cdot \rangle$ denotes the dot product, and $\vec x'$ is generally the reference centre\todo{Rephase}, but in the process of training the SVM, $\vec x'$ will be the unlabelled data point under consideration. In light of equation \ref{eq:kernel-function}, $\kernel(\vec x, \vec x')$ can be expressed as dot product between the images of $\vec x$ \resp $\vec x'$ under $\phi$. We are not interested in any direct form of $\phi$, but its existence is assured by Mercer's theorem, which --- loosely speaking --- states that $\phi$ exists if and only if $\kernel(\vec x, \vec x')$ is continous, symmetric \emph{and} positive semi--definite \citep{mercer1909}, otherwise $\kernel(\vec x, \vec x')$ will not resemble a dot product. Finally, we see that we can have our SVM operate in $\hdfeaturespace$ instead of $\featurespace$ in a very efficient manner just by substituting all occurences of $\langle \vec x_i, \vec x_j \rangle$ in the corresponding dual formulation of \ref{eq:svm-linear-hyperplane-relaxed} with $\kernel({\vec x_i, \vec x_j})$ for all $i,j$. \\
+where $\langle \cdot, \cdot \rangle$ denotes the dot product, and $\vec x'$ is generally the reference centre\todo{Rephase}, but in the process of training the SVM, $\vec x'$ will be the unlabelled data point under consideration. In light of equation \eqref{eq:kernel-function}, $\kernel(\vec x, \vec x')$ can be expressed as dot product between the images of $\vec x$ \resp $\vec x'$ under $\phi$. We are not interested in any direct form of $\phi$, but its existence is assured by Mercer's theorem, which --- loosely speaking --- states that $\phi$ exists if and only if $\kernel(\vec x, \vec x')$ is continous, symmetric \emph{and} positive semi--definite \citep{mercer1909}, otherwise $\kernel(\vec x, \vec x')$ will not resemble a dot product. Finally, we see that we can have our SVM operate in $\hdfeaturespace$ instead of $\featurespace$ in a very efficient manner just by substituting all occurences of $\langle \vec x_i, \vec x_j \rangle$ in the corresponding dual formulation of equation \eqref{eq:svm-linear-hyperplane-relaxed} with $\kernel({\vec x_i, \vec x_j})$ for all $i,j$. \\
  
 A suitable choice for $\kernel$ does ultimately depend on the problem, ideally incorporating domain--knowledge, but a very common choice is the Gaussian \emph{radial basis function} (RBF)\footnote{All radial basis functions $f$ must satisfy $f(\vec x) = f(\|\vec x\|) \; \forall \vec x$.} kernel
 
@@ -233,23 +233,55 @@ Technically, SVMs are restricted to binary classification problems, that is data
 
 \subsubsection{Decision Trees and Random Forests}
 
-Decision trees \citep{breiman1984} are presumably the most intuitive way to subdivide data into different classes.\\
-% Probably the way humans would do classification
+Decision trees\footnote{There are a variety of slightly different algorithms for tree construction (ID3, C4.5, \etc), splitting, pre-- and post--processing described in the literature. Unless otherwise noted, we will talk about \emph{Classification and Regression Trees} (CART) as described by \citet{breiman1984}.} \citep{breiman1984} are presumably the most intuitive way to subdivide data into different classes, and consequently most likely the way humans would tackle classification problems. The basic idea is to iteratively split the training set during the training process into exactly two subsets by asking a sequence of binary questions, until some predefined stop criteria is satisfied. This procedure, called \emph{recursive partitioning}, gives rise to a \emph{decision tree} consisting of inner nodes with exactly two children, representing split decisions, and leaf nodes representing labels.\footnote{This very structure is called a \emph{full binary tree} in  theoretical computer science and its properties are well characterized \citep{knuth1981}. This of course also means that efficient memory representations exist for such an entity.} With every split the tree grows deeper, and the remaining feature set becomes smaller. In the end, given some testing data $\trainingdata$, classification is performed simply by walking down the tree, and the corresponding label $\hat y_i$ is given by the respective leaf node. Due to the nature of binary questions, all branches are ``mutually distinct and exhaustive'' \citep{duda2001}, so exactly one branch will be followed, which means that $\hat y_i$ is unambiguous. One might wonder why binary splits are preferred over multi--way splits. The main reason for this is that, unless we are talking about a tremendous amount of data, multi--way splits will rapidly thin out our data at each level, because of the broad fragmentation at each decision node \citep{hastie2001}. % Still we can achieve that with a series of binary splits...
+\\
 
-There are a variety of metrics to access the impurity of every node in a classification tree. Let $p_i = \frac{1}{N} \sum\limits_{\vec x_i \in \classes_i}^N 1$ be the relative frequency of the $i^{\text{th}}$ class $\classes_i$ in the remaining set of $N$ observations. We define the \emph{Gini impurity} or \emph{Gini coefficient} for $k$ classes as
+% @TODO: Computational considerations: Duda, p. 406, 407
+% @TODO: Explain at what feature the split should happen
+
+% @IMAGE: Add image depicting decision tree
+
+The effectiveness of the above approach will ultimately depend on the choice of split criteria. A good split would ideally single out one of the classes, producing a perfectly pure node that only consists of members of the respective class. There are a variety of metrics to access the purity or impurity of every node in a classification tree. Let $p_i = \frac{1}{N} \sum\limits_{\vec x_i \in c_i}^N 1$ be the relative frequency of the $i^{\text{th}}$ class $c_i \in \classes$ in the remaining set of $N$ observations. We define the \emph{Gini impurity} or \emph{Gini coefficient} for $k = |\classes|$ classes as
 
 \begin{equation}
 \label{eq:gini-impurity}
-G_{\text{I}} = \sum\limits_{i=1}^k p_i (1 - p_i).
+G_{\text{I}} = \sum\limits_{i=1}^k p_i (1 - p_i),
 \end{equation}
 
-Furthermore we define the \emph{entropy} or \emph{deviance} of the remaining data as
+following \citet{astroML,hastie2001,ripley2007}. Furthermore we define the \emph{entropy} or \emph{deviance} of a set as
 
 \begin{equation}
 \label{eq:entropy-impurity}
 E_{\text{I}} = - \sum\limits_{i=1}^k p_i \ln(p_i).
 \end{equation}
-% From this we can define the information gain...
+
+Based on equation \eqref{eq:entropy-impurity}, we can introduce the \emph{information gain} or \emph{Kullback--Leibler divergence} \citep{kullback1951} for a binary split
+
+\begin{equation}
+\label{eq:information-gain}
+I = E_{\text{I}} - \frac{1}{N} \big(N_a E_{\text{I}}^{(a)} + N_b E_{\text{I}}^{(b)}\big),
+\end{equation}
+
+where $N_a, N_b$ denote the number of data points above and below the split threshold $S$. Thus, when growing the tree, we perform the split that maximizes the information gain, \ie solving $\argmax_S I$.\\
+
+% @TODO: Add suitable metric for regression trees
+
+In order to avoid overfitting and retain generalization, we have to set an upper bound for our model complexity by limiting the depth $h$ of our tree. Different strategies have been proposed to achieve this:
+
+\begin{enumerate}
+\item \label{itm:constant-metric} Stop growing subtrees when further splits do not affect the desired impurity metric by more than some constant $\delta$. This is good choice in case the complexity of the features differs substantially among the data \citep{duda2001}, leading to varying position of the leafs in the tree\footnote{At this point the tree becomes \emph{unbalanced}.}. A major drawback is, of course, the free paramater $\delta$ which has to be optimized.
+\item \label{itm:constant-data-points} Simply stop growing when $N \le N_c$ with some preset number of data points $N_c$. Once again, this adds another parameter to the model.
+\item \label{itm:validation} \emph{Validation}: Use cross--validation or some other method to compare training performance with testing performance. This could become computationally expensive, especially if it has to be performed at every node.
+\item \label{itm:pruning} \emph{Pruning}: % @TODO: Elaborate on pruning (Duda, p. 403, 403; Hastie, p. 208)...
+\item A combination of the illustrated strategies.
+\end{enumerate}
+
+% One way to avoid this is bagging. ...
+% Another approach is random forests \citep{...}...
+% Write about stop criteria, optimal depth, overfitting
+% Write about regression trees
+% Random Forests essentially limits the number of features on which the tree is constructed
+
 
 % @TODO: Name advantages and disadvantages for Decision trees (see e.g. http://scikit-learn.org/stable/modules/tree.html)
 
@@ -257,14 +289,7 @@ E_{\text{I}} = - \sum\limits_{i=1}^k p_i \ln(p_i).
 % DECISION TREES
 %%%
 
-
-% Subdivide (split) data at each branch into two sets
-% Boundaries axis aligned (so same split-feature at same level)
-% Recursive splitting until some stop--criteria is fulfiled (recursive partioning)
 % Top-down induction of decision trees 
-% CART: Classification And Regression Tree
-% Classification is performed by simpling walking down the tree
-% Leaf nodes determine label
 % Optimal depth of the tree needs to be determined
 % Normal decision trees are prone to overfitting
 % Very intuitive, very easy to interpret
@@ -277,6 +302,9 @@ E_{\text{I}} = - \sum\limits_{i=1}^k p_i \ln(p_i).
 % RANDOM FORESTS
 %%%
 
+Another way to restrict the model complexity is known as \emph{Random Forests} \citep{breiman2001}, which is an example of \emph{ensemble learning}.
+
+% Decision forests
 % Ensemble Learning
 % Random Forests: Features on which to generate the tree on are randomly drawn
 % Random Forests: no axis alignment
@@ -327,7 +355,7 @@ Linear Discriminant Analysis (LDA) is another way of performing dimensionality r
 
 \subsubsection{Algorithmic description of LDA}
 \begin{enumerate}
-\item Find the $d$--dimensional mean vectors $\mu_i$ (see equation \ref{eq:mean-vector}) for each class
+\item Find the $d$--dimensional mean vectors $\mu_i$ (see equation \eqref{eq:mean-vector}) for each class
 \item Find the within--class scatter matrix
 \begin{equation}
 S_W = \sum_{i = 1}^m S_i,
