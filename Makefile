@@ -20,7 +20,7 @@ clean: delete
 
 delete:
 
-	rm -f *.aux *.lof *.log *.lot *.toc *.bbl *.blg *.dvi *.ps *.bib *.bcf .log
+	rm -f *.aux *.lof *.log *.lot *.toc *.bbl *.blg *.dvi *.ps *.bcf .log
 
 count:
 
