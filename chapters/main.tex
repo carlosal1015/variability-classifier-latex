@@ -1,6 +1,11 @@
 \section{About the EROS dataset}
-\section{Simulating GAIA data}
-\section{Feature extraction and feature selection}
+
+% Number of sources in the dataset
+% Not a standard astronomical B and R bands
+
+\section{Feature Extraction \& Feature Selection}
+
+We extract a variety of features characterizing the variability of the source. In the following, $N$ will be number of data points in the light curve, $(t_i, m_i)$ the $i^{\text{th}}$ data point in the light curve.
 
 \begin{enumerate}
 %\setlength{\itemsep}{5pt}
@@ -45,6 +50,9 @@
 \litem{$P_{\text{LS}}$ (Lomb--Scargle period)} The period of the signal according to the Lomb--Scargle algorithm, given by
 \begin{equation}P_{\text{LS}} = \frac{1}{2 \sigma_y^2} \Bigg\{ \frac{\big[\sum\limits_{i=1}^k (y_i - \mu_y) \cos(\omega(t_i - \tau))\big]^2}{\sum\limits_{i=1}^k \cos^2(\omega(t_i - \tau))} + \frac{\big[\sum\limits_{i=1}^k (y_i - \mu_y) \sin(\omega(t_i - \tau))\big]^2}{\sum\limits_{i=1}^k \sin^2(\omega(t_i - \tau))}\Bigg\}\end{equation}
 
+\litem{$\text{FAP}_{\text{LS}}$ (False--Alarm probability for Lomb--Scargle)} The false--alarm probability (FAP) for the Lomb--Scargle algorithm, given by
+\begin{equation}\text{FAP}_{\text{LS}}(x) = 1 - (1 - \euler^{-x})^M.\end{equation}
+
 \litem{$\text{SNR}$ (Signal--to--noise ratio)} The signal--to--noise ratio, given by
 \begin{equation}\text{SNR} = \frac{\mu}{\sigma}.\end{equation}
 
@@ -65,20 +73,28 @@
 
 % Minimum, Maximum
 % Shapiro-Wilk test (normal-distribution test)
+% Number of datapoints
+% Proper citing of all equations
 
 \end{enumerate}
 
-\section{Model evaluation in machine learning}
+This leads to a total of $\cdots$ features in $\cdots$ bands.
 
-% Training set, testing set, different metrics, cross-validation
+% State that feature are highly correlated
+% Show histogram of some features.
 
-\section{Application and evaluation of different classifiers}
-\subsubsection{SVMs}
-\subsubsection{Random forests}
-\subsubsection{SOMs}
+\section{Hyperparameter Optimization}
 
-\section{Hyperparameter optimization}
-\subsubsection{(Randomized) Grid search}
-\subsubsection{Gradient descent}
+% Grid search
+% Show table with the optimal results
 
-\section{Ensemble classification: combining individual results}
+\section{Performance of the Support Vector Machine (SVM)}
+
+% Add confusion matrix
+
+\section{Performance of the Random Forest Classifier}
+
+% Add confusion matrix
+% Feature importance according to Random forest
+
+\chapter{Assessing Classification Performance for GAIA}
