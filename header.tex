@@ -1,8 +1,16 @@
-\documentclass[a4paper,twoside,openright,abstract=on,12pt]{scrreprt}
+\documentclass[a4paper,twoside,openright,12pt,abstract=on]{scrreprt}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english,german]{babel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rename some of the caption names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcaptionname{english}{\contentsname}{Table of Contents}
+\renewcaptionname{english}{\bibname}{References}
+%\renewcaptionname{english}{\figurename}{Fig.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Specify the font to be used
@@ -72,16 +80,21 @@
 
 \usepackage[]{units}
 
-\usepackage[protrusion=true,expansion=true]{microtype}
-\usepackage{float}
-\usepackage{subfigure}
-\usepackage{listings}
-\usepackage{todonotes}
-\usepackage{verbatim}
-\usepackage{enumerate}
-\usepackage{url}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Add some more symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{marvosym}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Make colored links from references
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage{hyperref}
 \usepackage{xcolor}
 \hypersetup{
@@ -90,15 +103,6 @@
 	citecolor={gray!80!black},
 	urlcolor={gray!80!black}
 }
-
-% Add some more symbols
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{extarrows}
-\usepackage{marvosym}
-\usepackage{lmodern}
-\usepackage{stmaryrd}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Show paragraphs in table of contents
@@ -114,41 +118,41 @@
 \newtheorem{definition}{Definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Custom commands
+% Add some custom commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{custom.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Vector style
+% Define the style for vectors
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Bold face vectors
 %\renewcommand{\vec}[1]{\mathbf{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Support for Appendices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage[title]{appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Misc packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Flushes the footnote marker to the left margin of the page,
+\usepackage[hang,flushmargin]{footmisc}
+% Beautiful tables
 \usepackage{booktabs}
+
+\usepackage{enumerate}
 \usepackage{enumitem}
 \newcommand\litem[1]{\item{\bfseries #1:}}
 
-% \usepackage{fourier}
-
-% \usepackage[round,sort,authoryear]{natbib}
-%
-% \usepackage{url}
-% \usepackage[protrusion=true,expansion=true]{microtype}
-% \usepackage{amsmath,amsfonts,amsthm}
-% \usepackage[pdftex]{graphicx}
-% \usepackage{subfigure}
-% \usepackage{longtable}
-% \usepackage{float}
-% \restylefloat{table}
-% \usepackage{tabularx}
-% \usepackage{todonotes}
-% \usepackage{booktabs}
-% \usepackage{framed}
-% \usepackage{listings}
-%
-%
-
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{listings}
+\usepackage{todonotes}
+\usepackage{verbatim}
+\usepackage{url}
