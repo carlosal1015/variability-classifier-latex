@@ -1,6 +1,73 @@
 \section{About the EROS dataset}
 \section{Simulating GAIA data}
 \section{Feature extraction and feature selection}
+
+\begin{enumerate}
+%\setlength{\itemsep}{5pt}
+%\setlength{\parskip}{0pt}
+%\setlength{\parsep}{0pt}
+%\setlength{\abovedisplayskip}{.5em}
+%\setlength{\belowdisplayskip}{.5em}
+
+\litem{$\mu$ (Mean of magnitude)} The arithmetic mean of the magnitude, given by
+\begin{equation}\mu = \frac{1}{N} \sum\limits_{i=1}^{N} m_i.\end{equation}
+
+\litem{$\sigma$ (Standard deviation of magnitude)} The standard deviation of the magnitude, given by
+\begin{equation}\sigma = \sqrt{\frac{1}{N} \sum_{i=1}^N (m_i - \mu)^2}.\end{equation}
+
+\litem{$Q_{50}$ (Median of magnitude)} The median of the magnitude, given by
+\begin{equation}Q_{50} = \cdots.\end{equation}
+
+\litem{$\bar \mu$ (Weighted mean of magnitude)} The weighted arithmetic mean of the magnitude, given by
+\begin{equation}\bar \mu = \big(\sum\limits_{i=1}^{N} w_i m_i\big) \; / \; \big(\sum\limits_{i=1}^{N} w_i\big).\end{equation}
+% @TODO: Specify weights
+
+\litem{$\bar \sigma$ (Weighted standard deviation of magnitude)} The weighted standard deviation of the magnitude, given by
+\begin{equation}\bar \sigma = \cdots.\end{equation}
+% @TODO: Specify weights
+% @TODO: Add formula for weighted standard deviation
+
+\litem{$\gamma_1$ (Skewness)} The skewness of the magnitude, given by
+\begin{equation}\gamma_1 = \cdots.\end{equation}
+
+\litem{$\gamma_2$ (Kurtosis)} The kurtosis of the magnitude, given by
+\begin{equation}\gamma_2 = \cdots.\end{equation}
+
+\litem{$Q_{25}$ (25\% quartile)} The 25\% quartile of the magnitude, given by
+\begin{equation}Q_{25} = \cdots.\end{equation}
+
+\litem{$Q_{75}$ (75\% quartile)} The 75\% quartile of the magnitude, given by
+\begin{equation}Q_{75} = \cdots.\end{equation}
+
+\litem{$\text{IQR}$ (Interquartile range)} The interquartile range of the magnitude, given by
+\begin{equation}\text{IQR} = Q_{75} -Q_{25}.\end{equation}
+
+\litem{$P_{\text{LS}}$ (Lomb--Scargle period)} The period of the signal according to the Lomb--Scargle algorithm, given by
+\begin{equation}P_{\text{LS}} = \frac{1}{2 \sigma_y^2} \Bigg\{ \frac{\big[\sum\limits_{i=1}^k (y_i - \mu_y) \cos(\omega(t_i - \tau))\big]^2}{\sum\limits_{i=1}^k \cos^2(\omega(t_i - \tau))} + \frac{\big[\sum\limits_{i=1}^k (y_i - \mu_y) \sin(\omega(t_i - \tau))\big]^2}{\sum\limits_{i=1}^k \sin^2(\omega(t_i - \tau))}\Bigg\}\end{equation}
+
+\litem{$\text{SNR}$ (Signal--to--noise ratio)} The signal--to--noise ratio, given by
+\begin{equation}\text{SNR} = \frac{\mu}{\sigma}.\end{equation}
+
+\litem{$S$ (Shannon entropy)} The Shannon entropy of the signal, given by
+\begin{equation}S = -\sum\limits_{i=1}^N m_i \ln(m_i).\end{equation}
+
+\litem{$\eta$ ($\cdots$)} The $\eta$ feature as proposed by \citep{}, given by
+\begin{equation}\eta = \frac{1}{\sigma^2 (N-1)} \sum\limits_{i=1}^{N-1} (m_{i+1} - m_{i})^2.\end{equation}
+
+\litem{$\cdots$ (Half--magnitude--amplitude ratio)} The ratio between higher \resp lower amplitudes than average, given by
+\begin{equation}\cdots = \cdots.\end{equation}
+
+\litem{$\text{MAD}^{(1)}$ (Mean absolute deviation)} The mean absolute deviation of the magnitude, given by
+\begin{equation}\text{MAD}^{(1)} = \cdots.\end{equation}
+
+\litem{$\text{MAD}^{(2)}$ (Median absolute deviation)} The median absolute deviation of the magnitude, given by
+\begin{equation}\text{MAD}^{(2)} = \cdots.\end{equation}
+
+% Minimum, Maximum
+% Shapiro-Wilk test (normal-distribution test)
+
+\end{enumerate}
+
 \section{Model evaluation in machine learning}
 
 % Training set, testing set, different metrics, cross-validation
