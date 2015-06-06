@@ -4,7 +4,7 @@
 A lot of astronomical processes show periodic behaviour, that can be identified and characterized by long-term observation.
 % Periodic, non-periodic, semi-periodic
 
-\subsection{Intrinsic and extrinsic variability}
+\subsection{Intrinsic \& Extrinsic Variability}
 \subsubsection{Quasi-Stellar radio sources (QSO)}
 % Stochastic variability
 \subsubsection{Pulsating variables}
@@ -26,7 +26,7 @@ A time series $\Tau$ is a sequence of $N$ data points $(t_i, \vec y_i),\; t_i,(y
 
 In section \ref{sec:theory-variable-objects}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct lightcurves, giving rise to discriminative features that can later be used for classification.
 
-\subsection{Period-finding algorithms}
+\subsection{Algorithms for Period-finding}
 
 One very important feature of a periodic signal is, of course, its period $T$. However, reconstructing $T$ from the time series $\Tau$ is not trivial, especially if the data is very noisy. Ultimately, this is a regression problem itself, see subsection \ref{sec:introduction-machine-learning}, however, we will not tackle this with Machine Learning, but rather make use of some well--known methods devised for this very problem. The ultimate objective is to find the \emph{periodogram} $P(\omega)$ of signal, which is an estimator for the \emph{spectral density} $P$ as a function of the angular frequency $\omega = \frac{2 \pi}{T}$\footnote{In this regard, the periodogram can be seen as spectrum (some quantity over frequency) of a time series $\Tau$.}. Traditionally, there are a variety of methods available to characterize the signal in frequency--domain, mostly Fourier analysis. In 1898, Arthur Schuster defined the \emph{Schuster periodogram}
 
@@ -119,7 +119,7 @@ There are a variety of learning problems, such as \emph{classification problems}
 % Overfitting, underfitting
 % Add some examples for machine learning problems
 
-Please note that in practise both $N$ and $d$ can be very large, and infering $\varphi$ from $\trainingdata$ directly can become computationally expensive or even unfeasible.
+Please note that in practise both $N$ and $d$ can be very large, and inferring $\varphi$ from $\trainingdata$ directly can become computationally expensive or even unfeasible.
 
 \subsubsection{Classification \& Regression}
 
@@ -135,7 +135,7 @@ consisting of $N$ \emph{feature} vectors $\vec x_i \in \observations$ of length 
 \estimator(\vec x_i) = y_i \in \classes \quad \forall i = 1,\ldots,N,
 \end{equation}
 
-where $y_i$ denotes the true class of an arbitrary observation $\vec x$ out of all possible oberservations $\observations$.
+where $y_i$ denotes the true class of an arbitrary observation $\vec x$ out of all possible observations $\observations$.
 
 \begin{definition}[Estimators]
 In any case, $\varphi$ is an \emph{estimator}. If the label $y_i$ is a discrete value, $\varphi$ will be called \emph{classifier}, if it is continuous, $\varphi$ will be called \emph{regressor}.
@@ -170,10 +170,10 @@ where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{fal
 \subsection{Algorithms for Classification \& Regression}
 \subsubsection{Support Vector Classifiers \& Support Vector Machines (SVMs)}
 
-Support Vector Machines (SVMs)\footnote{A note to the terminology: Most literature refers to the linearly separable case as \emph{Support Vector classifier}, whereas the non--linear high--dimensional enhancement, incorporating kernel methods, are called \emph{Support Vector Machine}.}, originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the descision boundary \citep{hastie2001}.} Among all possible hyperplanes, the optimal SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
+Support Vector Machines (SVMs)\footnote{A note to the terminology: Most literature refers to the linearly separable case as \emph{Support Vector classifier}, whereas the non--linear high--dimensional enhancement, incorporating kernel methods, are called \emph{Support Vector Machine}.}, originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the decision boundary \citep{hastie2001}.} Among all possible hyperplanes, the optimal SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
 
 % @IMAGE: Add image showing data points that are not linearly separable.
-% @IMAGE: Add image showing how transformation to higher dimension can make the proble linearly separable
+% @IMAGE: Add image showing how transformation to higher dimension can make the problem linearly separable
 
 %\paragraph{Support Vector Classifiers}
 
@@ -211,7 +211,7 @@ However, even with these relaxed constraints, if the underlying true model is no
 \kernel \colon \observations \times \observations \to \mathbb{R},\, (\vec x, \vec x') \mapsto \langle \phi(\vec x), \phi(\vec x') \rangle,
 \end{equation}\\
 
-where $\langle \cdot, \cdot \rangle$ denotes the dot product, and $\vec x'$ is generally the reference centre\todo{Rephase}, but in the process of training the SVM, $\vec x'$ will be the unlabelled data point under consideration. In light of equation \eqref{eq:kernel-function}, $\kernel(\vec x, \vec x')$ can be expressed as dot product between the images of $\vec x$ \resp $\vec x'$ under $\phi$. We are not interested in any direct form of $\phi$, but its existence is assured by Mercer's theorem, which --- loosely speaking --- states that $\phi$ exists if and only if $\kernel(\vec x, \vec x')$ is continous, symmetric \emph{and} positive semi--definite \citep{mercer1909}, otherwise $\kernel(\vec x, \vec x')$ will not resemble a dot product. Finally, we see that we can have our SVM operate in $\hdfeaturespace$ instead of $\featurespace$ in a very efficient manner just by substituting all occurences of $\langle \vec x_i, \vec x_j \rangle$ in the corresponding dual formulation of equation \eqref{eq:svm-linear-hyperplane-relaxed} with $\kernel({\vec x_i, \vec x_j})$ for all $i,j$. \\
+where $\langle \cdot, \cdot \rangle$ denotes the dot product, and $\vec x'$ is generally the reference centre\todo{Rephrase}, but in the process of training the SVM, $\vec x'$ will be the unlabelled data point under consideration. In light of equation \eqref{eq:kernel-function}, $\kernel(\vec x, \vec x')$ can be expressed as dot product between the images of $\vec x$ \resp $\vec x'$ under $\phi$. We are not interested in any direct form of $\phi$, but its existence is assured by Mercer's theorem, which --- loosely speaking --- states that $\phi$ exists if and only if $\kernel(\vec x, \vec x')$ is continuous, symmetric \emph{and} positive semi--definite \citep{mercer1909}, otherwise $\kernel(\vec x, \vec x')$ will not resemble a dot product. Finally, we see that we can have our SVM operate in $\hdfeaturespace$ instead of $\featurespace$ in a very efficient manner just by substituting all occurrences of $\langle \vec x_i, \vec x_j \rangle$ in the corresponding dual formulation of equation \eqref{eq:svm-linear-hyperplane-relaxed} with $\kernel({\vec x_i, \vec x_j})$ for all $i,j$. \\
  
 A suitable choice for $\kernel$ does ultimately depend on the problem, ideally incorporating domain--knowledge, but a very common choice is the Gaussian \emph{radial basis function} (RBF)\footnote{All radial basis functions $f$ must satisfy $f(\vec x) = f(\|\vec x\|) \; \forall \vec x$.} kernel
 
@@ -269,7 +269,7 @@ where $N_a, N_b$ denote the number of data points above and below the split thre
 In order to avoid overfitting and retain generalization, we have to set an upper bound for our model complexity by limiting the depth $h$ of our tree. Different strategies have been proposed to achieve this:
 
 \begin{enumerate}
-\item \label{itm:constant-metric} Stop growing subtrees when further splits do not affect the desired impurity metric by more than some constant $\delta$. This is good choice in case the complexity of the features differs substantially among the data \citep{duda2001}, leading to varying position of the leafs in the tree\footnote{At this point the tree becomes \emph{unbalanced}.}. A major drawback is, of course, the free paramater $\delta$ which has to be optimized.
+\item \label{itm:constant-metric} Stop growing sub--trees when further splits do not affect the desired impurity metric by more than some constant $\delta$. This is good choice in case the complexity of the features differs substantially among the data \citep{duda2001}, leading to varying position of the leafs in the tree\footnote{At this point the tree becomes \emph{unbalanced}.}. A major drawback is, of course, the free parameter $\delta$ which has to be optimized.
 \item \label{itm:constant-data-points} Simply stop growing when $N \le N_c$ with some preset number of data points $N_c$. Once again, this adds another parameter to the model.
 \item \label{itm:validation} \emph{Validation}: Use cross--validation or some other method to compare training performance with testing performance. This could become computationally expensive, especially if it has to be performed at every node.
 \item \label{itm:pruning} \emph{Pruning}: % @TODO: Elaborate on pruning (Duda, p. 403, 403; Hastie, p. 208)...
@@ -351,7 +351,7 @@ PCA is one of the simpler methods for dimensionality reduction based on eigenvec
 \subsection{Linear Discriminant Analysis (LDA)}
 \label{sec:theory:lda}
 
-Linear Discriminant Analysis (LDA) is another way of performing dimensionality reduction, this time, in contrast to PCA, a supervised learning algorithm that takes the labels into account\footnote{Note that LDA is also commonly used for classification.} Again we are trying to project into a lower--dimensional subspace, maximizing the scatter in feature space, but \emph{additionally} minimizing the in--class scatter, consequently keeping the class--discriminatory information. Ideally, each class degenerates to a cluster far away from other clusters in the new feature space with respect to an arbitrary metric.
+Linear Discriminant Analysis (LDA) is another way of performing dimensionality reduction, this time, in contrast to PCA, a supervised learning algorithm that takes the labels into account\footnote{Note that LDA is also commonly used for classification.}. Again we are trying to project into a lower--dimensional subspace, maximizing the scatter in feature space, but \emph{additionally} minimizing the in--class scatter, consequently keeping the class--discriminatory information. Ideally, each class degenerates to a cluster far away from other clusters in the new feature space with respect to an arbitrary metric.
 
 \subsubsection{Algorithmic description of LDA}
 \begin{enumerate}
