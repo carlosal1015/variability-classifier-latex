@@ -60,7 +60,7 @@ where $\tau$ is a time--offset defined by
 which makes the periodogram $P^{\text{N}}_{\text{LS}}(\omega)$ invariant for a translation in $t$. Furthermore, this time--offset $\tau$ makes the periodogram identical to least--squares fitting of a single--component sinusoidal model of the form $y(t) = A \sin(\omega t + \varphi)$ \citep{horne1986, vanderplas2015}. Additionally it can be shown that --- if the periodogram is properly normalized\footnote{There has been a lively discussion about the correct normalization of the periodogram, which retains above convenient statistical properties, see \citet{lomb1976,astroML,zechmeister2009}. The correct normalization factor in equation \eqref{eq:normalized-lomb-scargle} is \emph{the total variance of the data}, as explained in detail in \citet{horne1986}.} --- $P^{\text{N}}_{\text{LS}}(\omega_0) \propto \exp(-x)$ for pure noise at any frequency $\omega_0$, where $x$ denotes the height of the peak. This exponential probability distribution gives rise to the \emph{false--alarm-probability (FAP)},
 
 \begin{equation}
-\text{FAP}(x) = 1 - (1 - \euler^{-x})^M,
+\text{FAP}_{\text{LS}}(x) = 1 - (1 - \euler^{-x})^M,
 \end{equation}
 
 which is a suitable and convenient estimator for the significance\footnote{In this case: The probability that the peak is the product of a true signal, rather than the result of randomly distributed noise.} of a peak, and can be identified as the probability that a peak of at least height $x$ will occur in a periodogram on a grid of $M$ independent frequencies \emph{when evaluated on pure noise} \citep{horne1986}.\\
@@ -121,7 +121,7 @@ There are a variety of learning problems, such as \emph{classification problems}
 
 Please note that in practise both $N$ and $d$ can be very large, and infering $\varphi$ from $\trainingdata$ directly can become computationally expensive or even unfeasible.
 
-\subsubsection{Classification and Regression}
+\subsubsection{Classification \& Regression}
 
 In this work, we are primarily interested in classification and regression using supervised methods. Therefore, we are typically trying to solve the following problem: Given some training data
 
@@ -167,8 +167,8 @@ A = \frac{T_p + T_n}{T_p + F_p + T_n + F_n}, \; P = \frac{T_p}{T_p + F_p}, \; R 
 
 where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{false positives}, \emph{true negatives} and \emph{false negatives}\todo{}\footnote{Accuracy, precision and recall are sometimes also referred to as \emph{}, \emph{}, \emph{}}. For regression, we usually want to minimize some suitable loss-function $L$.
 
-\subsection{Algorithms for Classification and Regression}
-\subsubsection{Linear and Non--linear Support Vector Machines (SVMs)}
+\subsection{Algorithms for Classification \& Regression}
+\subsubsection{Support Vector Classifiers \& Support Vector Machines (SVMs)}
 
 Support Vector Machines (SVMs)\footnote{A note to the terminology: Most literature refers to the linearly separable case as \emph{Support Vector classifier}, whereas the non--linear high--dimensional enhancement, incorporating kernel methods, are called \emph{Support Vector Machine}.}, originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the descision boundary \citep{hastie2001}.} Among all possible hyperplanes, the optimal SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
 
@@ -231,7 +231,7 @@ Technically, SVMs are restricted to binary classification problems, that is data
 
 % @TODO: Name advantages and disadvantages
 
-\subsubsection{Decision Trees and Random Forests}
+\subsubsection{Decision Trees \& Random Forests}
 
 Decision trees\footnote{There are a variety of slightly different algorithms for tree construction (ID3, C4.5, \etc), splitting, pre-- and post--processing described in the literature. Unless otherwise noted, we will talk about \emph{Classification and Regression Trees} (CART) as described by \citet{breiman1984}.} \citep{breiman1984} are presumably the most intuitive way to subdivide data into different classes, and consequently most likely the way humans would tackle classification problems. The basic idea is to iteratively split the training set during the training process into exactly two subsets by asking a sequence of binary questions, until some predefined stop criteria is satisfied. This procedure, called \emph{recursive partitioning}, gives rise to a \emph{decision tree} consisting of inner nodes with exactly two children, representing split decisions, and leaf nodes representing labels.\footnote{This very structure is called a \emph{full binary tree} in  theoretical computer science and its properties are well characterized \citep{knuth1981}. This of course also means that efficient memory representations exist for such an entity.} With every split the tree grows deeper, and the remaining feature set becomes smaller. In the end, given some testing data $\trainingdata$, classification is performed simply by walking down the tree, and the corresponding label $\hat y_i$ is given by the respective leaf node. Due to the nature of binary questions, all branches are ``mutually distinct and exhaustive'' \citep{duda2001}, so exactly one branch will be followed, which means that $\hat y_i$ is unambiguous. One might wonder why binary splits are preferred over multi--way splits. The main reason for this is that, unless we are talking about a tremendous amount of data, multi--way splits will rapidly thin out our data at each level, because of the broad fragmentation at each decision node \citep{hastie2001}. % Still we can achieve that with a series of binary splits...
 \\
