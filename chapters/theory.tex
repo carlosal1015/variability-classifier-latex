@@ -18,11 +18,7 @@ A lot of astronomical processes show periodic behaviour, that can be identified 
 
 \section{Statistical Analysis of Time Series}
 
-When observing one specific object over some time interval $\Delta t$, we can record its magnitude $m_i$ at time $t_i$ and obtain a so-called \emph{time series}.
-
-\begin{definition}[Time Series]
-A time series $\Tau$ is a sequence of $N$ data points $(t_i, \vec y_i),\; t_i,(y_i)_j \in \mathbb{R}$ with $t_i < t_{i+1} \; \forall i = 1,\ldots,N$. We call $\Tau$ \emph{evenly--sampled} $\Leftrightarrow t_{i+1} - t_i = C \in \mathbb{R}$ where $C$ is constant. Otherwise, $\Tau$ is \emph{unevenly--sampled}.
-\end{definition}
+When observing one specific object over some time interval $\Delta t$, we can record its magnitude $m_i$ at time $t_i$ and obtain a so-called \emph{time series}. A time series $\Tau$ is a sequence of $N$ data points $(t_i, \vec y_i),\; t_i,(y_i)_j \in \mathbb{R}$ with $t_i < t_{i+1} \; \forall i = 1,\ldots,N$. We call $\Tau$ \emph{evenly--sampled} $\Leftrightarrow t_{i+1} - t_i = C \in \mathbb{R}$ where $C$ is constant. Otherwise, $\Tau$ is \emph{unevenly--sampled}.\\
 
 In section \ref{sec:theory-variable-objects}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct lightcurves, giving rise to discriminative features that can later be used for classification.
 
@@ -40,7 +36,10 @@ P_{\text{S}}(\omega) = \frac{1}{k} \, \biggl| \, \sum\limits_{i=1}^{k} y_i \eule
 % https://charlesmartin14.wordpress.com/2012/11/05/noisy-time-series/
 % Reference for Schuster periodogram
 
-for a time series $(t_i, y_i)$ of length $k$. Note that equation \ref{eg:schuster-periodogram} is essentially given by $\| \mathcal{F}(\omega) \|_2 $, the $L^2$ norm of the discrete Fourier transform (DFT) $\mathcal{F}$ of the signal\todo{Check again}. Therefore, $P_{\text{S}}(\omega)$ can be approximated very efficiently when using the fast Fourier transform algorithm (FFT) \citep{cooley1965}, which allows for a runtime complexity of $\mathcal{O}(N\log{(N)})$ instead of $\mathcal{O}(N^2)$. However, it can be shown that those Fourier transform--based methods perform poorly on unevenly--sampled data, because they tend to boost long--periodic noise \todo{Reference}. Since evenly--sampled data can be difficult to obtain, especially for earth--bound surveys in astronomy, a lot of effort was put into developing suitable methods that can cope with this kind of data. This work makes use of two popular methods devised for unevenly--sampled data, one based on least--squares spectral analysis (LSSA), namely the \emph{Lomb--Scargle periodogram}, and the other one based on the minimization of some metric for dispersion in phase space, in this case \emph{conditional entropy}. We provide a brief overview for both of them.
+% @TODO: Check again about the |F(omega)|
+% @TODO: Add a reference for "because they tend to boost long--periodic noise"
+
+for a time series $(t_i, y_i)$ of length $k$. Note that equation \eqref{eg:schuster-periodogram} is essentially given by $\| \mathcal{F}(\omega) \|_2 $, the $L^2$ norm of the discrete Fourier transform (DFT) $\mathcal{F}$ of the signal. Therefore, $P_{\text{S}}(\omega)$ can be approximated very efficiently when using the fast Fourier transform algorithm (FFT) \citep{cooley1965}, which allows for a runtime complexity of $\mathcal{O}(N\log{(N)})$ instead of $\mathcal{O}(N^2)$. However, it can be shown that those Fourier transform--based methods perform poorly on unevenly--sampled data, because they tend to boost long--periodic noise. Since evenly--sampled data can be difficult to obtain, especially for earth--bound surveys in astronomy, a lot of effort was put into developing suitable methods that can cope with this kind of data. This work makes use of two popular methods devised for unevenly--sampled data, one based on least--squares spectral analysis (LSSA), namely the \emph{Lomb--Scargle periodogram}, and the other one based on the minimization of some metric for dispersion in phase space, in this case \emph{conditional entropy}. We provide a brief overview for both of them.
 
 \subsubsection{Lomb--Scargle Periodogram}
 
@@ -69,11 +68,11 @@ In spite of its usefulness, there are some drawbacks of the normalized Lomb--Sca
 
 \begin{itemize}
 \item $P^{\text{N}}_{\text{LS}}(\omega)$ given by equation \eqref{eq:normalized-lomb-scargle} does not account for measurement errors, \eg by introducing weights for all data points. This however ignores an important aspect of the measurement process, where some data points might in fact be more accurate than others, for example due to changing conditions in the measurement environment.
-\item Offset % @TODO: Elaborate on constant offset
+\item Offset $\cdots$ % @TODO: Elaborate on constant offset
 \end{itemize}
 
-This led to further generalization...
-The \emph{generalized Lomb--Scargle periodogram} is less prone to aliasing, and provides more accurate results (http://arxiv.org/abs/0901.2573).
+% This led to further generalization...
+% The \emph{generalized Lomb--Scargle periodogram} is less prone to aliasing, and provides more accurate results (http://arxiv.org/abs/0901.2573).
 
 % Generalized and classical
 % Bayesian generalized Lomb-Scargle (Martiniee)
@@ -96,7 +95,7 @@ H_c = \sum_{i,j} p(m_i, \phi_i) \ln(\frac{p(\phi_j)}{p(m_i, \phi_j)})
 
 % Works good for evenly sampled datapoints
 
-We provide a runtime--optimized, fast \emph{Cython} implementation of the conditional entropy period--finding algorithm.
+%We provide a runtime--optimized, fast \emph{Cython} implementation of the conditional entropy period--finding algorithm.
 
 \subsection{Structure Function}
 
@@ -107,7 +106,8 @@ We provide a runtime--optimized, fast \emph{Cython} implementation of the condit
 
 Machine Learning (ML), sometimes referred to as \emph{pattern recognition}, is a subfield of Artificial Intelligence (AI) primarily dealing with automated approaches to infer meaning from data in such a way that, after some training process, a model is obtained, that can later be used to make predictions or decisions on similar data or achieve some other kind of insight. This is a form of learning, because rather than explicitly programming certain decision rules, we want to generalize observations towards an underlying model that performs as good as possible when confronted with new data.\\
 
-Depending on the problem to be solved and the data available, machine learning algorithms can be divided into \emph{supervised}, \emph{unsupervised}, \emph{reinforcement} learning and some hybrid form of these. In supervised learning, we train our model by providing examples of the desired output, whereas in unsupervised learning, $\cdots$. \todo{} Reinforcement learning works by $\cdots$.\\
+% @TODO: Elaborate on reinforcement learning
+Depending on the problem to be solved and the data available, machine learning algorithms can be divided into \emph{supervised}, \emph{unsupervised}, \emph{reinforcement} learning and some hybrid form of these. In supervised learning, we train our model by providing examples of the desired output, whereas in unsupervised learning, $\cdots$. Reinforcement learning works by $\cdots$.\\
 
 There are a variety of learning problems, such as \emph{classification problems}, \emph{regression problems} and \emph{clustering}, but also \emph{dimensionality reduction} and \emph{density estimation} are subject to Machine Learning.\\
 
@@ -135,13 +135,7 @@ consisting of $N$ \emph{feature} vectors $\vec x_i \in \observations$ of length 
 \estimator(\vec x_i) = y_i \in \classes \quad \forall i = 1,\ldots,N,
 \end{equation}
 
-where $y_i$ denotes the true class of an arbitrary observation $\vec x$ out of all possible observations $\observations$.
-
-\begin{definition}[Estimators]
-In any case, $\varphi$ is an \emph{estimator}. If the label $y_i$ is a discrete value, $\varphi$ will be called \emph{classifier}, if it is continuous, $\varphi$ will be called \emph{regressor}.
-\end{definition}\footnote{The term \emph{probabilistic classifier} stands for an estimator that assigns a probability $p_{\text{class}}$ for every class to the input vector. Based on this, classification can be conducted, \eg by maximum likelihood.}
-
-We consider $\varphi$ to be optimal if, confronted with some testing data,
+where $y_i$ denotes the true class of an arbitrary observation $\vec x$ out of all possible observations $\observations$. In any case, $\varphi$ is an \emph{estimator}. If the label $y_i$ is a discrete value, $\varphi$ will be called \emph{classifier}, if it is continuous, $\varphi$ will be called \emph{regressor}.\footnote{The term \emph{probabilistic classifier} stands for an estimator that assigns a probability $p_{\text{class}}$ for every class to the input vector. Based on this, classification can be conducted, \eg by maximum likelihood.} We consider $\varphi$ to be optimal if, confronted with some testing data,
 
 \begin{equation}
 \testingdata = \{ (\vec x'_j) \where \vec x'_j \in \mathbb{R}^d \quad \forall j = 1,\ldots,N \},
@@ -165,7 +159,9 @@ The estimators performance can be assessed by a variety of metrics: For classifi
 A = \frac{T_p + T_n}{T_p + F_p + T_n + F_n}, \; P = \frac{T_p}{T_p + F_p}, \; R = \frac{T_p}{T_p + F_n},
 \end{equation}
 
-where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{false positives}, \emph{true negatives} and \emph{false negatives}\todo{}\footnote{Accuracy, precision and recall are sometimes also referred to as \emph{}, \emph{}, \emph{}}. For regression, we usually want to minimize some suitable loss-function $L$.
+% @TODO: Elaborate on model evaluation
+
+where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{false positives}, \emph{true negatives} and \emph{false negatives}\footnote{Accuracy, precision and recall are sometimes also referred to as \emph{}, \emph{}, \emph{}}. For regression, we usually want to minimize some suitable loss-function $L$.
 
 \subsection{Algorithms for Classification \& Regression}
 \subsubsection{Support Vector Classifiers \& Support Vector Machines (SVMs)}
@@ -191,7 +187,9 @@ with parameters $\vec \alpha, \alpha_0$, obtained by solving the optimization pr
 \text{\st} y_i (\vec x_i^T \vec \alpha + \alpha_0) \ge 1 \quad \forall i = 1, \ldots, N,
 \end{gather}
 
-where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citet{hastie2001}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \citet{vanderplas2015}. At this point, the classification problem is solved by $\estimator(\vec x) = \operatorname{sign}(x_i^T \vec \alpha + \alpha_0)$. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by equation \eqref{eq:svm-linear-hyperplane}\todo{Fix number}. For this purpose, we introduce the non--negative \emph{slack variables} $\slack_i$ and slightly modify our optimization problem to \\
+where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citet{hastie2001}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \citet{vanderplas2015}. At this point, the classification problem is solved by $\estimator(\vec x) = \operatorname{sign}(x_i^T \vec \alpha + \alpha_0)$. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by equation \eqref{eq:svm-linear-hyperplane}. For this purpose, we introduce the non--negative \emph{slack variables} $\slack_i$ and slightly modify our optimization problem to \\
+
+% @TODO: Fix equations reference number
 
 \begin{gather}
 \label{eq:svm-linear-hyperplane-relaxed}
@@ -200,7 +198,10 @@ where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be iden
 \text{\st} \sum\limits_{i=1}^{N} \slack_i \le C \in \mathbb{R} \text{\ with\ } \slack_i \ge 0 \quad \forall i = 1, \ldots, N.
 \end{gather}
 
-Essentially, this will allow some points to be misclassified, $\cdots$\todo{Rephrase}. This is referred to as \emph{soft--margin SVM}. Note that we have added a free parameter $C$ to our model, that we need to adapt to our specific problem (see section hyperparamater optimization\todo{Add correct ref}).\\
+% @TODO: Rephrase
+% @TODO: Fix reference number
+
+Essentially, this will allow some points to be misclassified, $\cdots$. This is referred to as \emph{soft--margin SVM}. Note that we have added a free parameter $C$ to our model, that we need to adapt to our specific problem (see section hyperparamater optimization).\\
 
 %\paragraph{Support Vector Machines}
 
@@ -211,7 +212,9 @@ However, even with these relaxed constraints, if the underlying true model is no
 \kernel \colon \observations \times \observations \to \mathbb{R},\, (\vec x, \vec x') \mapsto \langle \phi(\vec x), \phi(\vec x') \rangle,
 \end{equation}\\
 
-where $\langle \cdot, \cdot \rangle$ denotes the dot product, and $\vec x'$ is generally the reference centre\todo{Rephrase}, but in the process of training the SVM, $\vec x'$ will be the unlabelled data point under consideration. In light of equation \eqref{eq:kernel-function}, $\kernel(\vec x, \vec x')$ can be expressed as dot product between the images of $\vec x$ \resp $\vec x'$ under $\phi$. We are not interested in any direct form of $\phi$, but its existence is assured by Mercer's theorem, which --- loosely speaking --- states that $\phi$ exists if and only if $\kernel(\vec x, \vec x')$ is continuous, symmetric \emph{and} positive semi--definite \citep{mercer1909}, otherwise $\kernel(\vec x, \vec x')$ will not resemble a dot product. Finally, we see that we can have our SVM operate in $\hdfeaturespace$ instead of $\featurespace$ in a very efficient manner just by substituting all occurrences of $\langle \vec x_i, \vec x_j \rangle$ in the corresponding dual formulation of equation \eqref{eq:svm-linear-hyperplane-relaxed} with $\kernel({\vec x_i, \vec x_j})$ for all $i,j$. \\
+% Rephrase
+
+where $\langle \cdot, \cdot \rangle$ denotes the dot product, and $\vec x'$ is generally the reference centre, but in the process of training the SVM, $\vec x'$ will be the unlabelled data point under consideration. In light of equation \eqref{eq:kernel-function}, $\kernel(\vec x, \vec x')$ can be expressed as dot product between the images of $\vec x$ \resp $\vec x'$ under $\phi$. We are not interested in any direct form of $\phi$, but its existence is assured by Mercer's theorem, which --- loosely speaking --- states that $\phi$ exists if and only if $\kernel(\vec x, \vec x')$ is continuous, symmetric \emph{and} positive semi--definite \citep{mercer1909}, otherwise $\kernel(\vec x, \vec x')$ will not resemble a dot product. Finally, we see that we can have our SVM operate in $\hdfeaturespace$ instead of $\featurespace$ in a very efficient manner just by substituting all occurrences of $\langle \vec x_i, \vec x_j \rangle$ in the corresponding dual formulation of equation \eqref{eq:svm-linear-hyperplane-relaxed} with $\kernel({\vec x_i, \vec x_j})$ for all $i,j$. \\
  
 A suitable choice for $\kernel$ does ultimately depend on the problem, ideally incorporating domain--knowledge, but a very common choice is the Gaussian \emph{radial basis function} (RBF)\footnote{All radial basis functions $f$ must satisfy $f(\vec x) = f(\|\vec x\|) \; \forall \vec x$.} kernel
 
@@ -311,70 +314,4 @@ Another way to restrict the model complexity is known as \emph{Random Forests} \
 
 % @TODO: Name advantages and disadvantages for Random forests (see e.g. http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm)
 
-\section{Dimensionality reduction on high-dimensional datasets}
-\label{sec:dimensionality-reduction}
-
-Often we are confronted with high--dimensional datasets that presumably contain a lot of redundancy. This means that the interesting data can be embedded in a lower--dimensional manifold (\emph{almost everywhere}). Therefore, before tackling the actual problem to be solved, often a so called dimensionality reduction is performed on the dataset. That is trying to find a lower--dimensional shadow of the data, which still contains most of the (relevant) information. Reasons to do this are manifold, but the dominant motivation is certainly to cut down on computation time and memory usage, which is often the limiting factor --- even on sophisticated high--performance platforms. Also, some algorithms used in machine learning suffer from the \emph{curse of dimensionality}. Another reason is that visualization is generally easier in a low--dimensional subspace.\\
-
-In the following we give a brief description of two standard methods that are later used to do dimensionality reduction on our dataset.
-
-\subsection{Principal component analysis (PCA)}
-\label{sec:theory:pca}
-
-Principal component analysis\footnote{Sometimes also referred to as \emph{Karhunen-Loève transformation}.} (PCA) is a standard method to reduce the number of variables in a dataset by trying to find linear combinations of features that maximize the total variance in the data, allowing for minimal loss of information. Since it does not care of the labels, PCA is considered as unsupervised learning. In terms of vector spaces, PCA performs a linear transformation of the data from a $d$--dimensional space to a $k$--dimensional subspace (in any case $k < d$), where the data is most spread out. This subspace can be identified as the span of the $k$ orthogonal dominant components --- therefore called \emph{principal components} ---, defining a new coordinate system. Because of the orthogonality, we find that the new features are linearly uncorrelated. Evidently, $k$ is a free parameter, that we need to choose small enough to obtain a significant data reduction, but not so small that important information is lost. In general, we say that a subspace describes the data well, if the eigenvalues of the scatter matrix $S$ (that we computed during the PCA) are similar of magnitude.\\
-
-There are essentially two similar ways to perform the PCA, one using the scatter matrix, the other one using the covariance matrix. We provide an algorithmic description using the former \citep{duda2001}.
-
-\subsubsection{Algorithmic description of PCA}
-\label{par:pca-algorithm}
-\begin{enumerate}
-\item \footnote{Since PCA is sensitive to the scaling of the data, often also a normalization is performed in advance (e.g. z--score). However, we do not consider this as part of the algorithm itself.}Find the $d$--dimensional mean vector
-\begin{equation}
-\label{eq:mean-vector}
-\vec \mu = \frac{1}{n} \sum_{i = 1}^n \vec x_i
-\end{equation}
-of all features $\vec x_i$ in the $n \times d$--dimensional dataset.
-\item Find the scatter matrix\footnote{Note that because $S$ is symmetric and $S_{ij} \in \mathbb{R} \, \forall i,j$, the eigenvectors are orthogonal.}
-\begin{equation}
-S = \sum_{i=1}^n (\vec x_i - \vec \mu) \, (\vec x_i - \vec \mu)^T
-\end{equation}
-and calculate eigenvectors and the respective eigenvalues.
-\item Take the $k$ eigenvectors with the $k$ largest eigenvalues and construct a $d \times k$--dimensional matrix $P$.
-\item Project the data into the new subspace using the linear transformation:
-\begin{equation}
-\vec y = P^T \cdot \vec x
-\end{equation}
-\end{enumerate}
-
-PCA is one of the simpler methods for dimensionality reduction based on eigenvectors. It is very straightforward to perform, but has some drawbacks, as well. For our task (classification), PCA is not the first choice, because it is not designed to maintain class separability.
-
-\subsection{Linear Discriminant Analysis (LDA)}
-\label{sec:theory:lda}
-
-Linear Discriminant Analysis (LDA) is another way of performing dimensionality reduction, this time, in contrast to PCA, a supervised learning algorithm that takes the labels into account\footnote{Note that LDA is also commonly used for classification.}. Again we are trying to project into a lower--dimensional subspace, maximizing the scatter in feature space, but \emph{additionally} minimizing the in--class scatter, consequently keeping the class--discriminatory information. Ideally, each class degenerates to a cluster far away from other clusters in the new feature space with respect to an arbitrary metric.
-
-\subsubsection{Algorithmic description of LDA}
-\begin{enumerate}
-\item Find the $d$--dimensional mean vectors $\mu_i$ (see equation \eqref{eq:mean-vector}) for each class
-\item Find the within--class scatter matrix
-\begin{equation}
-S_W = \sum_{i = 1}^m S_i,
-\end{equation}
-\begin{equation}
-S_i = \sum_{\vec x \in D_i}^n (\vec x - \vec \mu_i) \, (\vec x - \vec \mu_i)^T,
-\end{equation}
-where $m$ is the number of classes and $S_i$ is the scatter matrix of the $i$--th class.
-\item Find the between--class scatter matrix
-\begin{equation}
-S_B = \sum_{i = 1}^m N_i (\vec \mu_i - \vec \mu) \, (\vec \mu_i - \vec \mu)^T,
-\end{equation}
-where $\vec \mu$ denotes the mean vector of the whole dataset.
-\item Find (generalized) eigenvectors and the respective eigenvalues for $S := S_W^{-1} S_B$. These will be used as linear discriminants.
-\item Take the $k$ eigenvectors with the $k$ largest eigenvalues and construct a $d \times k$--dimensional matrix $P$.
-\item Project the data into the new subspace using the linear transformation:
-\begin{equation}
-\vec y = P^T \cdot \vec x
-\end{equation}
-\end{enumerate}
-
-In practise, we see that very often a combination of both procedures is performed, e.g. PCA followed by LDA. This is because LDA is computationally more expensive than PCA.
+%\input{chapters/pca-lda}
