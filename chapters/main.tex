@@ -1,11 +1,20 @@
-\section{About the EROS dataset}
+\section{About the EROS training set}
 
-% Number of sources in the dataset
+We use a training data set provided by \citet{kim2014} which contains labels (main and sub--classes) and lightcurves for $32655$ sources in the Large Magellanic Cloud (LMC). The lightcurves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project, a wide--field survey. A thorough description of the compilation process is available in \citet{kim2014}, however, here is a list of the main steps:
+
+\begin{enumerate}
+\item Compile known periodoic variables in the LMC from the OGLE and MACHO surveys
+\item Add $982$ blue variables (BVs) from the MACHO database
+\item Add 565 quasi--stellar objects (QSOs)
+\item 
+\end{enumerate}
+
+% Number of sources in the data set
 % Not a standard astronomical B and R bands
 
 \section{Feature Extraction \& Feature Selection}
 
-We extract a variety of features characterizing the variability of the source. In the following, $N$ will be number of data points in the light curve, $(t_i, m_i)$ the $i^{\text{th}}$ data point in the light curve.
+We extract a variety of features characterizing the variability of the source. A lot of them are standard statistical features, but some are more sophisticated, trying to incorporate a model of the underlying physics. In the following, $N$ will be the number of data points in the light curve, $(t_i, m_i)$ the $i^{\text{th}}$ data point in the light curve.
 
 \begin{enumerate}
 %\setlength{\itemsep}{5pt}
@@ -71,9 +80,22 @@ We extract a variety of features characterizing the variability of the source. I
 \litem{$\text{MAD}^{(2)}$ (Median absolute deviation)} The median absolute deviation of the magnitude, given by
 \begin{equation}\text{MAD}^{(2)} = \cdots.\end{equation}
 
-% Minimum, Maximum
-% Shapiro-Wilk test (normal-distribution test)
-% Number of datapoints
+\litem{$\text{SF}_A$ (Structure function $A$)} The ...
+\begin{equation}\text{SF}_A = \cdots.\end{equation}
+
+\litem{$\text{SF}_\gamma$ (Structure function $\gamma$)} The ...
+\begin{equation}\text{SF}_\gamma = \cdots.\end{equation}
+
+\litem{$\mathcal{F}$ (Fourier series)} We fit standard fourier series with five terms to the phase--folded lightcurve.
+\begin{equation}\mathcal{F}(t) = \frac{A_0}{2} + \sum_{k=1}^{\infty} ( A_k \cos(2 \pi k t) + B_k \sin(2 \pi k t) ).\end{equation}
+
+% CE – three candidate periods + scores
+% sf-A-error, sf-gamma-error
+% Slope percentile features
+% fourier-A-i, fourier-phi-i
+% fourier-residuals
+
+% Shapiro-W und Shapiro-p
 % Proper citing of all equations
 
 \end{enumerate}
@@ -82,6 +104,8 @@ This leads to a total of $\cdots$ features in $\cdots$ bands.
 
 % State that feature are highly correlated
 % Show histogram of some features.
+% Show some scatterplots
+% More about period finding
 
 \section{Hyperparameter Optimization}
 
@@ -90,11 +114,40 @@ This leads to a total of $\cdots$ features in $\cdots$ bands.
 
 \section{Performance of the Support Vector Machine (SVM)}
 
-% Add confusion matrix
+% Hyperparameter optimization
+% Add confusion matrix for main classes
+% Add confusion matrix for subclasses
+
+\renewcommand{\arraystretch}{1.5}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{c|ccccccccc|c}
+\toprule
+%& \multicolumn{8 }{c}{Predicted class} & & \\
+%\hline
+                 & BV        & CEPH       & DSCT      & EB         & LPV         & NoneVar    & QSO       & RRL        & T2CEPH   & Recall ($\%$) \\
+\hline
+BV               & {\bf 759} &            &           &            &             &            &      2    &            &          &        \\
+CEPH             &     2     & {\bf 2201} &           &            &             &            &           &            &          &        \\
+DSCT             &           &       1    & {\bf 421} &            &             &            &           &            &          &        \\
+EB               &    16     &      19    &           & {\bf 3290} &             &            &      4    &            &          &        \\
+LPV              &     4     &      11    &           &            & {\bf 15878} &            &      2    &            &          &        \\
+NoneVar          &    18     &       2    &           &            &             & {\bf 4607} &      12   &            &          &        \\
+QSO              &     3     &      25    &           &            &             &            & {\bf 142} &            &          &        \\
+RRL              &           &      35    &           &            &             &            &      1    & {\bf 4349} &          &        \\
+T2CEPH           &           &            &           &            &             &            &           &            & {\bf 1}  &        \\
+\bottomrule
+Precision ($\%$) &           &            &           &            &             &            &           &            &          &        \\
+\end{tabular}
+}
 
 \section{Performance of the Random Forest Classifier}
 
-% Add confusion matrix
-% Feature importance according to Random forest
+% Hyperparameter optimization
+% Add confusion matrix for main classes
+% Add confusion matrix for subclasses
+% Add feature importance for both
 
 \chapter{Assessing Classification Performance for GAIA}
+
+% Simulating GAIA time series
+% Performance of the best classifier on GAIA data
