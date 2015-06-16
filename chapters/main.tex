@@ -159,6 +159,33 @@ $F_1$ score ($\%$) &   94.28   &     96.35  &   85.74   &    93.30   &    99.00 
 
 \section{Performance of the Random Forest Classifier}
 
+\renewcommand{\arraystretch}{1.5}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{c|ccccccccc|c}
+\toprule
+%& \multicolumn{8 }{c}{Predicted class} & & \\
+%\hline
+                   & BV        & CEPH       & DSCT      & EB         & LPV         & NoneVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
+\hline
+BV                 & {\bf 775} &      1     &           &     10     &             &      8     &      2    &            &          &     796   \\
+CEPH               &     1     & {\bf 2224} &           &     21     &      2      &      5     &           &     23     &          &    2281   \\
+DSCT               &           &      2     & {\bf 471} &      5     &             &     26     &           &      7     &          &     511   \\
+EB                 &     8     &      12    &           & {\bf 3323} &     48      &     96     &      1    &     47     &     3    &    3538   \\
+LPV                &     4     &      3     &           &      8     & {\bf 15943} &     34     &      2    &            &     1    &   15995   \\
+NoneVar            &    15     &      3     &     2     &     42     &     94      & {\bf 4624} &     10    &     1      &          &    4791   \\
+QSO                &           &            &           &      2     &      3      &     31     & {\bf 143} &     1      &          &     180   \\
+RRL                &           &      24    &     5     &     44     &      2      &     15     &           & {\bf 4380} &          &    4470   \\
+T2CEPH             &           &      26    &           &     23     &      4      &     2      &           &     6      & {\bf 60} &     121   \\
+\bottomrule
+Recall ($\%$)      &   97.36   &     97.50  &   92.17   &    93.92   &    99.67    &   96.51    &   79.44   &    97.99   &   49.59  &           \\
+\hline
+Precision ($\%$)   &   96.51   &     96.91  &   98.54   &    95.54   &    99.05    &   95.52    &   90.51   &    97.99   &   93.75  &           \\
+\hline
+$F_1$ score ($\%$) &   96.93   &     97.20  &   95.25   &    94.72   &    99.36    &   96.01    &   84.61   &    97.99   &   64.87  &           \\
+\bottomrule
+\end{tabular}
+}
+
 % Hyperparameter optimization
 % Add confusion matrix for main classes
 % Add confusion matrix for subclasses
