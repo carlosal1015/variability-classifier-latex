@@ -123,7 +123,7 @@ This leads to a total of $\cdots$ features in $\cdots$ bands.
 \subfigure{\includegraphics[width=0.51\textwidth,height=0.4\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-06.png}}
 \hfill
 \caption[Hyperparameter optimization for the Support Vector Machine (SVM)]{This figure shows the average, weighted $F_1$ score on the $C$-$\gamma$-plane during the hyperparameter optimization for the Support Vector Machine. We start looking for global optima on a coarse grid with a wide range (upper left), and adjust the grid toward a finer stepwidth. At some point we find an optimum (lower right).}
-\label{fig:gridsearch-svm}
+\label{fig:gridsearch-svm-superclasses}
 \end{figure}
 
 % Hyperparameter optimization
@@ -138,26 +138,38 @@ This leads to a total of $\cdots$ features in $\cdots$ bands.
 %\hline
                    & BV        & CEPH       & DSCT      & EB         & LPV         & NoneVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
 \hline
-BV                 & {\bf 759} &            &           &     13     &     5       &     16     &      1    &            &     2    &     796   \\
-CEPH               &     4     & {\bf 2203} &           &     23     &     8       &     3      &           &     33     &     7    &    2281   \\
-DSCT               &           &       5    & {\bf 436} &     16     &             &     24     &           &     30     &          &     511   \\
-EB                 &    16     &      20    &     13    & {\bf 3321} &     47      &     62     &      4    &     49     &     6    &    3538   \\
-LPV                &     4     &      2     &           &     47     & {\bf 15881} &     58     &      2    &     1      &          &   15995   \\
-NoneVar            &    23     &      4     &     21    &     66     &     127     & {\bf 4516} &      30   &     4      &          &    4791   \\
-QSO                &     6     &      1     &           &     4      &             &     37     & {\bf 132} &            &          &     180   \\
-RRL                &           &      30    &     36    &     79     &      3      &     11     &      1    & {\bf 4307} &     3    &    4470   \\
-T2CEPH             &     2     &      27    &           &     12     &      7      &     1      &           &     11     & {\bf 61} &     121   \\
+BV                 & {\bf 762} &            &           &     12     &     1       &     19     &      1    &            &     1    &     796   \\
+CEPH               &     2     & {\bf 2218} &           &     13     &     5       &     3      &           &     28     &    12    &    2281   \\
+DSCT               &           &      5     & {\bf 453} &     8      &             &     17     &           &     28     &          &     511   \\
+EB                 &    16     &      16    &     10    & {\bf 3336} &     50      &     54     &      5    &     46     &     5    &    3538   \\
+LPV                &     5     &      5     &           &     46     & {\bf 15884} &     51     &      2    &     2      &          &   15995   \\
+NoneVar            &    15     &      1     &     14    &     48     &     65      & {\bf 4621} &      24   &     3      &          &    4791   \\
+QSO                &     2     &      1     &           &     1      &      1      &     30     & {\bf 144} &     1      &          &     180   \\
+RRL                &           &      27    &     34    &     60     &      4      &     7      &      0    & {\bf 4336} &     2    &    4470   \\
+T2CEPH             &     1     &      23    &           &     16     &      6      &     1      &           &     11     & {\bf 63} &     121   \\
 \bottomrule
-Recall ($\%$)      &   95.35   &     96.58  &   85.32   &    93.87   &    99.29    &   94.26    &    73.33  &    96.35   &   50.41  &           \\
+Recall ($\%$)      &   95.73   &     97.24  &   88.65   &    94.29   &    99.31    &   96.45    &    80.00  &    97.00   &   52.07  &           \\
 \hline
-Precision ($\%$)   &   93.24   &     96.12  &   86.17   &    92.74   &    98.77    &   95.52    &    77.65  &    97.11   &   77.12  &           \\
+Precision ($\%$)   &   94.89   &     96.60  &   88.65   &    94.24   &    99.18    &   96.21    &    81.82  &    97.33   &   75.90  &           \\
 \hline
-$F_1$ score ($\%$) &   94.28   &     96.35  &   85.74   &    93.30   &    99.00    &   94.89    &    75.43  &    96.73   &   60.97  &           \\
+$F_1$ score ($\%$) &   95.31   &     96.92  &   88.65   &    94.26   &    99.24    &   96.33    &    80.90  &    97.16   &   61.77  & 97.25 $\pm$ 0.25 \\
 \bottomrule
 \end{tabular}
 }
 
 \section{Performance of the Random Forest Classifier}
+
+\begin{figure}[H]
+\subfigure{\includegraphics[width=0.49\textwidth,height=0.4\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-01.png}}
+\hfill
+\subfigure{\includegraphics[width=0.51\textwidth,height=0.4\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-02.png}}
+\hfill
+\subfigure{\includegraphics[width=0.49\textwidth,height=0.4\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-03.png}}
+\hfill
+\subfigure{\includegraphics[width=0.51\textwidth,height=0.4\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-04.png}}
+\caption[Hyperparameter optimization for the Random Forest Classifier]{This figure shows the average, weighted $F_1$ score on the $m$-$t$-plane during the hyperparameter optimization for the Random Forest Classifier.$\cdots$}
+\label{fig:gridsearch-rf-superclasses}
+\end{figure}
 
 \renewcommand{\arraystretch}{1.5}
 \resizebox{\textwidth}{!}{
@@ -167,21 +179,21 @@ $F_1$ score ($\%$) &   94.28   &     96.35  &   85.74   &    93.30   &    99.00 
 %\hline
                    & BV        & CEPH       & DSCT      & EB         & LPV         & NoneVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
 \hline
-BV                 & {\bf 775} &      1     &           &     10     &             &      8     &      2    &            &          &     796   \\
-CEPH               &     1     & {\bf 2224} &           &     21     &      2      &      5     &           &     23     &          &    2281   \\
-DSCT               &           &      2     & {\bf 471} &      5     &             &     26     &           &      7     &          &     511   \\
-EB                 &     8     &      12    &           & {\bf 3323} &     48      &     96     &      1    &     47     &     3    &    3538   \\
-LPV                &     4     &      3     &           &      8     & {\bf 15943} &     34     &      2    &            &     1    &   15995   \\
-NoneVar            &    15     &      3     &     2     &     42     &     94      & {\bf 4624} &     10    &     1      &          &    4791   \\
-QSO                &           &            &           &      2     &      3      &     31     & {\bf 143} &     1      &          &     180   \\
-RRL                &           &      24    &     5     &     44     &      2      &     15     &           & {\bf 4380} &          &    4470   \\
-T2CEPH             &           &      26    &           &     23     &      4      &     2      &           &     6      & {\bf 60} &     121   \\
+BV                 & {\bf 773} &            &           &     11     &      3      &      8     &      1    &            &          &     796   \\
+CEPH               &     1     & {\bf 2226} &           &     18     &      2      &      3     &           &     31     &          &    2281   \\
+DSCT               &           &            & {\bf 496} &      2     &             &     12     &           &      1     &          &     511   \\
+EB                 &     7     &      7     &     2     & {\bf 3342} &     52      &     79     &      3    &     43     &     3    &    3538   \\
+LPV                &     4     &      2     &           &     10     & {\bf 15945} &     32     &      1    &     1      &          &   15995   \\
+NoneVar            &    23     &      1     &     4     &     35     &     72      & {\bf 4648} &      8    &            &          &    4791   \\
+QSO                &           &            &           &      3     &      4      &     25     & {\bf 147} &     1      &          &     180   \\
+RRL                &           &      9     &     7     &     31     &      2      &     7      &           & {\bf 4414} &          &    4470   \\
+T2CEPH             &     1     &      15    &           &     19     &      5      &     3      &           &            & {\bf 78} &     121   \\
 \bottomrule
-Recall ($\%$)      &   97.36   &     97.50  &   92.17   &    93.92   &    99.67    &   96.51    &   79.44   &    97.99   &   49.59  &           \\
+Recall ($\%$)      &   97.11   &     97.59  &   97.06   &    94.46   &    99.69    &   97.02    &   81.67   &    98.75   &   64.46  &           \\
 \hline
-Precision ($\%$)   &   96.51   &     96.91  &   98.54   &    95.54   &    99.05    &   95.52    &   90.51   &    97.99   &   93.75  &           \\
+Precision ($\%$)   &   95.55   &     98.50  &   97.45   &    96.28   &    99.13    &   96.49    &   91.87   &    98.29   &   96.93  &           \\
 \hline
-$F_1$ score ($\%$) &   96.93   &     97.20  &   95.25   &    94.72   &    99.36    &   96.01    &   84.61   &    97.99   &   64.87  &           \\
+$F_1$ score ($\%$) &   96.32   &     98.04  &   97.25   &    95.36   &    99.41    &   96.75    &   86.47   &    98.52   &   77.43  & 98.14 $\pm$ 0.07 \\
 \bottomrule
 \end{tabular}
 }
