@@ -1,19 +1,57 @@
 \section{Variable Objects in Astronomy}
 \label{sec:theory-variable-objects}
 
-When observing the sky over a sufficient time span, we empirically find that a lot of objects are subject to flux variability, \ie their observed magnitude $m$ is a function of time, even on short time--scales. These significant changes in brightness can be somewhere between fractions of one per cent and some multiples of the average magnitude. Some variables change very rapidly with periods of several hours, while others take years to complete one cycle. Some are strictly periodic, while others rather show stochastic, non--deterministic changes in brightness, which are much harder to characterise. Ultimately, it all boils down to the reason for variability.
+% For a very long time, people thought of stars to be invariable and eternal...
+
+When observing the sky over a sufficient time span, we empirically find that a lot of objects are subject to flux variability, \ie their observed magnitude $m$ is a function of time, even on short time--scales\footnote{Evidently, on the time span of their lifetime, all stars show some kind of variability as they evolve. However, this is not what we mean by the term \emph{variability}.}. These significant changes in brightness can be somewhere between some thousandths of its magnitude and multiples of a magnitude. A systematic observation of variables can provide valuable insight on cosmic evolution and stellar properties, such as temperature, mass and radius \citep{percy2007}. Some variables change very rapidly with periods of several hours, while others take years to complete one cycle. Some are strictly periodic, while others show  rather stochastic, non--deterministic behaviour, which is much harder to characterise. Ultimately, it all boils down to the reason for variability, which gives rise to different a categories of variables. There are numerous types of variable objects with all kind of different mechanisms for variability.
+
+% Can not explain all different classes in this work
 
 \subsection{Intrinsic \& Extrinsic Variability}
 
-We say that an object shows \emph{intrinsic} variability, when the change in brightness is caused by real changes in the physical state of the object, whereas objects show \emph{extrinsic} variability if the change in brightness is merely due to external influences.
+We say that an object shows \emph{intrinsic} variability, when the change in brightness is caused by real changes in the physical state of the object. Sources with intrinsic variability can be roughly grouped into \emph{pulsating}, \emph{eruptive} and \emph{catalysmic} or \emph{explosive} variables.
 
-Sources with intrinsic variability can be roughly grouped into \emph{pulsating}, \emph{eruptive} and \emph{catalysmic} or \emph{explosive} variables.
-A good part of sources with intrinsic variability are \emph{pulsating variables}, such as \emph{Cepheids}, \emph{RR Lyrae} and $\delta$-Scutis.
+\begin{itemize}
+\item Pulsating variables are oscillating in radius $R$ because they are not in hydrostatic equilibrium. The gravitational field drives contraction, which , while the nuclear fusion $\cdots$. 
+% kappa mechanism, epsilon mechanism
+	\begin{itemize}[label=$\circ$]
+	\item Classical Cepheids or $\delta$--Cepheids are bright stars with masses of $5$--$10 \, \unit{M_\odot}$, mostly in the helium--core--burning phase, that have periods between $1.0$--$50.0 \, \unit{d}$ \citep{cox1980}, and can be found in an almost vertical, narrow strip in the Hertzsprung--Russell diagram known as the \emph{instability strip}. They belong certainly to the most important variables, because of their well established \emph{period--luminosity} relation
+	\begin{equation}
+	\label{eq:period-luminosity-relation}
+	\cdots = \cdots,
+	\end{equation}
+	which allows astronomers to use Cepheids as \emph{standard candles} for distance estimation. Standard candles are objects with a known absolute magnitude $M$, which can then be used to calculate the distance modulus $\mu = m - M$ by measuring the apparent magnitude. The object's distance is then given by
+	\begin{equation}
+	\log_{10}(d) = 1 + \frac{\mu}{5},
+	\end{equation}
+	assuming negligible interstellar absorption \citep{hanslmeier2007}. 
+	% Period-luminosity relationship	
+	% Rapid increase, rather slow decrease
+	% Periods between 1 and 50 days
+	% Bright
+	\item $\delta$-Scuti stars or \emph{Dwarf Cepheids} are short--periodic ($0.7$-$5.0 \, \unit{h}$) variables with small amplitudes and typical masses of $1$-$2 \, \unit{M_\odot}$.
+	% Dwarf cepheids
+	\item RR Lyrae are somewhat smaller, fainter objects than Cepheids. They have masses between $0.5$--$0.6 \, \unit{M_\odot}$ and typical periods between $0.2 $--$1.2 \, \unit{d}$ \citep{unsoeld2001}. Similar to Cepheids, RR Lyrae can be used as standard candles, although this could be harder for far away objects due to the fainter nature.
+	% Also used as distance estimators
+	% Smaller than Cepheids, shorter periods, lower luminosity
+	\item Long--periodic variables
+	\end{itemize}
+\item Eruptive variables $\cdots$
+\item Catalysmic \& Explosive variables $\cdots$
+\end{itemize}
 
-% Pulsating: Cepheid, RR Lyrae, delta-Scuti
-% Extrinsic: Eclipsing binaries
+On the other hand, if the change in brightness as perceived from the earth is merely due to external influences, a variable exhibits \emph{extrinsic} variability.
+
+\begin{itemize}
+\item Rotating variables are $\cdots$
+\item Eclipsing binaries are $\cdots$
+% Majority of stars in milkway are binary systems
+\item Planetary transits are $\cdots$
+\end{itemize}
 
 \subsection{Stochastic variability \& QSOs}
+ 
+We want to pay special attention to stochastic variability...
  
 % Pulsating variables 
 % Cepheids 
@@ -23,6 +61,8 @@ A good part of sources with intrinsic variability are \emph{pulsating variables}
 % Active stars, flares and spots
 
 \subsection{Lightcurves of Variable Stars}
+
+% Cepheids: rapid rise to maximum, then slow decrease
 
 \section{Statistical Analysis of Time Series}
 
