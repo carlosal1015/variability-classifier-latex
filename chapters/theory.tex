@@ -3,7 +3,9 @@
 
 % For a very long time, people thought of stars to be invariable and eternal...
 
-When observing the sky over a sufficient time span, we empirically find that a lot of objects are subject to flux variability, \ie their observed magnitude $m$ is a function of time, even on short time--scales\footnote{Evidently, on the time span of their lifetime, all stars show some kind of variability as they evolve. However, this is not what we mean by the term \emph{variability}.}. These significant changes in brightness can be somewhere between some thousandths of its magnitude and multiples of a magnitude. A systematic observation of variables can provide valuable insight on cosmic evolution and stellar properties, such as temperature, mass and radius \citep{percy2007}. Some variables change very rapidly with periods of several hours, while others take years to complete one cycle. Some are strictly periodic, while others show  rather stochastic, non--deterministic behaviour, which is much harder to characterise. Ultimately, it all boils down to the reason for variability, which gives rise to different a categories of variables. There are numerous types of variable objects with all kind of different mechanisms for variability.
+When observing the sky over a sufficient time span, we empirically find that a lot of objects are subject to flux variability, \ie their observed magnitude $m$ is a function of time, even on short time--scales\footnote{Evidently, on the time span of their lifetime, all stars show some kind of variability as they evolve. However, this is not what we mean by the term \emph{variability}.}. These significant changes in brightness can be somewhere between some thousandths of a magnitude and multiples of a magnitude. Some variables change very rapidly with periods of several hours, while others take years to complete one cycle. Some are strictly periodic, while others show  rather stochastic, non--deterministic behaviour, which is much harder to characterise.\\
+
+A systematic observation of variables can provide valuable insight on cosmic evolution and stellar properties, such as temperature, mass and radius \citep{percy2007}. There are numerous types of variable objects with all kind of different mechanisms for variability. Ultimately, it all boils down to the reason for variability, which gives rise to different a categories of variables.
 
 % Can not explain all different classes in this work
 
@@ -12,15 +14,21 @@ When observing the sky over a sufficient time span, we empirically find that a l
 We say that an object shows \emph{intrinsic} variability, when the change in brightness is caused by real changes in the physical state of the object. Sources with intrinsic variability can be roughly grouped into \emph{pulsating}, \emph{eruptive} and \emph{catalysmic} or \emph{explosive} variables.
 
 \begin{itemize}
-\item Pulsating variables are oscillating in radius $R$ because they are not in hydrostatic equilibrium. The gravitational field drives contraction, which , while the nuclear fusion $\cdots$. 
+\item Pulsating variables are oscillating in radius $R$ because they are not in hydrostatic equilibrium, as given by
+\begin{equation}
+\label{eq:hydrostatic-equilibrium}
+\frac{\mathrm{d}P}{\mathrm{d}R} \overset{!}= - \rho(R) \, \frac{G M(R)}{R^2},
+\end{equation}
+where $M$ is the star's mass within a sphere of radius $R$ and pressure $P$. $\kappa$-mechanism and $\epsilon$-mechanism. The gravitational field drives contraction, which , while the nuclear fusion $\cdots$. 
 % kappa mechanism, epsilon mechanism
+The following is a list of some of the more important subclasses:
 	\begin{itemize}[label=$\circ$]
-	\item Classical Cepheids or $\delta$--Cepheids are bright stars with masses of $5$--$10 \, \unit{M_\odot}$, mostly in the helium--core--burning phase, that have periods between $1.0$--$50.0 \, \unit{d}$ \citep{cox1980}, and can be found in an almost vertical, narrow strip in the Hertzsprung--Russell diagram known as the \emph{instability strip}. They belong certainly to the most important variables, because of their well established \emph{period--luminosity} relation
+	\item Classical Cepheids or $\delta$--Cepheids are bright giant and supergiants with masses of $5$--$10 \, \unit{M_\odot}$, mostly in the helium--core--burning phase, that have periods between $1.0$--$50.0 \, \unit{d}$ \citep{cox1980}, and can be found in a diagonal, narrow strip in the Hertzsprung--Russell diagram known as the \emph{instability strip}. They belong certainly to the most important variables, because of their well established \emph{period--luminosity} relation
 	\begin{equation}
 	\label{eq:period-luminosity-relation}
 	\cdots = \cdots,
 	\end{equation}
-	which allows astronomers to use Cepheids as \emph{standard candles} for distance estimation. Standard candles are objects with a known absolute magnitude $M$, which can then be used to calculate the distance modulus $\mu = m - M$ by measuring the apparent magnitude. The object's distance is then given by
+	which allows astronomers to use Cepheids as \emph{standard candles} for distance estimation. Standard candles are objects with a known absolute magnitude $M$, which can then be used to calculate the distance modulus $\mu = m - M$ by measuring the apparent magnitude. The object's distance $d$ in $\unit{pc}$ is then given by solving
 	\begin{equation}
 	\log_{10}(d) = 1 + \frac{\mu}{5},
 	\end{equation}
@@ -29,24 +37,27 @@ We say that an object shows \emph{intrinsic} variability, when the change in bri
 	% Rapid increase, rather slow decrease
 	% Periods between 1 and 50 days
 	% Bright
-	\item $\delta$-Scuti stars or \emph{Dwarf Cepheids} are short--periodic ($0.7$-$5.0 \, \unit{h}$) variables with small amplitudes and typical masses of $1$-$2 \, \unit{M_\odot}$.
+	\item $\delta$-Scuti stars or \emph{Dwarf Cepheids} are short--periodic ($0.7$-$5.0 \, \unit{h}$) variables with small amplitudes and typical masses of $1$-$2 \, \unit{M_\odot}$. They are usually multi--periodic and oscillate in both radial and non--radial modes, making them somewhat difficult to describe.
 	% Dwarf cepheids
-	\item RR Lyrae are somewhat smaller, fainter objects than Cepheids. They have masses between $0.5$--$0.6 \, \unit{M_\odot}$ and typical periods between $0.2 $--$1.2 \, \unit{d}$ \citep{unsoeld2001}. Similar to Cepheids, RR Lyrae can be used as standard candles, although this could be harder for far away objects due to the fainter nature.
+	\item RR Lyrae are somewhat smaller, fainter objects than Cepheids. They have masses between $0.5$--$0.6 \, \unit{M_\odot}$ and typical periods between $0.2 $--$1.2 \, \unit{d}$ \citep{unsoeld2001}. Similar to Cepheids, RR Lyrae can be used as standard candles, although this will be harder for far away objects due to their fainter nature.
 	% Also used as distance estimators
 	% Smaller than Cepheids, shorter periods, lower luminosity
 	\item Long--periodic variables
+	% Mira, and Semiregulars
 	\end{itemize}
-\item Eruptive variables $\cdots$
+\item Eruptive variables exhibit variability due to sudden, violent outbursts.
+% Novae, Dward Novae and Supernovae
 \item Catalysmic \& Explosive variables $\cdots$
 \end{itemize}
 
 On the other hand, if the change in brightness as perceived from the earth is merely due to external influences, a variable exhibits \emph{extrinsic} variability.
 
 \begin{itemize}
-\item Rotating variables are $\cdots$
-\item Eclipsing binaries are $\cdots$
+\item Rotating variables change in brightness because their surface is not homogeneous, \eg has brighter and darker areas, that contribute accordingly to the overall brightness when rotating.
+\item Eclipsing binaries occur in binary star systems, where two stars are orbiting around some common centre of masse. Consequently, when observerd from the right angle, they show variability because one component of the systems is eclipsed by the other component. In fact, the majority of stars in Milky Way are binary systems.
 % Majority of stars in milkway are binary systems
-\item Planetary transits are $\cdots$
+% Primary eclipse and secondary eclipse
+\item Planetary transits could also block some of the light reaching the observer, leading to an overall decrease in brightness during the transit.
 \end{itemize}
 
 \subsection{Stochastic variability \& QSOs}
