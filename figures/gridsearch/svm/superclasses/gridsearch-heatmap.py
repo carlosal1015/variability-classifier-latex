@@ -51,7 +51,7 @@ scores = [a[1] for a in grid.grid_scores_]
 scores = np.array(scores).reshape(len(y), len(x))
 
 number2latex = lambda string: '$' + string.split('e')[0] + '\cdot 10^{' + str(int(string.split('e')[1])) + '}$'
-colormap = plt.cm.Blues
+colormap = plt.cm.Spectral_r
 
 plt.figure(figsize = (8, 6))
 plt.subplots_adjust(left = 0.2, right = 0.95, bottom = 0.2, top = 0.95)
