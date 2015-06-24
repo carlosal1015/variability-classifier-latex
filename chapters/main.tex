@@ -30,7 +30,8 @@ We extract a variety of features characterizing the variability of the source. A
 \begin{equation}\sigma = \sqrt{\frac{1}{N-1} \sum_{i=1}^N (m_i - \mu)^2}.\end{equation}
 
 \litem{$Q_{50}, Q_{50}^\phi$ (Median of magnitude)} The median of the magnitude, given by
-\begin{equation}Q_{50} = \cdots.\end{equation}
+\begin{equation}Q_{50} = \tilde m_{\lfloor\frac{N+1}{2}\rfloor},\end{equation}
+where $\tilde m$ is the sorted list of magnitude with legth $N$.
 
 \litem{$\bar \mu, \bar \mu^\phi$ (Weighted mean of magnitude)} The weighted arithmetic mean of the magnitude, given by
 \begin{equation}\bar \mu = \big(\sum\limits_{i=1}^{N} w_i m_i\big) \; / \; \big(\sum\limits_{i=1}^{N} w_i\big),\end{equation}
@@ -45,16 +46,16 @@ with weights $w_i$ inversely proportional to the measurement uncertainty, \ie $w
 \litem{$\gamma_2, \gamma_2^\phi$ (Kurtosis)} The kurtosis of the magnitude, given by
 \begin{equation}\gamma_2 = \frac{N(N+1)}{(N-1)(N-2)(N-3)} \sum\limits_{i=1}^N \big( \frac{m_i - \mu}{\sigma} \big)^4 - 3 \, \frac{(N-1)^2}{(N-2)(N-3)}.\end{equation}
 
-\litem{$Q_{25}, Q_{25}^\phi$ (25\% quartile)} The 25\% quartile of the magnitude, given by
+\litem{$Q_{25}, Q_{25}^\phi$ ($25^\text{th}$ percentile)} The $25^\text{th}$ percentile of the magnitude, given by
 \begin{equation}Q_{25} = \cdots.\end{equation}
 
-\litem{$Q_{75}, Q_{75}^\phi$ (75\% quartile)} The 75\% quartile of the magnitude, given by
+\litem{$Q_{75}, Q_{75}^\phi$ ($75^\text{th}$ percentile)} The $75^\text{th}$ percentile of the magnitude, given by
 \begin{equation}Q_{75} = \cdots.\end{equation}
 
 \litem{$\text{IQR}, \text{IQR}^\phi$ (Interquartile range)} The interquartile range of the magnitude, given by
 \begin{equation}\text{IQR} = Q_{75} -Q_{25}.\end{equation}
 
-\litem{$P_{\text{LS}}$ (Lomb--Scargle period)} The period of the signal according to the Lomb--Scargle algorithm, given by
+\litem{$T_{\text{LS}}$ (Lomb--Scargle period)} The maximum--likelihood period according to the Lomb--Scargle periodogram, given by
 \begin{equation}P_{\text{LS}} = \frac{1}{2 \sigma_y^2} \Bigg\{ \frac{\big[\sum\limits_{i=1}^k (y_i - \mu_y) \cos(\omega(t_i - \tau))\big]^2}{\sum\limits_{i=1}^k \cos^2(\omega(t_i - \tau))} + \frac{\big[\sum\limits_{i=1}^k (y_i - \mu_y) \sin(\omega(t_i - \tau))\big]^2}{\sum\limits_{i=1}^k \sin^2(\omega(t_i - \tau))}\Bigg\}\end{equation}
 
 \litem{$\text{FAP}_{\text{LS}}$ (False--Alarm probability for Lomb--Scargle)} The false--alarm probability (FAP) for the Lomb--Scargle algorithm, given by
@@ -63,39 +64,57 @@ with weights $w_i$ inversely proportional to the measurement uncertainty, \ie $w
 \litem{$\text{SNR}, \text{SNR}^\phi$ (Signal--to--noise ratio)} The signal--to--noise ratio, given by
 \begin{equation}\text{SNR} = \frac{\mu}{\sigma}.\end{equation}
 
-\litem{$S, S^\phi$ (Shannon entropy)} The Shannon entropy of the signal, given by
+\litem{$S, S^\phi$ (Shannon entropy)} The Shannon entropy \citep{shannon1949} of the signal, given by
 \begin{equation}S = -\sum\limits_{i=1}^N m_i \ln(m_i).\end{equation}
 
-\litem{$\eta, \eta^\phi$ (Eta--feature)} The $\eta$ feature as proposed by \citep{}, given by
+\litem{$\eta, \eta^\phi$ (Eta--feature)} The $\eta$ feature as proposed by \citet{vonneumann1941}, given by
 \begin{equation}\eta = \frac{1}{\sigma^2 (N-1)} \sum\limits_{i=1}^{N-1} (m_{i+1} - m_{i})^2.\end{equation}
+
+\litem{$\eta_e, \eta_e^\phi$ (Eta--feature)} $\eta_e$ is an enhancement of the $\eta$-feature by \citet{kim2014}, that accounts for unequal sampling, given by
+\begin{equation}\eta_e = (\frac{1}{N-1}\sum_{i=1}^{N-1} w_i) (t_{N-1} - t_1)^2 \big( \sum\limits_{i=1}^{N-1} w_i (m_{i+1} + m_i)^2 \big) \, / \, \big( \sigma^2 \sum\limits_{i=1}^{N-1} w_i \big),\end{equation}
+where the weights are given by $w_i = (t_{i+1} - t_i)^{-2}$.
 
 \litem{$\cdots$ (Half--magnitude--amplitude ratio)} The ratio of higher \resp lower amplitudes than average, given by
 \begin{equation}\cdots = \sqrt{ \Big(\sum\limits_{l=1}^N \big( \alpha^{>}_l - \mu \big)^2\Big) \, / \, \Big(\sum\limits_{m=1}^N \big( \alpha^{<}_m - \mu \big)^2\Big)},\end{equation}
 where $\alpha^{>}, \alpha^{<}$ are magnitudes higher resp. lower than $\mu$.
 
-\litem{$\text{MAD}^{(1)}$ (Mean absolute deviation)} The mean absolute deviation of the magnitude, given by
-\begin{equation}\text{MAD}^{(1)} = \cdots.\end{equation}
+\litem{$\text{MAD}_{\mu}, \text{MAD}_{\mu}^\phi$ (Mean absolute deviation)} The mean absolute deviation of the magnitude, given by
+\begin{equation}\text{MAD}_{\mu} = \frac{1}{N} \sum\limits_{i=1}^{N} | m_i - \mu |.,\end{equation}
+which is essentially the average distance between each of the data points and the mean.
 
-\litem{$\text{MAD}^{(2)}$ (Median absolute deviation)} The median absolute deviation of the magnitude, given by
-\begin{equation}\text{MAD}^{(2)} = \cdots.\end{equation}
+\litem{$\text{MAD}_{Q_{50}}, \text{MAD}_{Q_{50}}^\phi$ (Median absolute deviation)} The median absolute deviation of the magnitude, given by
+\begin{equation}\text{MAD}_{Q_{50}} = .\end{equation}
 
-\litem{$\cdots$ (Shapiro--Wilk statistics)} The Shapiro--Wilk test is used to test the null hypothesis that the data was drawn from a normal distribution. We add $W$ and $p$, given by
-\begin{equation}W = \cdots, p = \cdots.\end{equation}
-as features.
+\litem{$W_{\text{SW}}, p_{\text{SW}}$ (Shapiro--Wilk statistics)} The Shapiro--Wilk test \citep{shapiro1965} is used to test the null hypothesis that the data was drawn from a normal distribution. We the features
+\begin{equation}W_{\text{SW}} = \big(\sum\limits_{i=1}^n \lambda_i m_{(i)}\big)^2 \, / \, \big(\sum\limits_{i=1}^n (m_i - \mu)^2\big).\end{equation}
+as features, where $\lambda_i$ are constants derived from means, and variances of a normally distributed sample of the same size, $m_{(i)}$ is the $i^\text{th}$ smallest value in $m$, and $p_{\text{SW}}$ is the $p$-value for the hypothesis test.
 
-\litem{$\text{SF}$ (Structure function features)} We extract $A, \sigma_A, \gamma, \sigma_\gamma$ from the structure function power--law fit, given by
-\begin{equation}\text{SF}(\Delta t) = \cdots.\end{equation}
+\litem{$\text{SF}$ (Structure function features)} We extract $A, \sigma_A, \gamma, \sigma_\gamma$ from the structure function power--law fit, $A \big(\frac{\Delta t}{1 \, \mathrm{yr}}\big)^\gamma$, where the structure function is defined as
+\begin{equation}\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta t},\end{equation}
+where $\langle \cdot \rangle$ is the mean of the data points within the bin $\Delta t$.
 
 \litem{$\mathcal{F}$ (Fourier features)} We fit standard fourier series with five terms to the phase--folded lightcurve.
 \begin{equation}\mathcal{F}(t) = \frac{A_0}{2} + \sum_{k=1}^{\infty} ( A_k \cos(2 \pi k t) + B_k \sin(2 \pi k t) ).\end{equation}
 From this we the extract amplitude and phase features $A_0$, $A_i = \sqrt{a_i^2 + b_i^2}$ and $\varphi_i = \arctan(\frac{b_i}{a_i})$ features for $i = 1, \ldots, 5$.
 
-% CE – three candidate periods + scores
+\litem{$T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}$ (CE periods)} We add three candidate periods with the lowest conditional entropy according to the CE periodogram, given by
+\begin{equation}P_{\text{CE}} = \cdots.\end{equation}
+Furthermore, we also add the CE scores, $\text{CE}_1, \text{CE}_2, \text{CE}_3$, for each of the periods as features.
+
+\litem{$\delta_{\text{CE}_1}, \delta_{\text{CE}_2}$ ($\delta_{\text{CE}}$ features)} We add two more features comparing $T_{\text{LS}}$ and $T_{\text{CE}_1}$, which we define as
+\begin{equation}\delta_{\text{CE}_1} = T_{\text{LS}} - T_{\text{CE}_1}, \, \delta_{\text{CE}_2} = \frac{\delta_{\text{CE}_1}}{T_{\text{LS}}}.\end{equation}
+
+\litem{$\Delta_{Q_{10}}^\phi, \Delta_{Q_{90}}^\phi$ (Slope percentile features)} The $10^\text{th}$ and $90^\text{th}$ percentile of the slope, given by
+\begin{equation}\Delta = \frac{(t_{i+1} - t_i)}{(m_{i+1} - m_i)}.\end{equation}
+
+\litem{$\Sigma, \Sigma^\phi$ (Cumulative sum)} The range $\max(S) - \min(S)$ of the cumulative sum \citep{ellaway1978} of $S_k$, given by
+\begin{equation}S_k = \frac{1}{\sigma N} \sum\limits_{i=1}^k (m_i - \mu) .\end{equation}
+
+\litem{$K$ (Stetson $K$)} The Stetson K index \citep{stetson1996}, given by
+\begin{equation}K = \frac{1}{\sqrt{N}} \big( \sum\limits_{i=1}^N |\delta_i| \big) \, / \, \big( \sqrt{\sum\limits_{i=1}^N \delta_i^2} \big) \text{ with } \delta_i = \sqrt{\frac{N}{N-1}} \frac{m_i - \mu}{\sigma_i}.\end{equation}
+
 % sf-A-error, sf-gamma-error
 % Slope percentile features
-% fourier-A-i, fourier-phi-i
-% fourier-residuals
-
 % Shapiro-W und Shapiro-p
 % Proper citing of all equations
 
