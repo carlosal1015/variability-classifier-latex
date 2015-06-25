@@ -87,6 +87,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{amssymb}
 \usepackage{extarrows}
 \usepackage{marvosym}
 \usepackage{lmodern}
@@ -150,6 +151,7 @@
 \usepackage{lscape}
 \usepackage{array}
 \usepackage{caption}
+\usepackage{subcaption}
 
 \newcommand*\rot{\rotatebox{90}}
 \renewcommand{\arraystretch}{1.5}
@@ -163,8 +165,22 @@
 
 \usepackage[protrusion=true,expansion=true]{microtype}
 \usepackage{float}
-\usepackage{subfigure}
 \usepackage{listings}
 \usepackage{todonotes}
 \usepackage{verbatim}
 \usepackage{url}
+\usepackage{xcolor}
+
+% Define colors for the color legend
+
+\definecolor{ceph}{HTML}{7240B9}
+\definecolor{t2ceph}{HTML}{407FE5}
+\definecolor{bv}{HTML}{40BEC3}
+\definecolor{rrl}{HTML}{40B540}
+\definecolor{lpv}{HTML}{40ED40}
+\definecolor{dsct}{HTML}{DEF940}
+\definecolor{qso}{HTML}{FFB119}
+\definecolor{nonevar}{HTML}{E84040}
+\definecolor{eb}{HTML}{D8D8D8}
+
+\newcommand{\colorlegend}{\footnotesize (\textcolor{ceph}{\ensuremath\bullet} CEPH, \textcolor{t2ceph}{\ensuremath\bullet} T2CEPH, \textcolor{bv}{\ensuremath\bullet} BV, \textcolor{rrl}{\ensuremath\bullet} RRL, \textcolor{lpv}{\ensuremath\bullet} LPV, \textcolor{dsct}{\ensuremath\bullet} DSCT, \textcolor{qso}{\ensuremath\bullet} QSO, \textcolor{nonevar}{\ensuremath\bullet} NoneVar, \textcolor{eb}{\ensuremath\bullet} EB)}
