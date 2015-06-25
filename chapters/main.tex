@@ -1,12 +1,20 @@
 \section{About the EROS training set}
 
-We use a training data set provided by \citet{kim2014} which contains labels (main and sub--classes) and lightcurves for $32655$ sources in the Large Magellanic Cloud (LMC). The lightcurves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project, a wide--field survey. A thorough description of the compilation process is available in \citet{kim2014}, however, here is a list of the main steps:
+We use a training data set compiled by \citet{kim2014} containing labels and light curves for $32683$ sources in the Large Magellanic Cloud (LMC), including Cepheids, Type II Cepheids, Blue Variables, $\delta$-Scuti (DSCT), RR--Lyraes (RRL), eclipsing binaries (EB) and long--periodic Variables (LPV). The light curves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project \citep{tisserand2007}, which was a wide--field microlensing survey monitoring $10^7$ stars in the Magellanic clouds over a time span of seven years ($1996$-$2003$). It's main purpose was to probe the dark matter halo of the Milky Way for MACHOs, massive compact halo objects.\\
+
+% Add number of data points in light curves (R_E and B_E)
+% Mention that B_E is better sampled
+
+The training set comes labelled with superclasses and subclasses but without any features extracted. A thorough description of the compilation process is available in \citet{kim2014}, however, here is a list of the main steps:
 
 \begin{enumerate}
-\item Compile known periodoic variables in the LMC from the OGLE and MACHO surveys
-\item Add $982$ blue variables (BVs) from the MACHO database
-\item Add 565 quasi--stellar objects (QSOs)
-\item 
+\item Compile a list of known periodic variable stars in the LMC from the OGLE \citep{udalski2008, soszy2008} catalogs.
+\item Add $982$ blue variables (BVs) from the MACHO database \citep{keller2002}.
+\item Add $565$ quasi--stellar objects (QSOs).
+\item Crossmatch the extracted list with the entire EROS--2 LMC database and remove counterparts which are inaccurate.
+\item Visual examination of $97912$ raw-- and phase--folded light curves to remove sources without variability our periodicity. This results in a list of 27892 periodic variables.
+\item Add non--variable source to training set by randomly sampling $5000$ light curves (excluding the ones already selected) over the whole EROS-2 LMC fields in different magnitude ranges.
+\item Visual examination of the sampled sources to remove objects showing variability. This results in a list with $32683$ objects.
 \end{enumerate}
 
 % Number of sources in the data set
@@ -14,7 +22,9 @@ We use a training data set provided by \citet{kim2014} which contains labels (ma
 
 \section{Feature Extraction}
 
-We extract a variety of features characterizing the variability of the source. A lot of them are standard statistical features, but some are more sophisticated, trying to incorporate a model of the underlying physics. In the following, $N$ will be the number of data points in the light curve, $(t_i, m_i)$ the $i^{\text{th}}$ data point in the light curve. Some of the features are extracted from the recorded lightcurve, as well as from the phase--folded lightcurve ($P_{\text{LS}}$). We label the latter with a superscript $\phi$, \eg $\mu^\phi, \sigma^\phi$ and so forth\footnote{Note that this does not necessarily mean that \emph{all} features based on a phase--folded lightcurve are labelled this way.}.
+We extract a variety of features characterizing the variability of the source. A lot of them are standard statistical features, but some are more sophisticated, trying to incorporate a model of the underlying physics. We have implemented most of the variability features used by \citet{kim2014} and some of the features from \citet{dubath2011}. Features that can not be found in both of them are the CE features $T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}, \delta_{\text{CE}_1}, \delta_{\text{CE}_2}$, the Shannon entropy $S, S^\phi$ and the structure function features $A, \sigma_A, \gamma, \sigma_\gamma$. All of the following features listed are extracted both in the red band ($R_E$), in the blue band $B_E$, as well as in the difference of both ($R_E - B_E$).\\
+
+In the following, $N$ will be the number of data points in the light curve, $(t_i, m_i)$ the $i^{\text{th}}$ data point in the light curve. Some of the features are extracted from the recorded light curve, as well as from the phase--folded light curve ($P_{\text{LS}}$). We label the latter with a superscript $\phi$, \eg $\mu^\phi, \sigma^\phi$ and so forth\footnote{Note that this does not necessarily mean that \emph{all} features based on a phase--folded light curve are labelled this way.}.
 
 \begin{enumerate}
 %\setlength{\itemsep}{5pt}
@@ -93,7 +103,7 @@ as features, where $\lambda_i$ are constants derived from means, and variances o
 \begin{equation}\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta t},\end{equation}
 where $\langle \cdot \rangle$ is the mean of the data points within the bin $\Delta t$.
 
-\litem{$\mathcal{F}$ (Fourier features)} We fit standard fourier series with five terms to the phase--folded lightcurve.
+\litem{$\mathcal{F}$ (Fourier features)} We fit standard fourier series with five terms to the phase--folded light curve.
 \begin{equation}\mathcal{F}(t) = \frac{A_0}{2} + \sum_{k=1}^{\infty} ( A_k \cos(2 \pi k t) + B_k \sin(2 \pi k t) ).\end{equation}
 From this we the extract amplitude and phase features $A_0$, $A_i = \sqrt{a_i^2 + b_i^2}$ and $\varphi_i = \arctan(\frac{b_i}{a_i})$ features for $i = 1, \ldots, 5$.
 
@@ -157,7 +167,7 @@ This leads to a total of $\cdots$ features in $\cdots$ bands.
 		\label{fig:2f}
 		\includegraphics[width=\textwidth]{figures/scatterplots/R-ls-period-R-phase-q25.png}		
 	\end{subfigure}
-	\caption{This figure shows different scatterplots. $\cdots$\\\colorlegend}
+	\caption[Scatterplots for different features with reasonable separation.]{This figure shows different scatterplots. $\cdots$\\\colorlegend}
 	\label{fig:features-scatterplot}
 \end{figure}
 
@@ -196,7 +206,7 @@ The first classifier we try is the Support Vector Machine (SVM) with the RBF ker
 		\centering
 		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-06.png}		
 	\end{subfigure}
-	\caption[Hyperparameter optimization for the Support Vector Machine (SVM)]{This figure shows the average, weighted $F_1$ score on the $C$-$\gamma$-plane during the hyperparameter optimization for the Support Vector Machine. We start looking for global optima on a coarse grid with a wide range (upper left), and adjust the grid toward a finer stepwidth. At some point we find an optimum (lower right)}
+	\caption[Hyperparameter optimization for the Support Vector Machine (SVM)]{This figure shows the average, weighted $F_1$ score on the $C$-$\gamma$-plane during the hyperparameter optimization for the Support Vector Machine. We start looking for global optima on a coarse grid with a wide range (upper left), and adjust the grid toward a finer stepwidth. At some point we find an optimum (lower right).}
 	\label{fig:gridsearch-svm-superclasses}
 \end{figure}
 
