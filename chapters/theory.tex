@@ -1,11 +1,10 @@
 \section{Variable Objects in Astronomy}
 \label{sec:theory-variable-objects}
 
-% For a very long time, people thought of stars to be invariable and eternal...
+When observing the sky over a sufficient time span, we empirically find that a lot of objects are subject to flux variability, \ie their observed magnitude $m$ is a function of time, even on short time--scales\footnote{Evidently, on the time span of their lifetime, all stars show some kind of variability as they evolve. However, this is not what we referd to by the term \emph{variability}.}. These significant changes in brightness can be somewhere between some thousandths of a magnitude and multiples of a magnitude. Some variables change very rapidly with periods of several hours, while others take years to complete one cycle. Some are strictly periodic, while others show rather stochastic, non--deterministic behaviour, which is much harder to characterise. It is important to realise that besides the simple periodic behaviour of some sources, there are also sources with periodic behaviour \emph{in--between} non--periodic behaviour, or even sources with multi--periodic behaviour with separate independent cycles such that, in the end, all we see as an observer is the superposition of several modes \citep{hanslmeier2007}.\\
 
-When observing the sky over a sufficient time span, we empirically find that a lot of objects are subject to flux variability, \ie their observed magnitude $m$ is a function of time, even on short time--scales\footnote{Evidently, on the time span of their lifetime, all stars show some kind of variability as they evolve. However, this is not what we mean by the term \emph{variability}.}. These significant changes in brightness can be somewhere between some thousandths of a magnitude and multiples of a magnitude. Some variables change very rapidly with periods of several hours, while others take years to complete one cycle. Some are strictly periodic, while others show  rather stochastic, non--deterministic behaviour, which is much harder to characterise.\\
-
-A systematic observation of variables can provide valuable insight on cosmic evolution and stellar properties, such as temperature, mass and radius \citep{percy2007}. There are numerous types of variable objects with all kind of different mechanisms for variability. Ultimately, it all boils down to the reason for variability, which gives rise to different a categories of variables.
+% Elaborate more on motivation
+A systematic observation of variables can provide valuable insight on cosmic evolution and stellar properties, such as temperature, mass and radius \citep{percy2007}. There are numerous types of variable objects with all kind of different mechanisms for variability. Ultimately, it all boils down to the reason for variability, which gives rise to different categories of variables. An exhaustive liste of variables is beyond the scope of this work, but we will try to 
 
 % Can not explain all different classes in this work
 
@@ -26,31 +25,31 @@ There are a lot of different types of pulsating variables, but  some of the more
 	\item Classical Cepheids or $\delta$--Cepheids are bright giant and supergiants with masses of $5$--$10 \, \unit{M_\odot}$, mostly in the helium--core--burning phase, that have periods between $1.0$--$50.0 \, \unit{d}$ \citep{cox1980}, and can be found in a diagonal, narrow strip in the Hertzsprung--Russell diagram known as the \emph{instability strip}. They belong certainly to the most important variables, because of their well established \emph{period--luminosity} relation
 	\begin{equation}
 	\label{eq:period-luminosity-relation}
-	\cdots = \cdots,
+	\cdots = \cdots,\footnote{This was discovered by Henrietta Swan Leavitt in the beginning of the $20^\text{th}$ century, who was a computer --- note the queer, original meaning of this word back then --- at the Harvard Observatory, by laborious, manual screening of photographic plates.}
 	\end{equation}
-	which allows astronomers to use Cepheids as \emph{standard candles} for distance estimation. Standard candles are objects with a known absolute magnitude $M$, which can then be used to calculate the distance modulus $\mu = m - M$ by measuring the apparent magnitude. The object's distance $d$ in $\unit{pc}$ is then given by solving
+	which allows astronomers, after proper calibration, to use Cepheids as \emph{standard candles} for distance estimation. Standard candles are objects with a known absolute magnitude $M$, which can then be used to calculate the distance modulus $\mu = m - M$ by measuring the apparent magnitude. The object's distance $d$ in $\unit{pc}$ is then given by solving
 	\begin{equation}
 	\log_{10}(d) = 1 + \frac{\mu}{5},
 	\end{equation}
-	assuming negligible interstellar absorption \citep{hanslmeier2007}.
+	assuming negligible interstellar absorption \citep{hanslmeier2007}. This turned out to be invaluable, and was an important contribution to astronomy.
 	\item $\delta$-Scuti stars or \emph{Dwarf Cepheids} are short--periodic ($0.7$-$5.0 \, \unit{h}$) variables with small amplitudes and typical masses of $1$-$2 \, \unit{M_\odot}$. They are usually multi--periodic and oscillate in both radial and non--radial modes, making them somewhat difficult to describe.
 	% Dwarf cepheids
 	\item RR Lyrae are smaller, fainter objects than Cepheids. They have masses between $0.5$--$0.6 \, \unit{M_\odot}$ and typical periods between $0.2 $--$1.2 \, \unit{d}$ \citep{unsoeld2001}. Similar to Cepheids, RR Lyrae can be used as standard candles, although this will be harder for far away objects due to their fainter nature.
-	% Also used as distance estimators
-	% Smaller than Cepheids, shorter periods, lower luminosity
-	\item Long--periodic variables are rather cool pulsating stars with periods of $30$-$1000 \, \unit{d}$ and divide into \emph{Mira} and \emph{Semiregulars} with fairly irregular variability.
+	% Also known as "cluster Cepheids" because they commonly occur in globular clusters
+	\item Long--periodic variables are rather cool pulsating stars with periods of $30$-$1000 \, \unit{d}$ and divide into \emph{Mira} and \emph{Semiregulars} with fairly irregular variability. Mira variables are red giants $\le 2 \, \unit{M_\odot}$ on the asymptotic giant branch (AGB) \citep{unsoeld2001} and were among the first discovered variables, which is --- at least to some extent --- due to the their high variability.
 	% Mira, and Semiregulars
 	\end{itemize}
+\item Quasi--stellar objects (QSOs) or active galactic nuclei (AGN) are...
 \item Eruptive variables exhibit variability due to sudden, violent outbursts.
-% Novae, Dward Novae and Supernovae
 \item Catalysmic \& Explosive variables $\cdots$
+% Novae, Dward Novae and Supernovae
 \end{itemize}
 
 On the other hand, if the change in brightness as perceived from the earth is merely due to external influences, a variable exhibits \emph{extrinsic} variability.
 
 \begin{itemize}
-\item Rotating variables change in brightness because their surface is not homogeneous, \eg has brighter and darker areas, that contribute accordingly to the overall brightness when rotating.
-\item Eclipsing binaries occur in binary star systems, where two stars are orbiting around some common centre of masse. Consequently, when observerd from the right angle, they show variability because one component of the systems is eclipsed by the other component. In fact, the majority of stars in Milky Way are binary systems.
+\item Rotating variables change in brightness because their surface is not homogeneous, \eg has brighter and darker areas, that contribute accordingly to the overall brightness when rotating. One example for this is, of course, the Sun with its sunspots. For this type of variables, the amplitude changes are normally quite small.
+\item Eclipsing binaries occur in binary star systems, where two stars are orbiting around some common centre of masse. Consequently, when observerd from the right angle, they show variability because one component of the systems is eclipsed by the other component. In their light curves, we can see two bumps, the primary eclipse and the secondary eclipse, which might only be a partial eclipse. In fact, the majority of stars in Milky Way are binary systems.
 % Majority of stars in milkway are binary systems
 % Primary eclipse and secondary eclipse
 % Ask Kester for the reason why we see more short-periodic EB
@@ -59,7 +58,7 @@ On the other hand, if the change in brightness as perceived from the earth is me
 
 \subsection{Stochastic variability \& QSOs}
  
-We want to pay special attention to stochastic variability...
+We want to pay special attention to stochastic variability, especially in the context of Quasi--stellar objects (QSOs).
  
 % Pulsating variables 
 % Cepheids 
@@ -68,7 +67,7 @@ We want to pay special attention to stochastic variability...
 % Eclipsing binaries
 % Active stars, flares and spots
 
-\subsection{Lightcurves of Variable Stars}
+\subsection{Light curves of Variable Stars}
 
 % Cepheids: rapid rise to maximum, then slow decrease
 
@@ -76,7 +75,7 @@ We want to pay special attention to stochastic variability...
 
 When observing one specific object over some time interval $\Delta t$, we can record its magnitude $m_i$ at time $t_i$ and obtain a so-called \emph{time series}. A time series $\Tau$ is a sequence of $N$ data points $(t_i, \vec y_i),\; t_i,(y_i)_j \in \mathbb{R}$ with $t_i < t_{i+1} \; \forall i = 1,\ldots,N$. We call $\Tau$ \emph{evenly--sampled} $\Leftrightarrow t_{i+1} - t_i = C \in \mathbb{R}$ where $C$ is constant. Otherwise, $\Tau$ is \emph{unevenly--sampled}.\\
 
-In section \ref{sec:theory-variable-objects}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct lightcurves, giving rise to discriminative features that can later be used for classification.
+In section \ref{sec:theory-variable-objects}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct light curves, giving rise to discriminative features that can later be used for classification.
 
 \subsection{Algorithms for Period-finding}
 
@@ -99,7 +98,7 @@ for a time series $(t_i, y_i)$ of length $k$. Note that equation \eqref{eg:schus
 
 \subsubsection{Lomb--Scargle Periodogram}
 
-The most prominent method for finding the period of an unevenly--sampled lightcurve was developed by \citet{lomb1976} and extended by \citet{scargle1982}. It is devised to find the period of a sinusoidal-shaped periodic signal. For a given time--series $(t_i, (y_i, \sigma_i))$ of length $k$ with arithmetic mean $\mu_y$ and variance of the noise $\sigma_y^2$, Scargle defines the \emph{normalized Lomb--Scargle periodogram} as
+The most prominent method for finding the period of an unevenly--sampled light curve was developed by \citet{lomb1976} and extended by \citet{scargle1982}. It is devised to find the period of a sinusoidal-shaped periodic signal. For a given time--series $(t_i, (y_i, \sigma_i))$ of length $k$ with arithmetic mean $\mu_y$ and variance of the noise $\sigma_y^2$, Scargle defines the \emph{normalized Lomb--Scargle periodogram} as
 
 \begin{equation}
 \label{eq:normalized-lomb-scargle}
@@ -140,7 +139,7 @@ In spite of its usefulness, there are some drawbacks of the normalized Lomb--Sca
 
 \subsubsection{Conditional Entropy}
 
-Using conditional entropy for period finding was first proposed by \citet{graham2013} as an extension of a similar algorithm developed by \citet{cincotta1995}. Both algorithms look at the problem from an information theory point of view. The fundamental idea is that the phase-folded lightcurve will form the most ordered arrangement of points in phase space when folded with the true period, whereas ...
+Using conditional entropy for period finding was first proposed by \citet{graham2013} as an extension of a similar algorithm developed by \citet{cincotta1995}. Both algorithms look at the problem from an information theory point of view. The fundamental idea is that the phase-folded light curve will form the most ordered arrangement of points in phase space when folded with the true period, whereas ...
 
 \begin{equation}
 H_S = - \sum_{i=1}^k \mu_i \ln(\mu_i)
@@ -160,7 +159,7 @@ H_c = \sum_{i,j} p(m_i, \phi_i) \ln(\frac{p(\phi_j)}{p(m_i, \phi_j)})
 \subsection{Introduction to Machine Learning}
 \label{sec:introduction-machine-learning}
 
-Machine Learning (ML), sometimes referred to as \emph{pattern recognition}, is a subfield of Artificial Intelligence (AI) primarily dealing with automated approaches to infer meaning from data in such a way that, after some training process, a model is obtained, that can later be used to make predictions or decisions on similar data or achieve some other kind of insight. This is a form of learning, because rather than explicitly programming certain decision rules, we want to generalize observations towards an underlying model that performs as good as possible when confronted with new data.\\
+Machine Learning (ML), sometimes referred to as \emph{pattern recognition}, is a subfield of Artificial Intelligence (AI) primarily dealing with automated approaches to infer meaning from data in such a way that, after some training process, a model is obtained, that can later be used to make predictions or decisions on similar data or achieve some other kind of insight. This is a form of learning, because rather than explicitly programming certain decision rules, we want to generalize observations towards an underlying model that performs as well as possible when confronted with new data.\\
 
 % @TODO: Elaborate on reinforcement learning
 Depending on the problem to be solved and the data available, machine learning algorithms can be divided into \emph{supervised}, \emph{unsupervised}, \emph{reinforcement} learning and some hybrid form of these. In supervised learning, we train our model by providing examples of the desired output, whereas in unsupervised learning, $\cdots$. Reinforcement learning works by $\cdots$.\\
@@ -222,7 +221,7 @@ where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{fal
 \subsection{Algorithms for Classification \& Regression}
 \subsubsection{Support Vector Classifiers \& Support Vector Machines (SVMs)}
 
-Support Vector Machines (SVMs)\footnote{A note to the terminology: Most literature refers to the linearly separable case as \emph{Support Vector classifier}, whereas the non--linear high--dimensional enhancement, incorporating kernel methods, are called \emph{Support Vector Machine}.}, originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the decision boundary \citep{hastie2001}.} Among all possible hyperplanes, the optimal SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
+Support Vector Machines (SVMs)\footnote{A note to the terminology: Most literature refers to the linearly separable case as \emph{Support Vector classifier}, whereas the non--linear high--dimensional enhancement, incorporating kernel methods, are called \emph{Support Vector Machine}.}, originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the decision boundary \citep{hastie2001}.} Among all possible hyperplanes, the SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
 
 % @IMAGE: Add image showing data points that are not linearly separable.
 % @IMAGE: Add image showing how transformation to higher dimension can make the problem linearly separable
@@ -243,7 +242,7 @@ with parameters $\vec \alpha, \alpha_0$, obtained by solving the optimization pr
 \text{\st} y_i (\vec x_i^T \vec \alpha + \alpha_0) \ge 1 \quad \forall i = 1, \ldots, N,
 \end{gather}
 
-where $\alpha_0$ is known as \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citet{hastie2001}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \citet{vanderplas2015}. At this point, the classification problem is solved by $\estimator(\vec x) = \operatorname{sign}(x_i^T \vec \alpha + \alpha_0)$. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by equation \eqref{eq:svm-linear-hyperplane}. For this purpose, we introduce the non--negative \emph{slack variables} $\slack_i$ and slightly modify our optimization problem to \\
+where $\alpha_0$ is known as the \emph{bias} and $\|\vec \alpha \|^{-1}$ can be identified as the margin, following \citet{hastie2001}. This is a convex optimization problem, so we have standard methods at hand to find the global optimum solution in a computationally efficient way, as outlined by \citet{vanderplas2015}. At this point, the classification problem is solved by $\estimator(\vec x) = \operatorname{sign}(x_i^T \vec \alpha + \alpha_0)$. Obviously, such a hyperplane does not always exist\footnote{In fact, in most real--life problems, $\estimator(\vec x)$ will not be strictly linear in $\vec x$.}, so in practise we have to relax the constraints given by equation \eqref{eq:svm-linear-hyperplane}. For this purpose, we introduce the non--negative \emph{slack variables} $\slack_i$ and slightly modify our optimization problem to \\
 
 % @TODO: Fix equations reference number
 
@@ -328,11 +327,11 @@ where $N_a, N_b$ denote the number of data points above and below the split thre
 In order to avoid overfitting and retain generalization, we have to set an upper bound for our model complexity by limiting the depth $h$ of our tree. Different strategies have been proposed to achieve this:
 
 \begin{enumerate}
-\item \label{itm:constant-metric} Stop growing sub--trees when further splits do not affect the desired impurity metric by more than some constant $\delta$. This is good choice in case the complexity of the features differs substantially among the data \citep{duda2001}, leading to varying position of the leafs in the tree\footnote{At this point the tree becomes \emph{unbalanced}.}. A major drawback is, of course, the free parameter $\delta$ which has to be optimized.
+\item \label{itm:constant-metric} Stop growing sub--trees when further splits do not affect the desired impurity metric by more than some constant $\delta$. This is good choice in case the complexity of the features differs substantially among the data \citep{duda2001}, leading to varying position of the leaves in the tree\footnote{At this point the tree becomes \emph{unbalanced}.}. A major drawback is, of course, the free parameter $\delta$ which has to be optimized.
 \item \label{itm:constant-data-points} Simply stop growing when $N \le N_c$ with some preset number of data points $N_c$. Once again, this adds another parameter to the model.
 \item \label{itm:validation} \emph{Validation}: Use cross--validation or some other method to compare training performance with testing performance. This could become computationally expensive, especially if it has to be performed at every node.
 \item \label{itm:pruning} \emph{Pruning}: % @TODO: Elaborate on pruning (Duda, p. 403, 403; Hastie, p. 208)...
-\item A combination of the illustrated strategies.
+\item A combination of preceding strategies.
 \end{enumerate}
 
 % One way to avoid this is bagging. ...
