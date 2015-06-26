@@ -1,6 +1,6 @@
-\section{About the EROS training set}
+\section{About the EROS--2 training set}
 
-We use a training data set compiled by \citet{kim2014} containing labels and light curves for $32683$ sources in the Large Magellanic Cloud (LMC), including Cepheids, Type II Cepheids, Blue Variables, $\delta$-Scuti (DSCT), RR--Lyraes (RRL), eclipsing binaries (EB) and long--periodic Variables (LPV). The light curves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project \citep{tisserand2007}, which was a wide--field microlensing survey monitoring $10^7$ stars in the Magellanic clouds over a time span of seven years ($1996$-$2003$). It's main purpose was to probe the dark matter halo of the Milky Way for MACHOs, massive compact halo objects.\\
+We use a training data set compiled by \citet{kim2014} containing labels and light curves for $32683$ sources in the Large Magellanic Cloud (LMC), including Cepheids (CEPH), Type II Cepheids (T2CEPH), Blue Variables, $\delta$-Scuti (DSCT), RR--Lyraes (RRL), eclipsing binaries (EB) and long--periodic Variables (LPV). The light curves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project \citep{tisserand2007}, which was a wide--field microlensing survey monitoring $10^7$ stars in the Magellanic clouds over a time span of seven years ($1996$-$2003$). It's main purpose was to probe the dark matter halo of the Milky Way for MACHOs, massive compact halo objects.\\
 
 % Add number of data points in light curves (R_E and B_E)
 % Mention that B_E is better sampled
@@ -84,12 +84,12 @@ with weights $w_i$ inversely proportional to the measurement uncertainty, \ie $w
 \begin{equation}\eta_e = (\frac{1}{N-1}\sum_{i=1}^{N-1} w_i) (t_{N-1} - t_1)^2 \big( \sum\limits_{i=1}^{N-1} w_i (m_{i+1} + m_i)^2 \big) \, / \, \big( \sigma^2 \sum\limits_{i=1}^{N-1} w_i \big),\end{equation}
 where the weights are given by $w_i = (t_{i+1} - t_i)^{-2}$.
 
-\litem{$\cdots$ (Half--magnitude--amplitude ratio)} The ratio of higher \resp lower amplitudes than average, given by
-\begin{equation}\cdots = \sqrt{ \Big(\sum\limits_{l=1}^N \big( \alpha^{>}_l - \mu \big)^2\Big) \, / \, \Big(\sum\limits_{m=1}^N \big( \alpha^{<}_m - \mu \big)^2\Big)},\end{equation}
+\litem{$\zeta$ (Half--magnitude--amplitude ratio)} The ratio of higher \resp lower amplitudes than average, given by
+\begin{equation}\zeta = \sqrt{ \Big(\sum\limits_{l=1}^N \big( \alpha^{>}_l - \mu \big)^2\Big) \, / \, \Big(\sum\limits_{m=1}^N \big( \alpha^{<}_m - \mu \big)^2\Big)},\end{equation}
 where $\alpha^{>}, \alpha^{<}$ are magnitudes higher resp. lower than $\mu$.
 
 \litem{$\text{MAD}_{\mu}, \text{MAD}_{\mu}^\phi$ (Mean absolute deviation)} The mean absolute deviation of the magnitude, given by
-\begin{equation}\text{MAD}_{\mu} = \frac{1}{N} \sum\limits_{i=1}^{N} | m_i - \mu |.,\end{equation}
+\begin{equation}\text{MAD}_{\mu} = \frac{1}{N} \sum\limits_{i=1}^{N} | m_i - \mu |,\end{equation}
 which is essentially the average distance between each of the data points and the mean.
 
 \litem{$\text{MAD}_{Q_{50}}, \text{MAD}_{Q_{50}}^\phi$ (Median absolute deviation)} The median absolute deviation of the magnitude, given by
@@ -178,7 +178,7 @@ This leads to a total of $\cdots$ features in $\cdots$ bands.
 
 \section{Performance of the Support Vector Machine}
 
-The first classifier we try is the Support Vector Machine (SVM) with the RBF kernel $\kernel_{\text{RBF}}$. We optimize the models hyperparameters $C$ and $\gamma$ for the average, weighted $F_1$-score by performing a $5$-fold cross--validation on subsequently finer grids. The results are visualized in figure \ref{fig:gridsearch-svm-superclasses}.
+The first classifier we try is the Support Vector Machine (SVM) with the RBF kernel $\kernel_{\text{RBF}}$. Since the SVM is very sensitive to proper feature scaling, we normalize all features by subtracting the mean and dividing by the standard deviation. In the end, each features has zero--mean and unit--variance prior to the training. We \emph{thoroughly} separate training and test sets to retain generalization. We optimize the models hyperparameters $C$ and $\gamma$ for the average, weighted $F_1$-score by performing a $5$-fold cross--validation on subsequently finer grids. The results are visualized in figure \ref{fig:gridsearch-svm-superclasses}. The optimal hyperparameters we find for the superclass classification are $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$.\\
 
 \begin{figure}[h]
 	\centering
@@ -210,8 +210,6 @@ The first classifier we try is the Support Vector Machine (SVM) with the RBF ker
 	\label{fig:gridsearch-svm-superclasses}
 \end{figure}
 
-We determine the optimal hyperparameters for the superclass classification to be $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$.
-
 \begin{table}[h]
 \centering
 \resizebox{\textwidth}{!}{
@@ -226,7 +224,7 @@ EB                 &    16     &      16    &     10    & {\bfseries 3336} &    
 LPV                &     5     &      5     &           &     46     & {\bfseries 15884} &     51     &      2    &     2      &          &   15995   \\
 NoneVar            &    15     &      1     &     14    &     48     &     65      & {\bfseries 4621} &      24   &     3      &          &    4791   \\
 QSO                &     2     &      1     &           &     1      &      1      &     30     & {\bfseries 144} &     1      &          &     180   \\
-RRL                &           &      27    &     34    &     60     &      4      &     7      &      0    & {\bfseries 4336} &     2    &    4470   \\
+RRL                &           &      27    &     34    &     60     &      4      &     7      &           & {\bfseries 4336} &     2    &    4470   \\
 T2CEPH             &     1     &      23    &           &     16     &      6      &     1      &           &     11     & {\bfseries 63} &     121   \\
 \bottomrule
 Recall ($\%$)      &   95.73   &     97.24  &   88.65   &    94.29   &    99.31    &   96.45    &    80.00  &    97.00   &   52.07  &           \\
@@ -239,7 +237,7 @@ $F_1$ score ($\%$) &   95.31   &     96.92  &   88.65   &    94.26   &    99.24 
 \end{tabular}
 }
 \label{tab:svm-confusion-matrix-superclasses}
-\caption{This table shows the confusion matrix for the SVM superclasses classification on the EROS data set with $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$. The columns show predicted labels, while rows show the true label.}
+\caption{This table shows the confusion matrix for the SVM superclasses classification on the EROS--2 data set with $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$. The columns show predicted labels, while rows show the true label.}
 \end{table}
 
 Furthermore, we also want the classifier to predict subclasses as well...
@@ -287,10 +285,11 @@ $F_1$-score ($\%$) &   95.33 &    82.63 &   92.70 &       72.15 &   87.51 &   55
 \end{tabular}
 }
 \label{tab:svm-confusion-matrix-subclasses}
-\caption{This table shows the confusion matrix for the SVM subclasses classification on the EROS data set with $C = 9.83 \cdot 10^{2}$ and $\gamma = 9.22 \cdot 10^{-4}$. The columns show predicted labels, while rows show the true label.}
+\caption{This table shows the confusion matrix for the SVM subclasses classification on the EROS--2 data set with $C = 9.83 \cdot 10^{2}$ and $\gamma = 9.22 \cdot 10^{-4}$. The columns show predicted labels, while rows show the true label.}
 
 \end{table}
 \end{landscape}
+
 \section{Performance of the Random Forest Classifier}
 
 The second classifier to evaluate is the Random Forest classifier. Once again, for optimal classification performance, we have to optimize the model's hyperparameters $t$, the number of trees in the forest, and $m$, the maximum number of features to consider at each split. The results of the $5$-fold cross--validation grid search (superclasses), optimized for the average $F_1$-score, weighted by the number of observations per class, shown in figure \ref{fig:gridsearch-rf-superclasses}.
@@ -343,10 +342,43 @@ $F_1$ score ($\%$) &   96.32   &     98.04  &   97.25   &    95.36   &    99.41 
 \end{tabular}
 }
 \label{tab:rf-confusion-matrix-superclasses}
-\caption{This table shows the confusion matrix for the Random Forest superclasses classification on the EROS data set with $m = 80$ and $t = 1800$. The columns show predicted labels, while rows show the true label.}
+\caption{This table shows the confusion matrix for the Random Forest superclasses classification on the EROS--2 data set with $m = 80$ and $t = 1800$. The columns show predicted labels, while rows show the true label.}
 \end{table}
 
-\chapter{Assessing Classification Performance for GAIA}
+\section{Performance of the Gradient Boosted Classifier}
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{c|ccccccccc|c}
+\toprule
+                   & BV        & CEPH       & DSCT      & EB         & LPV         & NoneVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
+\midrule
+BV                 & \bfseries 773     &           &          &    7      &     3      &   12      &          &          &   1      & 796   \\
+CEPH               &   1     & \bfseries 2230      &          &    5      &     1      &    5      &          &   39     &          & 2281  \\
+DSCT               &         &           & \bfseries 495      &           &            &   11      &          &    5     &          & 511   \\
+EB                 &   5     &    5      &   4      & \bfseries 3402      &    47      &   50      &          &   25     &          & 3538  \\
+LPV                &   4     &    2      &          &   16      & \bfseries 15945      &   26      &   1      &    1     &          & 15995 \\
+NoneVar            &  15     &    1      &   3      &   23      &    60      & \bfseries 4681      &   6      &    2     &          & 4791  \\
+QSO                &   2     &           &          &    3      &            &   25      & \bfseries 150      &          &          & 180   \\
+RRL                &         &    6      &   5      &   27      &     2      &    2      &          & \bfseries 4428     &          & 4470  \\
+T2CEPH             &  1     &   17      &          &   22      &     7      &    1      &          &          &   \bfseries 73      & 121   \\
+\bottomrule
+Recall ($\%$)      &   97.11   &     97.76  &   96.87   &    96.16   &    99.69    &   97.70    &    83.33  &    99.06   &   60.33  &           \\
+\hline
+Precision ($\%$)   &   96.50   &     98.63  &   97.63   &    97.06   &    99.25    &   97.26    &    95.54  &    98.40   &   98.65  &           \\
+\hline
+$F_1$ score ($\%$) &   96.30   &     98.13  &   97.25   &    96.61   &    99.47    &   97.48    &    89.02  &    98.73   &   74.87  & 98.43 $\pm$ 0.07 \\
+\bottomrule
+
+\end{tabular}
+}
+\label{tab:gb-confusion-matrix-superclasses}
+\caption{This table shows the confusion matrix for the Gradient Boosted Classifier superclasses classification on the EROS--2 data set. The columns show predicted labels, while rows show the true label.}
+% 98.43% (+/-0.07%) for {'max_features': 80, 'n_estimators': 10000, 'learning_rate': 0.02, 'max_depth': 10, 'min_samples_leaf': 500}
+\end{table}
+
+\chapter{Classification Performance on simulated Gaia data}
 
 % Simulating GAIA time series
 % Performance of the best classifier on GAIA data
