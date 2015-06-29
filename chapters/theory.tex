@@ -44,7 +44,7 @@ There are a lot of different types of pulsating variables, but  some of the more
 \item Catalysmic \& Explosive variables $\cdots$
 % Novae, Dward Novae and Supernovae
 
-\item \emph{Quasi--stellar objects} (QSOs) or \emph{quasars} (generally active galactic nuclei (AGN)) are extraordinary luminous ($10^{12}$--$10^{14} \, \unit{L_\odot}$), distant objects at the center of active galaxies. The emission of some $10^{40} \, \unit{W}$ is powered by the accretion of matter into supermassive black holes ($10^7$--$10^9 \, \unit{M_\odot}$) \citep{hanslmeier2007}. While being among the brightest objects in the observable universe over a broad range of the electromagnetic spectrum, most quasars appear faint from Earth, and can not be seen without special equipment. They show broad emission lines with a high redshift in their spectra (up to $z  = \Delta \lambda / \lambda_0 \approx 6$), which is due to the high velocities of the emitting gas. 
+\item \emph{Quasi--stellar objects} (QSOs) or \emph{quasars} (generally active galactic nuclei (AGN)) are extraordinary luminous ($10^{12}$--$10^{14} \, \unit{L_\odot}$), distant objects at the center of active galaxies. The emission of some $10^{40} \, \unit{W}$ is powered by the accretion of matter into supermassive black holes ($10^7$--$10^9 \, \unit{M_\odot}$) \citep{hanslmeier2007}. While being among the brightest objects in the observable universe over a broad range of the electromagnetic spectrum, most quasars appear faint from Earth, and can not be seen without special equipment. They show broad emission lines with a high redshift in their spectra (up to $z  = \Delta \lambda / \lambda_0 \approx 6$), which is due to the high velocities of the emitting gas. Most quasars show aperiodic photometric variability, and their change in brightness varies at $\approx 20\%$ on timescales of several months to years. Their smooth power spectra suggest a stochastic reason for variability \citep{macleod2010}, and it has been shown by \citet{kozlowski2010} that the observed light curves can be described by a \emph{damped random walk} (DRW).
 
 % Broad emission lines in spectra
 % Rapid changes in luminosity in the optical range
@@ -158,7 +158,21 @@ H_c = \sum_{i,j} p(m_i, \phi_i) \ln(\frac{p(\phi_j)}{p(m_i, \phi_j)})
 
 \subsection{Structure Function \& Stochastic Variability}
 
-We want to pay special attention to stochastic variability, especially in the context of Quasi--stellar objects (QSOs).
+As we have seen in section \ref{sec:theory-variable-objects}, some objects change their luminosity in a chaotic, stochastic manner. The structure function $\text{SF}$ is a way to characterize a source's intrinsic, stochastic variability. It quantifies the variability amplitude $V$ of an object as a function of the time lag $\Delta t_{ij}$ between two observations $m_i, m_j$ \citep{schmidt2010}. This can be done for a large ensemble of sources, to analyse the properties of an entire population, or, if proper sampling is available, for individual objects. Given a magnitude time series of length $N$, we build a list of the $\frac{N(N-1)}{2}$ data pairs, and estimate the intrinsic magnitude variability by
+
+\begin{equation}
+V_{ij}(\Delta t_{ij}) = \Delta m_{ij} - \sqrt{\sigma_i + \sigma_j},
+\end{equation}
+
+where the last term corrects for the photometric measurement errors, and $\Delta m_{ij}$ is the magnitude difference $m_i - m_j$. It is important to note that $\Delta t_{ij}$ denotes the time lag in the observed frame and \emph{not} in the object's rest frame. In principle, we could correct for this if further knowledge about the object's red shift was available.
+
+\begin{equation}
+\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta \tau}
+\end{equation}
+
+\begin{equation}
+A \big(\frac{\Delta t}{1 \, \mathrm{yr}}\big)^\gamma
+\end{equation}
 
 \section{Statistical Inference Using Machine Learning}
 
