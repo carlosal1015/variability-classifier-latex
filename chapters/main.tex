@@ -100,8 +100,8 @@ which is essentially the average distance between each of the data points and th
 as features, where $\lambda_i$ are constants derived from means, and variances of a normally distributed sample of the same size, $m_{(i)}$ is the $i^\text{th}$ smallest value in $m$, and $p_{\text{SW}}$ is the $p$-value for the hypothesis test.
 
 \litem{$\text{SF}$ (Structure function features)} We extract $A, \sigma_A, \gamma, \sigma_\gamma$ from the structure function power--law fit, $A \big(\frac{\Delta t}{1 \, \mathrm{yr}}\big)^\gamma$, where the structure function is defined as
-\begin{equation}\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta t},\end{equation}
-where $\langle \cdot \rangle$ is the mean of the data points within the bin $\Delta t$.
+\begin{equation}\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta \tau},\end{equation}
+where $\langle \cdot \rangle$ is the mean of the data points within the bin $\Delta \tau$.
 
 \litem{$\mathcal{F}$ (Fourier features)} We fit standard fourier series with five terms to the phase--folded light curve.
 \begin{equation}\mathcal{F}(t) = \frac{A_0}{2} + \sum_{k=1}^{\infty} ( A_k \cos(2 \pi k t) + B_k \sin(2 \pi k t) ).\end{equation}
