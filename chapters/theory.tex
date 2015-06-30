@@ -9,6 +9,7 @@ A systematic observation of variables can provide valuable insight on cosmic evo
 % Can not explain all different classes in this work
 
 \subsection{Intrinsic \& Extrinsic Variability}
+\label{subsec:intrinsic-extrinsic-variability}
 
 We say that an object shows \emph{intrinsic} variability, when the change in brightness is caused by real changes in the physical state of the object. Sources with intrinsic variability can be grouped into \emph{pulsating}, \emph{eruptive} and \emph{catalysmic} or \emph{explosive} variables.
 
@@ -72,16 +73,79 @@ On the other hand, if the change in brightness as perceived from the earth is me
 % Active stars, flares and spots
 
 \subsection{The Light Curves of Variable Stars}
+\label{subsec:light-curves-variables}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{CEPH ($\cdots$)}
+		\label{fig:lightcurve-ceph}
+		\includegraphics[width=\textwidth]{figures/lightcurves/ceph.png}				
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{T2CEPH ($\cdots$)}
+		\label{fig:lightcurve-ceph}
+		\includegraphics[width=\textwidth]{figures/lightcurves/t2ceph.png}				
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{RRL ($\cdots$)}
+		\label{fig:lightcurve-rrl}
+		\includegraphics[width=\textwidth]{figures/lightcurves/rrl.png}		
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{$\delta$-Scuti ($\cdots$)}
+		\label{fig:lightcurve-dsct}
+		\includegraphics[width=\textwidth]{figures/lightcurves/dsct.png}		
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{BV ($\cdots$)}
+		\label{fig:lightcurve-lpv}
+		\includegraphics[width=\textwidth]{figures/lightcurves/bv.png}		
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{LPV ($\cdots$)}
+		\label{fig:lightcurve-bv}
+		\includegraphics[width=\textwidth]{figures/lightcurves/lpv.png}		
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{EB ($\cdots$)}
+		\label{fig:lightcurve-lpv}
+		\includegraphics[width=\textwidth]{figures/lightcurves/eb.png}		
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{QSO ($\cdots$)}
+		\label{fig:lightcurve-qso}
+		\includegraphics[width=\textwidth]{figures/lightcurves/qso.png}		
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\caption{NonVar ($\cdots$)}
+		\label{fig:lightcurve-nonvar}
+		\includegraphics[width=\textwidth]{figures/lightcurves/nonvar.png}		
+	\end{subfigure}
+	\caption[...]{...}
+	\label{fig:various-light-curves}
+\end{figure}
 
 % Cepheids: rapid rise to maximum, then slow decrease
 
 \section{Statistical Analysis of Time Series}
+\label{sec:statistical-analysis-time-series}
 
 When observing one specific object over some time interval $\Delta t$, we can record its magnitude $m_i$ at time $t_i$ and obtain a so-called \emph{time series}. A time series $\Tau$ is a sequence of $N$ data points $(t_i, \vec y_i),\; t_i,(y_i)_j \in \mathbb{R}$ with $t_i < t_{i+1} \; \forall i = 1,\ldots,N$. We call $\Tau$ \emph{evenly--sampled} $\Leftrightarrow t_{i+1} - t_i = C \in \mathbb{R}$ where $C$ is constant. Otherwise, $\Tau$ is \emph{unevenly--sampled}.\\
 
 In section \ref{sec:theory-variable-objects}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct light curves, giving rise to discriminative features that can later be used for classification.
 
 \subsection{Algorithms for Period-finding}
+\label{subsec:period-finding}
 
 One very important feature of a periodic signal is, of course, its period $T$. However, reconstructing $T$ from the time series $\Tau$ is not trivial, especially if the data is very noisy. Ultimately, this is a regression problem itself, see subsection \ref{sec:introduction-machine-learning}, however, we will not tackle this with Machine Learning, but rather make use of some well--known methods devised for this very problem. The ultimate objective is to find the \emph{periodogram} $P(\omega)$ of signal, which is an estimator for the \emph{spectral density} $P$ as a function of the angular frequency $\omega = \frac{2 \pi}{T}$\footnote{In this regard, the periodogram can be seen as spectrum (some quantity over frequency) of a time series $\Tau$.}. Traditionally, there are a variety of methods available to characterize the signal in frequency--domain, mostly Fourier analysis. In 1898, Arthur Schuster defined the \emph{Schuster periodogram}
 
@@ -101,6 +165,7 @@ P_{\text{S}}(\omega) = \frac{1}{k} \, \biggl| \, \sum\limits_{i=1}^{k} y_i \eule
 for a time series $(t_i, y_i)$ of length $k$. Note that equation \eqref{eg:schuster-periodogram} is essentially given by $\| \mathcal{F}(\omega) \|_2 $, the $L^2$ norm of the discrete Fourier transform (DFT) $\mathcal{F}$ of the signal. Therefore, $P_{\text{S}}(\omega)$ can be approximated very efficiently when using the fast Fourier transform algorithm (FFT) \citep{cooley1965}, which allows for a runtime complexity of $\mathcal{O}(N\log{(N)})$ instead of $\mathcal{O}(N^2)$. However, it can be shown that those Fourier transform--based methods perform poorly on unevenly--sampled data, because they tend to boost long--periodic noise. Since evenly--sampled data can be difficult to obtain, especially for earth--bound surveys in astronomy, a lot of effort was put into developing suitable methods that can cope with this kind of data. This work makes use of two popular methods devised for unevenly--sampled data, one based on least--squares spectral analysis (LSSA), namely the \emph{Lomb--Scargle periodogram}, and the other one based on the minimization of some metric for dispersion in phase space, in this case \emph{conditional entropy}. We provide a brief overview for both of them.
 
 \subsubsection{Lomb--Scargle Periodogram}
+\label{subsubsec:lomb-scargle}
 
 The most prominent method for finding the period of an unevenly--sampled light curve was developed by \citet{lomb1976} and extended by \citet{scargle1982}. It is devised to find the period of a sinusoidal-shaped periodic signal. For a given time--series $(t_i, (y_i, \sigma_i))$ of length $k$ with arithmetic mean $\mu_y$ and variance of the noise $\sigma_y^2$, Scargle defines the \emph{normalized Lomb--Scargle periodogram} as
 
@@ -142,6 +207,7 @@ In spite of its usefulness, there are some drawbacks of the normalized Lomb--Sca
 % Remarks concerning runtime N^2 and Nlog(N) implementations
 
 \subsubsection{Conditional Entropy Periodogram}
+\label{subsubsec:conditional-entropy}
 
 Using conditional entropy for period finding was first proposed by \citet{graham2013} as an extension of a similar algorithm developed by \citet{cincotta1995}. Both algorithms look at the problem from an information theory point of view. The fundamental idea is that the phase-folded light curve will form the most ordered arrangement of points in phase space when folded with the true period, whereas ...
 
@@ -157,22 +223,28 @@ H_c = \sum_{i,j} p(m_i, \phi_i) \ln(\frac{p(\phi_j)}{p(m_i, \phi_j)})
 %We provide a runtime--optimized, fast \emph{Cython} implementation of the conditional entropy period--finding algorithm.
 
 \subsection{Structure Function \& Stochastic Variability}
+\label{subsec:structure-function}
 
-As we have seen in section \ref{sec:theory-variable-objects}, some objects change their luminosity in a chaotic, stochastic manner. The structure function $\text{SF}$ is a way to characterize a source's intrinsic, stochastic variability. It quantifies the variability amplitude $V$ of an object as a function of the time lag $\Delta t_{ij}$ between two observations $m_i, m_j$ \citep{schmidt2010}. This can be done for a large ensemble of sources, to analyse the properties of an entire population, or, if proper sampling is available, for individual objects. Given a magnitude time series of length $N$, we build a list of the $\frac{N(N-1)}{2}$ data pairs, and estimate the intrinsic magnitude variability by
+As we have seen in section \ref{sec:theory-variable-objects}, quasars change their luminosity in a chaotic, stochastic manner. The precise physical cause for this variability is subject to ongoing research. \citet{pereyra2006} and \citet{li2008} present evidence that the variability is caused by a variable accretion rate $\dot M$. On the other hand, \citet{blackburne2010} demonstrate that a change in the effective area of the accretion disk could contribute to the overall variability. Regardless of the actual cause, we can describe QSO observations, \eg light curves, in a statistical manner. Structure function $\text{SF}$ analysis \citep{hughes1992,collier2001} is one way to do this, and has been shown (\eg \citet{schmidt2010}) to provide robust results in separating quasars from other variables sources. It characterizes the intrinsic, stochastic variability of a source by quantifing the variability amplitude $V$ of an object as a function of the time lag $\Delta t_{ij}$ between two observations $m_i, m_j$. This can be done for a large ensemble of sources, to analyse the properties of an entire population, or, if proper sampling is available, for individual objects. Given a magnitude time series of length $N$, we build a list of the $\frac{N(N-1)}{2}$ data pairs, and estimate the variability by
 
 \begin{equation}
 V_{ij}(\Delta t_{ij}) = \Delta m_{ij} - \sqrt{\sigma_i + \sigma_j},
 \end{equation}
 
-where the last term corrects for the photometric measurement errors, and $\Delta m_{ij}$ is the magnitude difference $m_i - m_j$. It is important to note that $\Delta t_{ij}$ denotes the time lag in the observed frame and \emph{not} in the object's rest frame. In principle, we could correct for this if further knowledge about the object's red shift was available.
+where the last term corrects for the photometric measurement errors, and $\Delta m_{ij}$ is the magnitude difference $m_i - m_j$. It is important to note that $\Delta t_{ij}$ denotes the time lag in the observed frame and \emph{not} in the object's rest frame. In principle, we could correct for this if further knowledge about the object's red shift was available. We then define the binned structure function as
 
 \begin{equation}
-\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta \tau}
+\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta \tau},
+\label{eq:binned-structure-function}
 \end{equation}
 
+where $\langle \cdot \rangle_{\Delta \tau}$ is the arithmetic mean of all data points within bin $\Delta \tau$.\footnote{There are a lot of different definitions of equation \eqref{eq:binned-structure-function} We decide to follow \citet{schmidt2010}.} It has been established \citep{richards2006} that a power--law model of the form
+
 \begin{equation}
-A \big(\frac{\Delta t}{1 \, \mathrm{yr}}\big)^\gamma
+A \, \big(\frac{\Delta t}{1 \, \unit{yr}}\big)^\gamma
 \end{equation}
+
+provides a decent fit for \eqref{eq:binned-structure-function}, where $A$ is an estimate of the root--mean--square magnitude variability on the timescale of $1 \, \unit{yr}$ and $\gamma$ is the logarithmic gradient of the change in magnitude.
 
 \section{Statistical Inference Using Machine Learning}
 
@@ -239,6 +311,7 @@ A = \frac{T_p + T_n}{T_p + F_p + T_n + F_n}, \; P = \frac{T_p}{T_p + F_p}, \; R 
 where $T_p, F_p, T_n, F_n$ denote the number of \emph{true positives}, \emph{false positives}, \emph{true negatives} and \emph{false negatives}\footnote{Accuracy, precision and recall are sometimes also referred to as \emph{}, \emph{}, \emph{}}. For regression, we usually want to minimize some suitable loss-function $L$.
 
 \subsection{Algorithms for Classification \& Regression}
+\label{subsec:algorithms-classification-and-regression}
 \subsubsection{Support Vector Classifiers \& SVMs}
 
 Support Vector Machines (SVMs)\footnote{A note to the terminology: Most literature refers to the linearly separable case as \emph{Support Vector classifier}, whereas the non--linear high--dimensional enhancement, incorporating kernel methods, are called \emph{Support Vector Machine}.}, originally proposed by \citet{vapnik1963} as linear classification, later extended by \citet{cortes1995} to allow for non--linear classification, are among the most common classification algorithms, especially for high--dimensional datasets. The underlying idea is to find a special \emph{hyperplane} $\hyperplane$, which will act as decision boundary in feature space $\featurespace$.\footnote{This is somewhat similar to \emph{perceptron learning} as devised by \citet{rosenblatt1958}. His algorithm however tries to find a separating hyperplane that minimizes the distance of misclassified points to the decision boundary \citep{hastie2001}.} Among all possible hyperplanes, the SVM decision boundary will be given by the hyperplane which separates the classes \emph{and} maximizes the distance to the closest data points for both classes, therefore called \emph{maximum--margin hyperplane} $\hat \hyperplane$. The data points on the decision boundary are \emph{support vectors}. In any case, $\hat \hyperplane$ is obtained by solving some kind of optimization problem. In the following we will assume that we are dealing with $d$-dimensional training data $\trainingdata$ of length $N$, containing data points of only two classes $\classes = \{ \pm 1 \}$. \\
