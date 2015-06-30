@@ -1,4 +1,5 @@
 \section{About the EROS--2 training set}
+\label{sec:about-training-set}
 
 We use a training data set compiled by \citet{kim2014} containing labels and light curves for $32683$ sources in the Large Magellanic Cloud (LMC), including Cepheids (CEPH), Type II Cepheids (T2CEPH), Blue Variables, $\delta$-Scuti (DSCT), RR--Lyraes (RRL), eclipsing binaries (EB) and long--periodic Variables (LPV). The light curves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project \citep{tisserand2007}, which was a wide--field microlensing survey monitoring $10^7$ stars in the Magellanic clouds over a time span of seven years ($1996$-$2003$). It's main purpose was to probe the dark matter halo of the Milky Way for MACHOs, massive compact halo objects.\\
 
@@ -21,6 +22,7 @@ The training set comes labelled with superclasses and subclasses but without any
 % Not a standard astronomical B and R bands
 
 \section{Feature Extraction}
+\label{sec:feature-extraction}
 
 We extract a variety of features characterizing the variability of the source. A lot of them are standard statistical features, but some are more sophisticated, trying to incorporate a model of the underlying physics. We have implemented most of the variability features used by \citet{kim2014} and some of the features from \citet{dubath2011}. Features that can not be found in both of them are the CE features $T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}, \delta_{\text{CE}_1}, \delta_{\text{CE}_2}$, the Shannon entropy $S, S^\phi$ and the structure function features $A, \sigma_A, \gamma, \sigma_\gamma$. All of the following features listed are extracted both in the red band ($R_E$), in the blue band $B_E$, as well as in the difference of both ($R_E - B_E$).\\
 
@@ -215,14 +217,14 @@ The first classifier we try is the Support Vector Machine (SVM) with the RBF ker
 \resizebox{\textwidth}{!}{
 \begin{tabular}{c|ccccccccc|c}
 \toprule
-                   & BV        & CEPH       & DSCT      & EB         & LPV         & NoneVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
+                   & BV        & CEPH       & DSCT      & EB         & LPV         & NonVar     & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
 \midrule
 BV                 & {\bfseries 762} &            &           &     12     &     1       &     19     &      1    &            &     1    &     796   \\
 CEPH               &     2     & {\bfseries 2218} &           &     13     &     5       &     3      &           &     28     &    12    &    2281   \\
 DSCT               &           &      5     & {\bfseries 453} &     8      &             &     17     &           &     28     &          &     511   \\
 EB                 &    16     &      16    &     10    & {\bfseries 3336} &     50      &     54     &      5    &     46     &     5    &    3538   \\
 LPV                &     5     &      5     &           &     46     & {\bfseries 15884} &     51     &      2    &     2      &          &   15995   \\
-NoneVar            &    15     &      1     &     14    &     48     &     65      & {\bfseries 4621} &      24   &     3      &          &    4791   \\
+NonVar             &    15     &      1     &     14    &     48     &     65      & {\bfseries 4621} &      24   &     3      &          &    4791   \\
 QSO                &     2     &      1     &           &     1      &      1      &     30     & {\bfseries 144} &     1      &          &     180   \\
 RRL                &           &      27    &     34    &     60     &      4      &     7      &           & {\bfseries 4336} &     2    &    4470   \\
 T2CEPH             &     1     &      23    &           &     16     &      6      &     1      &           &     11     & {\bfseries 63} &     121   \\
@@ -268,7 +270,7 @@ OSARG RGB C &          &           &           &              &          &      
 OSARG RGB O &   2      &           &    1      &              &          &  13      &    2      &             &   9      &     4      &           1      &                  &           22      &          149      &           21      &         \bfseries 1729      &          1      &         86      &      6      &          &            &           &           &           &            & 2046 \\
 SRV AGB C &   1      &           &           &              &          &          &           &             &          &            &          93      &           2      &          301      &           18      &            3      &            4      &       \bfseries 3315      &         74      &      8      &          &            &           &           &           &            & 3819  \\
 SRV AGB O &          &     1     &           &              &          &          &           &             &          &            &           7      &          72      &           58      &          329      &           15      &          136      &        106      &       \bfseries 3479      &      3      &          &            &           &           &           &            & 4206 \\
-NoneVar &  16      &           &           &              &  13      &   1      &   21      &      4      &  12      &     6      &           2      &                  &           20      &           34      &            4      &           14      &          1      &                 &   \bfseries 4613      &  28      &            &    1      &    1      &           &            & 4791 \\
+NonVar &  16      &           &           &              &  13      &   1      &   21      &      4      &  12      &     6      &           2      &                  &           20      &           34      &            4      &           14      &          1      &                 &   \bfseries 4613      &  28      &            &    1      &    1      &           &            & 4791 \\
 QSO &   2      &           &           &              &          &   1      &           &             &   1      &            &           1      &                  &                   &                   &                   &                   &                 &                 &     33      & \bfseries 142      &            &           &           &           &            & 180 \\
 RRab &          &    11     &    9      &       1      &   1      &  28      &           &             &  12      &     2      &                  &                  &                   &                   &            1      &                   &                 &                 &      9      &   1      &  \bfseries 3248      &   62      &   42      &    5      &     2      & 3434 \\
 RRc &          &     5     &           &       2      &  11      &   5      &    3      &      1      &   6      &     4      &                  &                  &                   &                   &                   &                   &                 &                 &      2      &          &    46      &  \bfseries 574      &   23      &   32      &            & 714 \\
@@ -321,14 +323,14 @@ The second classifier to evaluate is the Random Forest classifier. Once again, f
 \resizebox{\textwidth}{!}{
 \begin{tabular}{c|ccccccccc|c}
 \toprule
-                   & BV        & CEPH       & DSCT      & EB         & LPV         & NoneVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
+                   & BV        & CEPH       & DSCT      & EB         & LPV         & NonVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
 \midrule
 BV                 & {\bfseries 773} &            &           &     11     &      3      &      8     &      1    &            &          &     796   \\
 CEPH               &     1     & {\bfseries 2226} &           &     18     &      2      &      3     &           &     31     &          &    2281   \\
 DSCT               &           &            & {\bfseries 496} &      2     &             &     12     &           &      1     &          &     511   \\
 EB                 &     7     &      7     &     2     & {\bfseries 3342} &     52      &     79     &      3    &     43     &     3    &    3538   \\
 LPV                &     4     &      2     &           &     10     & {\bfseries 15945} &     32     &      1    &     1      &          &   15995   \\
-NoneVar            &    23     &      1     &     4     &     35     &     72      & {\bfseries 4648} &      8    &            &          &    4791   \\
+NonVar             &    23     &      1     &     4     &     35     &     72      & {\bfseries 4648} &      8    &            &          &    4791   \\
 QSO                &           &            &           &      3     &      4      &     25     & {\bfseries 147} &     1      &          &     180   \\
 RRL                &           &      9     &     7     &     31     &      2      &     7      &           & {\bfseries 4414} &          &    4470   \\
 T2CEPH             &     1     &      15    &           &     19     &      5      &     3      &           &            & {\bfseries 78} &     121   \\
@@ -371,7 +373,7 @@ OSARG RGB C &          &           &           &              &          &      
 OSARG RGB O &   2      &    1      &           &              &          &   3      &    1      &             &   2      &     1      &           1      &                  &            3      &          138      &                 1 &         \bfseries 1774      &           5     &        103      &     11      &          &            &           &           &           &            & 2046 \\
 SRV AGB C   &   1      &           &           &              &          &          &           &             &          &            &          70      &                  &           85      &           27      &                   &           18      &        \bfseries 3502     &        112      &      3      &   1      &            &           &           &           &            & 3819  \\
 SRV AGB O   &   1      &           &    1      &              &          &   1      &           &             &          &     1      &           1      &          18      &           19      &          356      &                   &          129      &         119     &       \bfseries 3551      &      4      &          &            &           &           &           &     5      & 4206 \\
-NoneVar     &  25      &           &           &              &   6      &   1      &   17      &             &   1      &            &                  &                  &            9      &           41      &                   &            5      &           2     &          2      &   \bfseries 4674      &   8      &            &           &           &           &            & 4791 \\
+NonVar     &  25      &           &           &              &   6      &   1      &   17      &             &   1      &            &                  &                  &            9      &           41      &                   &            5      &           2     &          2      &   \bfseries 4674      &   8      &            &           &           &           &            & 4791 \\
 QSO         &          &           &           &              &          &          &    1      &             &          &            &                  &                  &                   &                   &                   &                   &           1     &                 &     27      & \bfseries 148      &     3      &           &           &           &            & 180 \\
 RRab        &          &    1      &           &          2   &          &   2      &    7      &             &   9      &            &                  &                  &                   &            1      &                   &                   &                 &                 &     10      &          &  \bfseries 3398      &    2      &    2      &           &            & 3434 \\
 RRc         &          &    1      &           &              &          &   2      &           &             &   3      &            &                  &                  &                   &                   &                   &                   &                 &                 &      3      &          &     3      &  \bfseries 666      &   11      &   25      &            & 714 \\
@@ -401,14 +403,14 @@ $F_1$-score ($\%$) &   96.58 &    91.28 &   97.18 &       72.73 &   96.56 &   56
 \resizebox{\textwidth}{!}{
 \begin{tabular}{c|ccccccccc|c}
 \toprule
-                   & BV        & CEPH       & DSCT      & EB         & LPV         & NoneVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
+                   & BV        & CEPH       & DSCT      & EB         & LPV         & NonVar    & QSO       & RRL        & T2CEPH   & $\Sigma $ \\
 \midrule
 BV                 & \bfseries 773     &           &          &    7      &     3      &   12      &          &          &   1      & 796   \\
 CEPH               &   1     & \bfseries 2230      &          &    5      &     1      &    5      &          &   39     &          & 2281  \\
 DSCT               &         &           & \bfseries 495      &           &            &   11      &          &    5     &          & 511   \\
 EB                 &   5     &    5      &   4      & \bfseries 3402      &    47      &   50      &          &   25     &          & 3538  \\
 LPV                &   4     &    2      &          &   16      & \bfseries 15945      &   26      &   1      &    1     &          & 15995 \\
-NoneVar            &  15     &    1      &   3      &   23      &    60      & \bfseries 4681      &   6      &    2     &          & 4791  \\
+NonVar             &  15     &    1      &   3      &   23      &    60      & \bfseries 4681      &   6      &    2     &          & 4791  \\
 QSO                &   2     &           &          &    3      &            &   25      & \bfseries 150      &          &          & 180   \\
 RRL                &         &    6      &   5      &   27      &     2      &    2      &          & \bfseries 4428     &          & 4470  \\
 T2CEPH             &  1     &   17      &          &   22      &     7      &    1      &          &          &   \bfseries 73      & 121   \\
