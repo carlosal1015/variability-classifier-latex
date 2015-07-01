@@ -1,6 +1,11 @@
 % All about "turning data into knowledege"
+% Predicting the future based on the past
+% For a very long time, people thought of stars to be invariable and eternal...
 % Data flood in astronomy
+% Hipparcos and Gaia
 
-% Criteria for classifiers: Accuracy/Performance, Computational complexity, Scalability, Interpretability of the model, Simplicity of the model, Preprocessing work, Robustness (how does it perform if assumptions are slightly violated)
+% Criteria for classifiers: Accuracy/Performance, Computational complexity, Scalability, Interpretability of the model, Simplicity of the model, Preprocessing work
 
 % In the spirit of reproducible research (Donoho et al. 2008) all of the code and data necessary to reproduce all of the figures in this paper are included as auxiliary material.
+
+We will cover the theoretical background in section \ref{sec:theory}, from a brief description of important variable objects (\ref{sec:theory-variable-objects}) and the underlying mechanisms for different types of photometric variability (\ref{subsec:intrinsic-extrinsic-variability}), to the characteristics of the respective light curves (\ref{subsec:light-curves-variables}). Section \ref{sec:statistical-analysis-time-series} explains two different algorithms for period--finding (\ref{subsec:period-finding}) and introduces the structure function as a way to characterize stochastic variability (\ref{subsec:structure-function}). We then move on to a short introduction to the basic concepts of Machine Learning (\ref{sec:introduction-machine-learning}) and outline three different algorithms for classification (\ref{subsec:algorithms-classification-and-regression}). The main part of the thesis, section \ref{sec:main}, details all the steps undertaken for the classification of variables in the LMC, from the feature extraction (\ref{sec:feature-extraction}), to the training process and hyperparameter optimization for all different classifiers for both superclasses and subclasses. A description of the training data set can be found in section (\ref{sec:about-training-set}). We provide a discussion of the results in section \ref{sec:discussion}, amongst other things comparing the performance of the individual classifiers, the significance of the features we used, and conclude with suggestions for further improvement in future work.
