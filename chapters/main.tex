@@ -106,7 +106,7 @@ as features, where $\lambda_i$ are constants derived from means, and variances o
 where $\langle \cdot \rangle$ is the mean of the data points within the bin $\Delta \tau$.
 
 \litem{$\mathcal{F}$ (Fourier features)} We fit standard fourier series with five terms to the phase--folded light curve.
-\begin{equation}\mathcal{F}(t) = \frac{A_0}{2} + \sum_{k=1}^{\infty} ( A_k \cos(2 \pi k t) + B_k \sin(2 \pi k t) ).\end{equation}
+\begin{equation}\label{eq:fourier-series-features}\mathcal{F}(t) = \frac{A_0}{2} + \sum_{k=1}^{\infty} ( A_k \cos(2 \pi k t) + B_k \sin(2 \pi k t) ).\end{equation}
 From this we the extract amplitude and phase features $A_0$, $A_i = \sqrt{a_i^2 + b_i^2}$ and $\varphi_i = \arctan(\frac{b_i}{a_i})$ features for $i = 1, \ldots, 5$.
 
 \litem{$T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}$ (CE periods)} We add three candidate periods with the lowest conditional entropy according to the CE periodogram, given by
@@ -177,6 +177,9 @@ This leads to a total of $\cdots$ features in $\cdots$ bands.
 % Show histogram of some features.
 % Show some scatterplots
 % More about period finding
+
+\todo[inline]{Add some histograms of the features}
+\todo[inline]{Add structure functon plots. Fit for Quasar (left), Scatterplot $A$-$\gamma$--plane (right)}
 
 \section{Performance of the Support Vector Machine}
 
@@ -395,6 +398,7 @@ $F_1$-score ($\%$) &   96.58 &    91.28 &   97.18 &       72.73 &   96.56 &   56
 \end{table}
 \end{landscape}
 
+\improvement[inline]{Add figure for feature importance plot from RF}
 
 \section{Performance of the Gradient Boosted Classifier}
 
@@ -428,3 +432,5 @@ $F_1$ score ($\%$) &   96.30   &     98.13  &   97.25   &    96.61   &    99.47 
 \caption{This table shows the confusion matrix for the Gradient Boosted Classifier superclasses classification on the EROS--2 data set. The columns show predicted labels, while rows show the true label.}
 % 98.43% (+/-0.07%) for {'max_features': 80, 'n_estimators': 10000, 'learning_rate': 0.02, 'max_depth': 10, 'min_samples_leaf': 500}
 \end{table}
+
+\todo[inline]{Add confusion matrix for subclasses}
