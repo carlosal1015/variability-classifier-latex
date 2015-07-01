@@ -127,3 +127,5 @@ sympy-plots-for-*.tex/
 
 # Gummi temporary files
 *.swp
+
+*.pyc
