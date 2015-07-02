@@ -35,12 +35,13 @@ There are a lot of different types of pulsating variables, but  some of the more
 	assuming negligible interstellar absorption \citep{hanslmeier2007}. This turned out to be invaluable, and was an important contribution to astronomy.\todo{Insert equation}
 	\item \emph{$\delta$-Scuti} stars or \emph{Dwarf Cepheids} are short--periodic ($0.7$--$5.0 \, \unit{h}$) variables with small amplitudes and typical masses of $1$--$2 \, \unit{M_\odot}$. They are usually multi--periodic and oscillate in both radial and non--radial modes, making them somewhat difficult to describe.
 	% Dwarf cepheids
-	\item \emph{RR Lyrae} are smaller, fainter objects than Cepheids. They have masses between $0.5$--$0.6 \, \unit{M_\odot}$ and typical periods between $0.2 $--$1.2 \, \unit{d}$ \citep{unsoeld2001}. Similar to Cepheids, RR Lyrae can be used as standard candles, although this will be harder for far away objects due to their fainter nature.
+	\item \emph{RR Lyrae} are smaller, fainter objects than Cepheids. They have masses between $0.5$--$0.6 \, \unit{M_\odot}$ and typical periods between $0.2 $--$1.2 \, \unit{d}$ \citep{unsoeld2001}. Their phase and amplitude change over the course of the Blazhko cycle (\emph{Blazhko effect}) \citep{soszy2008}. Similar to Cepheids, RR Lyrae can be used as standard candles, although this will be harder for far away objects due to their fainter nature.
 	% Also known as "cluster Cepheids" because they commonly occur in globular clusters
 	\item \emph{Long--periodic variables} are rather cool pulsating stars with periods of $30$--$1000 \, \unit{d}$ and divide into \emph{Mira} and \emph{Semiregulars} with fairly irregular variability. Mira variables are red giants $\le 2 \, \unit{M_\odot}$ on the asymptotic giant branch (AGB) \citep{unsoeld2001} and were among the first discovered variables, which is --- at least to some extent --- due to the their high variability.
 	% Mira, and Semiregulars
 	\end{itemize}
 
+\item{Blazhko effect for RRL}
 \item Eruptive variables exhibit variability due to sudden, violent outbursts.
 \item Catalysmic \& Explosive variables $\cdots$
 \todo{Explain Catalysmic, explosive, eruoptive variables}
@@ -89,7 +90,7 @@ On the other hand, if the change in brightness as perceived from the earth is me
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
 		\caption{Type II Cepheid ($T_{\text{LS}} = 12.69 \, \unit{d}$)}
-		\label{fig:lightcurve-ceph}
+		\label{fig:lightcurve-t2ceph}
 		\includegraphics[width=\textwidth]{figures/lightcurves/t2ceph.png}				
 	\end{subfigure}
 	\begin{subfigure}[t]{0.49\textwidth}
@@ -134,14 +135,13 @@ On the other hand, if the change in brightness as perceived from the earth is me
 \todo{Check if LPV period is spurious}
 
 \todo[inline]{Comment on the different light curve shapes}
-% Cepheids: rapid rise to maximum, then slow decrease
+
+In section \ref{subsec:intrinsic-extrinsic-variability}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct light curves, giving rise to discriminative features that can later be used for classification. For the Cepheids (\ref{fig:lightcurve-ceph}), we can see a major change in brightness with small deviations. Although it is almost sinusoidal, we can clearly see that the decline is slower than the incline. The Type II Cepheids (\ref{fig:lightcurve-t2ceph}) show an extra bump in the light curve, which could be caused by a resonance between the different modes \citep{caputo1999}. The RR Lyrae (\ref{fig:lightcurve-rrl}) show a rapid increase followed by slower decline with some wiggles. The shape is clearly asymmetrical (which is not the case for RRc). $\delta$-Scuti's (\ref{fig:lightcurve-dsct}) light curves are in general similar to Cepheid's or RR Lyrae's, but with a much shorter period. Multi--mode oscillations are very common for $\delta$-Scuti. Blue variables (\ref{fig:lightcurve-bv}) show $\cdots$\todo{Describe BV light curve}. Long--periodic variables (\ref{fig:lightcurve-lpv}) have rather irregular, complicated light curves which is due to the fact that
 
 \section{Statistical Analysis of Time Series}
 \label{sec:statistical-analysis-time-series}
 
 When observing one specific object over some time interval $\Delta t$, we can record its magnitude $m_i$ at time $t_i$ and obtain a so-called \emph{time series}. A time series $\Tau$ is a sequence of $N$ data points $(t_i, \vec y_i),\; t_i,(y_i)_j \in \mathbb{R}$ with $t_i < t_{i+1} \; \forall i = 1,\ldots,N$. We call $\Tau$ \emph{evenly--sampled} $\Leftrightarrow t_{i+1} - t_i = C \in \mathbb{R}$ where $C$ is constant. Otherwise, $\Tau$ is \emph{unevenly--sampled}.\\
-
-In section \ref{sec:theory-variable-objects}, we have seen that there are a whole variety of different mechanisms for variability. These mechanisms will lead to distinct light curves, giving rise to discriminative features that can later be used for classification.
 
 \todo{Add definition of phase--fold}
 
@@ -375,25 +375,21 @@ A suitable choice for $\kernel$ does ultimately depend on the problem, ideally i
 \end{equation}
 
 with $\gamma = -\frac{1}{2 \sigma^2}$.\\
-
-% RBF -> Hilbert space
+\todo{Mention other common choices for kernels}
+\todo{Mention that $\gamma$ has to be optimized}
 
 Technically, SVMs are restricted to binary classification problems, that is data sets with only two distinct classes, but in practise every multi--class classification problem can be transformed into multiple binary classification problems, \eg by training multiple SVMs for either one class against all classes (\emph{one--vs.--all}), or every class against every other class (\emph{one--vs.--one}) \citep{knerr1990}. In the end, for $N$ classes, we would actually train $N \cdot \frac{N-1}{2}$ classifiers when using the \emph{one--vs.--all} approach.
 
-% Scale data
-% List common choices for kernels
-
-% @TODO: Name advantages and disadvantages
+\todo{Mention need to scale the data}
 
 \subsubsection{Decision Trees \& Random Forests}
 
 Decision trees\footnote{There are a variety of slightly different algorithms for tree construction (ID3, C4.5, \etc), splitting, pre-- and post--processing described in the literature. Unless otherwise noted, we will talk about \emph{Classification and Regression Trees} (CART) as described by \citet{breiman1984}.} \citep{breiman1984} are presumably the most intuitive way to subdivide data into different classes, and consequently most likely the way humans would tackle classification problems. The basic idea is to iteratively split the training set during the training process into exactly two subsets by asking a sequence of binary questions, until some predefined stop criteria is satisfied. This procedure, called \emph{recursive partitioning}, gives rise to a \emph{decision tree} consisting of inner nodes with exactly two children, representing split decisions, and leaf nodes representing labels.\footnote{This very structure is called a \emph{full binary tree} in  theoretical computer science and its properties are well characterized \citep{knuth1981}. This of course also means that efficient memory representations exist for such an entity.} With every split the tree grows deeper, and the remaining feature set becomes smaller. In the end, given some testing data $\trainingdata$, classification is performed simply by walking down the tree, and the corresponding label $\hat y_i$ is given by the respective leaf node. Due to the nature of binary questions, all branches are ``mutually distinct and exhaustive'' \citep{duda2001}, so exactly one branch will be followed, which means that $\hat y_i$ is unambiguous. One might wonder why binary splits are preferred over multi--way splits. The main reason for this is that, unless we are talking about a tremendous amount of data, multi--way splits will rapidly thin out our data at each level, because of the broad fragmentation at each decision node \citep{hastie2001}. % Still we can achieve that with a series of binary splits...
 \\
 
-% @TODO: Computational considerations: Duda, p. 406, 407
-% @TODO: Explain at what feature the split should happen
+\todo{Explain at what feature the split should happen}
 
-% @IMAGE: Add image depicting decision tree
+\improvement{Maybe add image depciting decision tree}
 
 The effectiveness of the above approach will ultimately depend on the choice of split criteria. A good split would ideally single out one of the classes, producing a perfectly pure node that only consists of members of the respective class. There are a variety of metrics to access the purity or impurity of every node in a classification tree. Let $p_i = \frac{1}{N} \sum\limits_{\vec x_i \in c_i}^N 1$ be the relative frequency of the $i^{\text{th}}$ class $c_i \in \classes$ in the remaining set of $N$ observations. We define the \emph{Gini impurity} or \emph{Gini coefficient} for $k = |\classes|$ classes as
 
@@ -402,13 +398,14 @@ The effectiveness of the above approach will ultimately depend on the choice of 
 G_{\text{I}} = \sum\limits_{i=1}^k p_i (1 - p_i),
 \end{equation}
 
-following \citet{astroML,hastie2001,ripley2007}. Furthermore we define the \emph{entropy} or \emph{deviance} of a set as
+following \citet{astroML,hastie2001,ripley2007}. Furthermore we define the \emph{Shannon entropy} or \emph{deviance} of a set as
 
 \begin{equation}
 \label{eq:entropy-impurity}
 E_{\text{I}} = - \sum\limits_{i=1}^k p_i \ln(p_i).
 \end{equation}
 
+\todo{Add reference to Shannon entropy in the CE part}
 Based on equation \eqref{eq:entropy-impurity}, we can introduce the \emph{information gain} or \emph{Kullback--Leibler divergence} \citep{kullback1951} for a binary split
 
 \begin{equation}
@@ -417,8 +414,6 @@ I = E_{\text{I}} - \frac{1}{N} \big(N_a E_{\text{I}}^{(a)} + N_b E_{\text{I}}^{(
 \end{equation}
 
 where $N_a, N_b$ denote the number of data points above and below the split threshold $S$. Thus, when growing the tree, we perform the split that maximizes the information gain, \ie solving $\argmax_S I$.\\
-
-% @TODO: Add suitable metric for regression trees
 
 In order to avoid overfitting and retain generalization, we have to set an upper bound for our model complexity by limiting the depth $h$ of our tree. Different strategies have been proposed to achieve this:
 
