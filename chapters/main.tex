@@ -4,9 +4,15 @@
 We use a training data set compiled by \citet{kim2014} containing labels and light curves for $32683$ sources in the Large Magellanic Cloud (LMC), including Cepheids (CEPH), Type II Cepheids (T2CEPH), Blue Variables, $\delta$-Scuti (DSCT), RR--Lyraes (RRL), eclipsing binaries (EB) and long--periodic Variables (LPV). The light curves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project \citep{tisserand2007}, which was a wide--field microlensing survey monitoring $10^7$ stars in the Magellanic clouds over a time span of seven years ($1996$-$2003$). It's main purpose was to probe the dark matter halo of the Milky Way for MACHOs, massive compact halo objects.\\
 
 % Add number of data points in light curves (R_E and B_E)
+\todo{Add information about number of data points per band}
+\todo{Mention that $B_E$ is better sampled}
+\todo{Explain the preprocessing: cut out placeholder data points}
+\todo{Mention that no $3\sigma$ clipping was performed}
 % Mention that B_E is better sampled
 
-The training set comes labelled with superclasses and subclasses but without any features extracted. A thorough description of the compilation process is available in \citet{kim2014}, however, here is a list of the main steps:
+\todo[inline]{Insert a table describing the different abbreviations, especially for subclasses}
+
+The data set comes labelled with superclasses and subclasses but without any features extracted. A thorough description of the compilation process is available in \citet{kim2014}, however, here is a list of the main steps:
 
 \begin{enumerate}
 \item Compile a list of known periodic variable stars in the LMC from the OGLE \citep{udalski2008, soszy2008} catalogs.
@@ -24,7 +30,7 @@ The training set comes labelled with superclasses and subclasses but without any
 \section{Feature Extraction}
 \label{sec:feature-extraction}
 
-We extract a variety of features characterizing the variability of the source. A lot of them are standard statistical features, but some are more sophisticated, trying to incorporate a model of the underlying physics. We have implemented most of the variability features used by \citet{kim2014} and some of the features from \citet{dubath2011}. Features that can not be found in both of them are the CE features $T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}, \delta_{\text{CE}_1}, \delta_{\text{CE}_2}$, the Shannon entropy $S, S^\phi$ and the structure function features $A, \sigma_A, \gamma, \sigma_\gamma$. All of the following features listed are extracted both in the red band ($R_E$), in the blue band $B_E$, as well as in the difference of both ($R_E - B_E$).\\
+We extract a variety of features characterizing the variability of the source. A lot of them are standard statistical features, but some are more sophisticated, trying to incorporate a model of the underlying physics. We have implemented most of the variability features used by \citet{kim2014} and some of the features from \citet{dubath2011}. Features that can not be found in either of them are the CE features $T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}, \delta_{\text{CE}_1}, \delta_{\text{CE}_2}$, the Shannon entropy $S, S^\phi$ and the structure function features $A, \sigma_A, \gamma, \sigma_\gamma$. All of the following features listed are extracted both in the red band ($R_E$)\todo{Explain both bands}, in the blue band $B_E$, as well as in the difference of both ($R_E - B_E$).\\
 
 In the following, $N$ will be the number of data points in the light curve, $(t_i, m_i)$ the $i^{\text{th}}$ data point in the light curve. Some of the features are extracted from the recorded light curve, as well as from the phase--folded light curve ($P_{\text{LS}}$). We label the latter with a superscript $\phi$, \eg $\mu^\phi, \sigma^\phi$ and so forth\footnote{Note that this does not necessarily mean that \emph{all} features based on a phase--folded light curve are labelled this way.}.
 
@@ -35,36 +41,36 @@ In the following, $N$ will be the number of data points in the light curve, $(t_
 %\setlength{\abovedisplayskip}{.5em}
 %\setlength{\belowdisplayskip}{.5em}
 
-\litem{$\mu, \mu^\phi$ (Mean of magnitude)} The arithmetic mean of the magnitude, given by
+\litem{$\mu, \mu^\phi$ (Mean of magnitude)} The arithmetic mean of the magnitudes, given by
 \begin{equation}\mu = \frac{1}{N} \sum\limits_{i=1}^{N} m_i.\end{equation}
 
-\litem{$\sigma, \sigma^\phi$ (Standard deviation of magnitude)} The standard deviation of the magnitude, given by
+\litem{$\sigma, \sigma^\phi$ (Standard deviation of magnitude)} The standard deviation of the magnitudes, given by
 \begin{equation}\sigma = \sqrt{\frac{1}{N-1} \sum_{i=1}^N (m_i - \mu)^2}.\end{equation}
 
-\litem{$Q_{50}, Q_{50}^\phi$ (Median of magnitude)} The median of the magnitude, given by
+\litem{$Q_{50}, Q_{50}^\phi$ (Median of magnitude)} The median of the magnitudes, given by
 \begin{equation}Q_{50} = \tilde m_{\lfloor\frac{N+1}{2}\rfloor},\end{equation}
-where $\tilde m$ is the sorted list of magnitude with legth $N$.
+where $\tilde m$ is the sorted list of magnitudes with length $N$.
 
-\litem{$\bar \mu, \bar \mu^\phi$ (Weighted mean of magnitude)} The weighted arithmetic mean of the magnitude, given by
+\litem{$\bar \mu, \bar \mu^\phi$ (Weighted mean of magnitude)} The weighted arithmetic mean of the magnitudes, given by
 \begin{equation}\bar \mu = \big(\sum\limits_{i=1}^{N} w_i m_i\big) \; / \; \big(\sum\limits_{i=1}^{N} w_i\big),\end{equation}
 with weights $w_i$ inversely proportional to the measurement uncertainty, \ie $w_i = \sigma_i^{-1}$ with $\sigma_i > 0 \; \forall i$.
 
-\litem{$\bar \sigma, \bar \sigma^\phi$ (Weighted standard deviation of magnitude)} The weighted standard deviation of the magnitude, given by
+\litem{$\bar \sigma, \bar \sigma^\phi$ (Weighted standard deviation of magnitude)} The weighted standard deviation of the magnitudes, given by
 \begin{equation}\bar \sigma = \sqrt{\frac{1}{(N-1) \sum\limits_{i=1}^{N} w_i} \sum_{i=1}^N w_i \, ( m_i - \bar \mu)^2}.\end{equation}
 
-\litem{$\gamma_1, \gamma_1^\phi$ (Skewness)} The skewness of the magnitude, given by
+\litem{$\gamma_1, \gamma_1^\phi$ (Skewness)} The skewness of the magnitude distribution, given by
 \begin{equation}\gamma_1 = \frac{N}{(N-1)(N-2)} \sum\limits_{i=1}^N \big( \frac{m_i - \mu}{\sigma} \big)^3.\end{equation}
 
-\litem{$\gamma_2, \gamma_2^\phi$ (Kurtosis)} The kurtosis of the magnitude, given by
+\litem{$\gamma_2, \gamma_2^\phi$ (Kurtosis)} The kurtosis of the magnitude distribution, given by
 \begin{equation}\gamma_2 = \frac{N(N+1)}{(N-1)(N-2)(N-3)} \sum\limits_{i=1}^N \big( \frac{m_i - \mu}{\sigma} \big)^4 - 3 \, \frac{(N-1)^2}{(N-2)(N-3)}.\end{equation}
 
-\litem{$Q_{25}, Q_{25}^\phi$ ($25^\text{th}$ percentile)} The $25^\text{th}$ percentile of the magnitude, given by
+\litem{$Q_{25}, Q_{25}^\phi$ ($25^\text{th}$ percentile)} The $25^\text{th}$ percentile of the magnitude distribution, given by
 \begin{equation}Q_{25} = \cdots.\end{equation}
 
-\litem{$Q_{75}, Q_{75}^\phi$ ($75^\text{th}$ percentile)} The $75^\text{th}$ percentile of the magnitude, given by
+\litem{$Q_{75}, Q_{75}^\phi$ ($75^\text{th}$ percentile)} The $75^\text{th}$ percentile of the magnitude distribution, given by
 \begin{equation}Q_{75} = \cdots.\end{equation}
 
-\litem{$\text{IQR}, \text{IQR}^\phi$ (Interquartile range)} The interquartile range of the magnitude, given by
+\litem{$\text{IQR}, \text{IQR}^\phi$ (Interquartile range)} The interquartile range of the magnitude distribution, given by
 \begin{equation}\text{IQR} = Q_{75} -Q_{25}.\end{equation}
 
 \litem{$T_{\text{LS}}$ (Lomb--Scargle period)} The maximum--likelihood period according to the Lomb--Scargle periodogram, given by
@@ -76,8 +82,8 @@ with weights $w_i$ inversely proportional to the measurement uncertainty, \ie $w
 \litem{$\text{SNR}, \text{SNR}^\phi$ (Signal--to--noise ratio)} The signal--to--noise ratio, given by
 \begin{equation}\text{SNR} = \frac{\mu}{\sigma}.\end{equation}
 
-\litem{$S, S^\phi$ (Shannon entropy)} The Shannon entropy \citep{shannon1949} of the signal, given by
-\begin{equation}S = -\sum\limits_{i=1}^N m_i \ln(m_i).\end{equation}
+\litem{$E_\text{S}, E_\text{S}^\phi$ (Shannon entropy)} The Shannon entropy \citep{shannon1949} of the signal, given by
+\begin{equation}E_\text{S} = -\sum\limits_{i=1}^N m_i \ln(m_i).\end{equation}
 
 \litem{$\eta, \eta^\phi$ (Eta--feature)} The $\eta$ feature as proposed by \citet{vonneumann1941}, given by
 \begin{equation}\eta = \frac{1}{\sigma^2 (N-1)} \sum\limits_{i=1}^{N-1} (m_{i+1} - m_{i})^2.\end{equation}
@@ -95,7 +101,7 @@ where $\alpha^{>}, \alpha^{<}$ are magnitudes higher resp. lower than $\mu$.
 which is essentially the average distance between each of the data points and the mean.
 
 \litem{$\text{MAD}_{Q_{50}}, \text{MAD}_{Q_{50}}^\phi$ (Median absolute deviation)} The median absolute deviation of the magnitude, given by
-\begin{equation}\text{MAD}_{Q_{50}} = .\end{equation}
+\begin{equation}\text{MAD}_{Q_{50}} = .\end{equation}\todo{Add equation}
 
 \litem{$W_{\text{SW}}, p_{\text{SW}}$ (Shapiro--Wilk statistics)} The Shapiro--Wilk test \citep{shapiro1965} is used to test the null hypothesis that the data was drawn from a normal distribution. We the features
 \begin{equation}W_{\text{SW}} = \big(\sum\limits_{i=1}^n \lambda_i m_{(i)}\big)^2 \, / \, \big(\sum\limits_{i=1}^n (m_i - \mu)^2\big).\end{equation}
@@ -105,13 +111,11 @@ as features, where $\lambda_i$ are constants derived from means, and variances o
 \begin{equation}\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta \tau},\end{equation}
 where $\langle \cdot \rangle$ is the mean of the data points within the bin $\Delta \tau$.
 
-\litem{$\mathcal{F}$ (Fourier features)} We fit standard fourier series with five terms to the phase--folded light curve.
+\litem{$\mathcal{F}$ (Fourier decomposition)} We fit standard fourier series with five terms to the phase--folded light curve.
 \begin{equation}\label{eq:fourier-series-features}\mathcal{F}(t) = \frac{A_0}{2} + \sum_{k=1}^{\infty} ( A_k \cos(2 \pi k t) + B_k \sin(2 \pi k t) ).\end{equation}
 From this we the extract amplitude and phase features $A_0$, $A_i = \sqrt{a_i^2 + b_i^2}$ and $\varphi_i = \arctan(\frac{b_i}{a_i})$ features for $i = 1, \ldots, 5$.
 
-\litem{$T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}$ (CE periods)} We add three candidate periods with the lowest conditional entropy according to the CE periodogram, given by
-\begin{equation}P_{\text{CE}} = \cdots.\end{equation}
-Furthermore, we also add the CE scores, $\text{CE}_1, \text{CE}_2, \text{CE}_3$, for each of the periods as features.
+\litem{$T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}$ (CE periods)} We add three candidate periods with the lowest conditional entropy according to the CE periodogram, as introduced in section \ref{subsubsec:conditional-entropy}\todo{Mention filtering of aliases}. Furthermore, we also add the CE scores, $\text{CE}_1, \text{CE}_2, \text{CE}_3$, for each of the periods as features.
 
 \litem{$\delta_{\text{CE}_1}, \delta_{\text{CE}_2}$ ($\delta_{\text{CE}}$ features)} We add two more features comparing $T_{\text{LS}}$ and $T_{\text{CE}_1}$, which we define as
 \begin{equation}\delta_{\text{CE}_1} = T_{\text{LS}} - T_{\text{CE}_1}, \, \delta_{\text{CE}_2} = \frac{\delta_{\text{CE}_1}}{T_{\text{LS}}}.\end{equation}
@@ -125,11 +129,11 @@ Furthermore, we also add the CE scores, $\text{CE}_1, \text{CE}_2, \text{CE}_3$,
 \litem{$K$ (Stetson $K$)} The Stetson K index \citep{stetson1996}, given by
 \begin{equation}K = \frac{1}{\sqrt{N}} \big( \sum\limits_{i=1}^N |\delta_i| \big) \, / \, \big( \sqrt{\sum\limits_{i=1}^N \delta_i^2} \big) \text{ with } \delta_i = \sqrt{\frac{N}{N-1}} \frac{m_i - \mu}{\sigma_i}.\end{equation}
 
-% Proper citing of all equations
+\todo{Check proper citing of all equations}
 
 \end{enumerate}
 
-This leads to a total of $\cdots$ features in $\cdots$ bands.
+This results in 64 features per band ($B_R, B_B, B_{R-B}$), so 192 features overall.\todo{Note that features are highly correllated}
 
 \begin{figure}[h]
 	\centering
@@ -179,11 +183,29 @@ This leads to a total of $\cdots$ features in $\cdots$ bands.
 % More about period finding
 
 \todo[inline]{Add some histograms of the features}
-\todo[inline]{Add structure functon plots. Fit for Quasar (left), Scatterplot $A$-$\gamma$--plane (right)}
+\todo[inline]{Add plots containing periodogram for LS and CE}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\label{fig:2e}
+		\includegraphics[width=\textwidth]{figures/sf/sf-fit.png}		
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\label{fig:2f}
+		\includegraphics[width=\textwidth]{figures/sf/sf-scatterplot.png}		
+	\end{subfigure}
+	\caption[Structure function features]{The left panel shows the structure function fit for a typical quasar in the training set (chosen and random). The right panel shows a scatterplot of different variables on the $A$-$\gamma$-plane.}
+	\label{fig:features-scatterplot}
+\end{figure}
+
 
 \section{Performance of the Support Vector Machine}
+\label{sec:performance-svm}
 
-The first classifier we try is the Support Vector Machine (SVM) with the RBF kernel $\kernel_{\text{RBF}}$. Since the SVM is very sensitive to proper feature scaling, we normalize all features by subtracting the mean and dividing by the standard deviation. In the end, each features has zero--mean and unit--variance prior to the training. We \emph{thoroughly} separate training and test sets to retain generalization. We optimize the models hyperparameters $C$ and $\gamma$ for the average, weighted $F_1$-score by performing a $5$-fold cross--validation on subsequently finer grids. The results are visualized in figure \ref{fig:gridsearch-svm-superclasses}. The optimal hyperparameters we find for the superclass classification are $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$.\\
+The first classifier we try is the Support Vector Machine (SVM) with the RBF kernel $\kernel_{\text{RBF}}$. Since the SVM is very sensitive to proper feature scaling, we normalize all features by subtracting the mean and dividing by the standard deviation. In the end, each features has zero--mean and unit--variance prior to the training. We optimize the models hyperparameters $C$ and $\gamma$ for the average, weighted $F_1$-score by performing a $5$-fold cross--validation on subsequently finer grids. The results are visualized in figure \ref{fig:gridsearch-svm-superclasses}. The optimal hyperparameters we find for the superclass classification are $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$.\\
 
 \begin{figure}[h]
 	\centering
@@ -296,6 +318,7 @@ $F_1$-score ($\%$) &   95.33 &    82.63 &   92.70 &       72.15 &   87.51 &   55
 \end{landscape}
 
 \section{Performance of the Random Forest Classifier}
+\label{sec:performance-rf}
 
 The second classifier to evaluate is the Random Forest classifier. Once again, for optimal classification performance, we have to optimize the model's hyperparameters $t$, the number of trees in the forest, and $m$, the maximum number of features to consider at each split. The results of the $5$-fold cross--validation grid search (superclasses), optimized for the average $F_1$-score, weighted by the number of observations per class, shown in figure \ref{fig:gridsearch-rf-superclasses}.
 
@@ -401,6 +424,7 @@ $F_1$-score ($\%$) &   96.58 &    91.28 &   97.18 &       72.73 &   96.56 &   56
 \improvement[inline]{Add figure for feature importance plot from RF}
 
 \section{Performance of the Gradient Boosted Classifier}
+\label{sec:performance-gb}
 
 \begin{table}[h]
 \centering
@@ -433,4 +457,52 @@ $F_1$ score ($\%$) &   96.30   &     98.13  &   97.25   &    96.61   &    99.47 
 % 98.43% (+/-0.07%) for {'max_features': 80, 'n_estimators': 10000, 'learning_rate': 0.02, 'max_depth': 10, 'min_samples_leaf': 500}
 \end{table}
 
-\todo[inline]{Add confusion matrix for subclasses}
+\begin{landscape}
+\begin{table}[h]
+\centering
+\resizebox{22cm}{!}{
+\begin{tabular}{C{3.1cm}|C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}|c}
+\toprule
+ & \rot{BV} &   \rot{1O} &   \rot{F} &   \rot{CEPH Other} &   \rot{DSCT} &    \rot{EC} &    \rot{ED} &   \rot{ED ESD} &   \rot{ESD} &   \rot{EB Other} &   \rot{Mira AGB C} &   \rot{Mira AGB O} &   \rot{OSARG AGB C} &   \rot{OSARG AGB O} &   \rot{OSARG RGB C} &   \rot{OSARG RGB O} &   \rot{SRV AGB C} &   \rot{SRV AGB O} &   \rot{None\-Var} &   \rot{QSO} &   \rot{RRab} &   \rot{RRc} &   \rot{RRd} &   \rot{RRe} &   \rot{T2\-CEPH} &    $\Sigma$ \\
+\midrule
+BV          & \bfseries 776      &           &           &              &          &          &    1      &             &   3      &     1      &                  &                  &                   &                   &                   &                   &          1      &          1      &      12     &   1      &            &           &           &           &            & 796 \\
+1O          &          &  \bfseries 771      &   21      &      16      &          &   1      &    1      &             &   4      &            &                  &                  &                   &                   &                   &                   &                 &          2      &       4     &          &     5      &   14      &    1      &    4      &            & 844 \\
+F           &   1      &   22      & \bfseries 1244      &       5      &          &          &           &             &          &            &            1     &                  &                   &            1      &                   &                   &                 &                 &             &          &            &           &           &           &     1      & 1275 \\
+CEPH Other  &          &   40      &    5      &      \bfseries 97      &          &          &           &             &   2      &            &                  &                  &                   &                   &                   &                   &                 &                 &             &          &    14      &    4      &           &           &            & 162 \\
+DSCT        &          &           &           &              & \bfseries 497      &          &           &             &          &            &                  &                  &                   &                   &                   &                   &                 &                 &      11     &          &            &           &           &    3      &            & 511 \\
+EC          &          &    6      &    1      &              &   3      & \bfseries 205      &   20      &         1   & 156      &     9      &                  &                  &                   &                   &                   &           13      &          4      &          4      &       2     &          &     7      &    8      &    1      &    5      &            & 445 \\
+ED          &   2      &           &           &              &          &   8      & \bfseries 1404      &         2   & 186      &     2      &                  &                  &                   &            1      &                   &            1      &          1      &                 &      32     &          &     2      &    2      &           &           &     1      & 1644  \\
+ED ESD      &          &           &           &              &          &          &  113      &         \bfseries 1   &  16      &     1      &                  &                  &                   &                   &                   &                   &                 &                 &      15     &          &            &           &           &           &            & 146 \\
+ESD         &   3      &    4      &    2      &              &          &  58      &  257      &         1   & \bfseries 762      &     7      &                  &                  &                   &            3      &                   &           14      &                 &          1      &      13     &          &    16      &    7      &    1      &    1      &            & 1150 \\
+EB Other    &   3      &           &           &              &   1      &  20      &   31      &             &  56      &     \bfseries 7      &                  &                  &            1      &            2      &                   &           12      &                 &                 &      18     &   1      &            &    1      &           &           &            & 153 \\
+Mira AGB C  &   1      &           &           &              &          &          &           &             &          &            &          \bfseries 696     &           7      &                   &                   &                   &            2      &         41      &          3      &       1     &   2      &     1      &           &           &           &            & 754 \\
+Mira AGB O  &          &           &           &              &          &          &           &             &          &            &           15     &         \bfseries 272      &                   &                   &                   &                   &          2      &         40      &             &          &            &           &           &           &            & 329 \\
+OSARG AGB C &          &           &           &              &          &   1      &           &             &          &            &                  &                  &          \bfseries 851      &          246      &                   &           19      &        265      &         18      &      16     &          &            &           &           &           &            & 1416  \\
+OSARG AGB O &          &           &           &              &          &          &           &             &          &     2      &                  &                  &          189      &         \bfseries 2630      &                   &          145      &         23      &        361      &      18     &          &            &           &           &           &            & 3368 \\
+OSARG RGB C &          &           &           &              &          &          &           &             &          &            &                  &                  &            4      &           12      &                   &           23      &          9      &          5      &       4     &          &            &           &           &           &            &    57    \\
+OSARG RGB O &   1      &           &           &              &          &   3      &    2      &             &          &            &            1     &                  &            5      &          140      &                   &         \bfseries 1787      &          5      &         98      &       4     &          &            &           &           &           &            & 2046 \\
+SRV AGB C   &   1      &           &           &              &          &          &           &             &          &            &           73     &                  &           96      &           10      &                   &            5      &       \bfseries 3551      &         81      &       2     &          &            &           &           &           &            & 3819 \\
+SRV AGB O   &   1      &           &           &              &          &          &           &             &          &            &            2     &          24      &           25      &          314      &                   &          105      &         87      &       \bfseries 3640      &       7     &          &            &           &           &           &     1      & 4206 \\
+NonVar      &  16      &           &           &              &   2      &   2      &    7      &             &   1      &     1      &            1     &                  &           14      &           20      &                   &            3      &          2      &          4      &    \bfseries 4709     &   9      &            &           &           &           &            & 4791 \\
+QSO         &   1      &           &           &              &          &          &    2      &             &   2      &     1      &                  &                  &                   &                   &                   &                   &                 &                 &      23     & \bfseries 151      &            &           &           &           &            & 180 \\
+RRab        &          &    2      &           &       1      &          &   1      &    2      &             &  14      &            &                  &                  &                   &            1      &                   &                   &                 &                 &       1     &          &  \bfseries 3409      &    2      &    1      &           &            & 3434 \\
+RRc         &          &    2      &           &              &          &   1      &    1      &             &   1      &     1      &                  &                  &                   &                   &                   &                   &                 &                 &             &          &     2      &  \bfseries 668      &   21      &   17      &            & 714 \\
+RRd         &          &           &           &       1      &          &          &           &             &          &            &                  &                  &                   &                   &                   &                   &                 &                 &             &          &     5      &   49      &  \bfseries 124      &           &            & 179 \\
+RRe         &          &           &           &              &   4      &   1      &           &             &          &            &                  &                  &                   &            1      &                   &                   &                 &                 &       1     &          &            &   20      &           &  \bfseries 116      &            & 143 \\
+T2CEPH      &   1      &    8      &    9      &       1      &          &   5      &    1      &             &   9      &     1      &            1     &                  &                   &                   &                   &                   &          1      &          8      &       2     &          &     3      &           &           &           &    \bfseries 71      & 121 \\
+\bottomrule
+Recall ($\%$) &   97.49 &    91.35 &    97.57 &       59.88 &   97.26 &   46.07 &    85.40 &        0.68  &   66.26 &     4.58 &            92.31 &           82.67 &            60.10 &            78.09 &               0.0 &            87.34 &          92.98 &          86.54 &       98.29 &   83.39 &     99.27 &    93.56 &    69.27 &    81.12 &     58.68 &       \\[.1cm]
+\hline
+Precision ($\%$) &   96.16 &    90.18 &    97.04 &       80.17 &   98.03 &   66.99 &    76.22 &         20.0 &   62.87 &     21.21 &            88.10&           89.77 &            71.81 &            77.79 &               0.0 &            83.94 &          88.95 &          85.33 &       96.20 &   92.07 &     98.41 &    86.19 &    83.22 &    79.45 &     95.95 &     \\[.1cm]
+\hline
+$F_1$ score ($\%$) &   96.82 &    90.76 &    97.30 &       68.56 &   97.64 &   54.59 &    80.55 &         1.32 &   64.52 &     7.53 &           90.16 &           86.07 &            65.44 &            77.94 &               0.0 &            85.61 &          90.92 &          85.98 &       97.23 &   87.52 &     98.84 &    89.72 &    75.61 &    80.28 &     72.82 & 86.30 $\pm$ 0.37     \\[.1cm]
+\bottomrule
+
+\end{tabular}
+}
+\label{tab:gb-confusion-matrix-subclasses}
+\caption{This table shows the confusion matrix for the Gradient Boosted Classifier subclasses classification on the EROS--2 data set. The columns show predicted labels, while rows show the true label.}
+
+% (1) 86.30% (+/-0.37%) for {'max_features': 75, 'n_estimators': 5000, 'learning_rate': 0.01, 'max_depth': 10, 'min_samples_leaf': 100}
+\end{table}
+\end{landscape}
