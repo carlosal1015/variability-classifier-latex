@@ -38,6 +38,9 @@
 \setlength{\bibhang}{0pt}
 %\usepackage[backend=biber,sorting=nyt,style=authoryear,backref=false,hyperref=false]{biblatex}
 
+\setlength{\bibsep}{5pt} % or use whatever dimension you want
+\renewcommand{\bibfont}{\scriptsize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Headers and footers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -203,3 +206,22 @@
 \definecolor{eb}{HTML}{D8D8D8}
 
 \newcommand{\colorlegend}{\footnotesize (\textcolor{ceph}{\ensuremath\bullet} CEPH, \textcolor{t2ceph}{\ensuremath\bullet} T2CEPH, \textcolor{bv}{\ensuremath\bullet} BV, \textcolor{rrl}{\ensuremath\bullet} RRL, \textcolor{lpv}{\ensuremath\bullet} LPV, \textcolor{dsct}{\ensuremath\bullet} DSCT, \textcolor{qso}{\ensuremath\bullet} QSO, \textcolor{nonevar}{\ensuremath\bullet} NoneVar, \textcolor{eb}{\ensuremath\bullet} EB)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define big disjoint union symbol \bigcupdot
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
