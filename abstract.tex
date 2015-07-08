@@ -1,23 +1,23 @@
 \begin{minipage}{\linewidth}
-
 \selectlanguage{english}
+
+\vspace*{-8em}
+
 \begin{abstract}
-This work assesses the automated classification of periodic variables based on their photometric variability. We extract a variety of features from $\approx 30000$ lightcurves in the EROS data set, including the period of the signal using the Lomb--Scargle algorithm, as well as conditional entropy (CE). In this context, we present a runtime--optimized, fast Python/Cython implementation of the CE algorithm. To provide further separation of quasars (QSOs) in feature space, we implement the structure function as a measure for the intrinsic stochastic variability of the source. Based on these features, we train a Support Vector Machine (SVM) and a Random Forest classifier for supervised classification into classes and subclasses of all occurring variables, optimize the hyperparameters for both models using grid--search in the parameter space to achieve optimal classification performance. We perform a $5$--fold cross--validation and achieve $\cdots$ with the SVM, and $\cdots$ with the Random forest classifier for the main catgories, and $\cdots$ for the sub--categories.
+
+This work assesses the predictive performance of different automated, supervised Machine Learning approaches for the classification of astrophysical variables based on their photometric variability. We extract 64 ad--hoc features in $R_E, B_E$ and $R_E-B_E$ from 32683 EROS--2 light curves of known periodic, semi--periodic and aperiodic sources in the Large Magellanic Cloud (LMC). To characterize the periodicity of the signals, we make use of both Lomb--Scargle and the conditional entropy (CE) algorithm for period--finding. In this context, we present a fast Python/Cython implementation of the CE algorithm. To provide further separation of quasars in feature space, we implement the structure function to quantify the source's intrinsic stochastic variability. Using a training set containing labels for 9 superclasses and 25 subclasses provided by \citet{kim2014}, we train three different models on the extracted features, namely Support Vector Machines (SVMs), Random Forest (RF) and Gradient Boosted Trees (GBT), and optimize the model's hyperparameters for the average, weighted $F_1$-score for superclasses and subclasses by performing a grid search using $5$--fold cross--validation. We find that the decision tree based models, RF and GBT, outperform the SVM in both superclass and subclass classification. The highest scores are achieved by the GBT classifier with an average, weighted $F_1$-score of $(98.43 \, \pm \, 0.07) \, \%$ for superclass classification and $(86.30 \, \pm \, 0.37) \, \%$ for subclass classification.
 \end{abstract}
 
-% Training set by Kim et al.
-% Expérience pour la Recherche d’Objets Sombres
+\selectlanguage{german}
 
-\selectlanguage{german} 
+\vspace*{-5em}
 
 \begin{abstract}
-Im Rahmen dieser Arbeit $\cdots$
+
+Im Rahmen dieser Arbeit untersuchen wir die Vorhersageleistung verschiedener \emph{supervised Machine Learning} Verfahren zur automatischen Klassifizierung von Veränderlichen aufgrund ihrer photometrischen Variabilität. Wir extrahieren 64 \emph{features} in $R_E, B_E$ und $R_E-B_E$ von 32683 EROS--2 Lichtkurven bekannter periodischer, semi--periodischer oder aperiodischer Veränderlicher in der Großen Magellanschen Wolke (GMW). Um die Periodizität der Signale zu charakterisieren verwenden wir sowohl den Lomb--Scargle Algorithmus, als auch den \emph{Conditional Entropy} (CE) Algorithmus. In diesem Rahmen stellen wir eine schnelle Python/Cython Implementation des CE Verfahrens dar. Um eine weitere Separierung von Quasaren im \emph{feature space} zu ermöglichen, implementieren wir die \emph{structure function} zur Quantifizierung der intrinsischen, stochastischen Variabilität. Mit Hilfe eines Trainingsdatensatzes von \citet{kim2014}, das \emph{labels} für 9 Oberkategorien und 25 Unterkategorien enthält, trainieren wir drei verschiedene Modelle, Support Vector Machines (SVMs), Random Forest (RF) und Gradient Boosted Trees (GBT), und optimieren die Hyperparameter bezüglich der durchschnittlichen, gewichteten $F_1$-Metrik für Ober-- und Unterkategorien mit Hilfe von $5$-facher Kreuzvalidierung auf einem Gitter. Unsere Ergebnisse zeigen, dass die Entscheidungsbaum basierten Verfahren, RF und GBT, sowohl für Oberkategorien, als auch für Unterkategorien besser als die Support Vector Machine abschneiden. Das beste Ergebnis erzielte der GBT \emph{classifier} mit einer durchschnittlichen, gewichteten $F_1$-Metrik von $(98.43 \, \pm \, 0.07) \, \%$ für die Oberkategorien, und $(86.30 \, \pm \, 0.37) \, \%$ für die Unterkategorien.
+
 \end{abstract}
 
 \end{minipage}
 
 \selectlanguage{english}
-
-% Name the different variables in the EROS dataset
-% Name precise number of features
-% Name different color bands
