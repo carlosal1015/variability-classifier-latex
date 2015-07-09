@@ -1,16 +1,7 @@
 \section{About the EROS--2 training set}
 \label{sec:about-training-set}
 
-We use a training data set compiled by \citet{kim2014} containing labels and light curves for $32683$ sources in the Large Magellanic Cloud (LMC), including Cepheids (CEPH), Type II Cepheids (T2CEPH), Blue Variables, $\delta$-Scuti (DSCT), RR--Lyraes (RRL), eclipsing binaries (EB) and long--periodic Variables (LPV). The light curves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project \citep{tisserand2007}, which was a wide--field microlensing survey monitoring $10^7$ stars in the Magellanic clouds over a time span of seven years ($1996$-$2003$). It's main purpose was to probe the dark matter halo of the Milky Way for MACHOs, massive compact halo objects.\\
-
-% Add number of data points in light curves (R_E and B_E)
-\todo{Add information about number of data points per band}
-\todo{Mention that $B_E$ is better sampled}
-\todo{Explain the preprocessing: cut out placeholder data points}
-\todo{Mention that no $3\sigma$ clipping was performed}
-% Mention that B_E is better sampled
-
-\todo[inline]{Insert a table describing the different abbreviations, especially for subclasses}
+We use a training data set compiled by \citet{kim2014} containing labels and light curves for $32683$ sources in the Large Magellanic Cloud (LMC), including Cepheids (CEPH), Type II Cepheids (T2CEPH), blue variables (BV), $\delta$-Scuti (DSCT), RR--Lyraes (RRL), eclipsing binaries (EB), long--periodic variables (LPV) and quasi--stellar objects (QSOs). The light curves were recorded by the Expérience pour la Recherche d’Objets Sombres (EROS) project \citep{tisserand2007}, which was a wide--field microlensing survey monitoring $10^7$ stars in the Magellanic clouds over a time span of seven years ($1996$-$2003$). Its main purpose was to probe the dark matter halo of the Milky Way for MACHOs, massive compact halo objects.\\
 
 The data set comes labelled with superclasses and subclasses but without any features extracted. A thorough description of the compilation process is available in \citet{kim2014}, however, here is a list of the main steps:
 
@@ -19,20 +10,19 @@ The data set comes labelled with superclasses and subclasses but without any fea
 \item Add $982$ blue variables (BVs) from the MACHO database \citep{keller2002}.
 \item Add $565$ quasi--stellar objects (QSOs).
 \item Crossmatch the extracted list with the entire EROS--2 LMC database and remove counterparts which are inaccurate.
-\item Visual examination of $97912$ raw-- and phase--folded light curves to remove sources without variability our periodicity. This results in a list of 27892 periodic variables.
-\item Add non--variable source to training set by randomly sampling $5000$ light curves (excluding the ones already selected) over the whole EROS-2 LMC fields in different magnitude ranges.
+\item Visual examination of $97912$ raw-- and phase--folded light curves to remove sources without variability and periodicity. This results in a list of 27892 periodic variables.
+\item Add non--variable sources to training set by randomly sampling $5000$ light curves (excluding the ones already selected) over the whole EROS-2 LMC fields in different magnitude ranges.
 \item Visual examination of the sampled sources to remove objects showing variability. This results in a list with $32683$ objects.
 \end{enumerate}
 
-% Number of sources in the data set
-% Not a standard astronomical B and R bands
+The light curves have between 200 and 300 data points, and were sampled in two bands, the blue band $B_E$ ($420$-$720 \, \unit{nm}$) and the red band $R_E$ ($620$-$920 \, \unit{nm}$). There were some technical problems with the some of the CCDs, which is the reason why we have generally more data points in $B_E$.
 
 \section{Feature Extraction}
 \label{sec:feature-extraction}
 
-We extract a variety of features characterizing the variability of the source. A lot of them are standard statistical features, but some are more sophisticated, trying to incorporate a model of the underlying physics. We have implemented most of the variability features used by \citet{kim2014} and some of the features from \citet{dubath2011}. Features that can not be found in either of them are the CE features $T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}, \delta_{\text{CE}_1}, \delta_{\text{CE}_2}$, the Shannon entropy $S, S^\phi$ and the structure function features $A, \sigma_A, \gamma, \sigma_\gamma$. All of the following features listed are extracted both in the red band ($R_E$)\todo{Explain both bands}, in the blue band $B_E$, as well as in the difference of both ($R_E - B_E$).\\
+We extract a variety of features characterizing the variability of the source. A lot of them are standard statistical features, but some are more sophisticated, trying to incorporate a model of the underlying physics. We have implemented most of the variability features used by \citet{kim2014} and some of the features from \citet{dubath2011}. Features that can not be found in either of them are the CE features $T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}, \delta_{\text{CE}_1}, \delta_{\text{CE}_2}$, the Shannon entropy $S, S^\phi$ and the structure function features $A, \sigma_A, \gamma, \sigma_\gamma$. All of the following features listed are extracted in $R_E$, $B_E$, and $R_E - B_E$.\\
 
-In the following, $N$ will be the number of data points in the light curve, $(t_i, m_i)$ the $i^{\text{th}}$ data point in the light curve. Some of the features are extracted from the recorded light curve, as well as from the phase--folded light curve ($P_{\text{LS}}$). We label the latter with a superscript $\phi$, \eg $\mu^\phi, \sigma^\phi$ and so forth\footnote{Note that this does not necessarily mean that \emph{all} features based on a phase--folded light curve are labelled this way.}.
+In the following, $N$ will be the number of data points in the light curve, $(t_i, m_i)$ the $i^{\text{th}}$ data point in the light curve. Some of the features are extracted from the recorded light curve, as well as from the phase--folded light curve ($P_{\text{LS}}$). We label the latter with a superscript $\phi$, \eg $\mu^\phi, \sigma^\phi$ and so forth.
 
 \begin{enumerate}
 %\setlength{\itemsep}{5pt}
@@ -64,11 +54,7 @@ with weights $w_i$ inversely proportional to the measurement uncertainty, \ie $w
 \litem{$\gamma_2, \gamma_2^\phi$ (Kurtosis)} The kurtosis of the magnitude distribution, given by
 \begin{equation}\gamma_2 = \frac{N(N+1)}{(N-1)(N-2)(N-3)} \sum\limits_{i=1}^N \big( \frac{m_i - \mu}{\sigma} \big)^4 - 3 \, \frac{(N-1)^2}{(N-2)(N-3)}.\end{equation}
 
-\litem{$Q_{25}, Q_{25}^\phi$ ($25^\text{th}$ percentile)} The $25^\text{th}$ percentile of the magnitude distribution, given by
-\begin{equation}Q_{25} = \cdots.\end{equation}
-
-\litem{$Q_{75}, Q_{75}^\phi$ ($75^\text{th}$ percentile)} The $75^\text{th}$ percentile of the magnitude distribution, given by
-\begin{equation}Q_{75} = \cdots.\end{equation}
+\litem{$Q_{25}, Q_{25}^\phi, Q_{75}, Q_{75}^\phi$ (Percentile features)} The $25^\text{th}$ and $75^\text{th}$ percentile of the magnitude distribution in ascending order.
 
 \litem{$\text{IQR}, \text{IQR}^\phi$ (Interquartile range)} The interquartile range of the magnitude distribution, given by
 \begin{equation}\text{IQR} = Q_{75} -Q_{25}.\end{equation}
@@ -85,7 +71,7 @@ with weights $w_i$ inversely proportional to the measurement uncertainty, \ie $w
 \litem{$E_\text{S}, E_\text{S}^\phi$ (Shannon entropy)} The Shannon entropy \citep{shannon1949} of the signal, given by
 \begin{equation}E_\text{S} = -\sum\limits_{i=1}^N m_i \ln(m_i).\end{equation}
 
-\litem{$\eta, \eta^\phi$ (Eta--feature)} The $\eta$ feature as proposed by \citet{vonneumann1941}, given by
+\litem{$\eta, \eta^\phi$ (Eta--feature)} The $\eta$ feature as proposed by \citet{vonneumann1941} quantifies monotonic trends and is defined as
 \begin{equation}\eta = \frac{1}{\sigma^2 (N-1)} \sum\limits_{i=1}^{N-1} (m_{i+1} - m_{i})^2.\end{equation}
 
 \litem{$\eta_e, \eta_e^\phi$ (Eta--feature)} $\eta_e$ is an enhancement of the $\eta$-feature by \citet{kim2014}, that accounts for unequal sampling, given by
@@ -100,22 +86,21 @@ where $\alpha^{>}, \alpha^{<}$ are magnitudes higher resp. lower than $\mu$.
 \begin{equation}\text{MAD}_{\mu} = \frac{1}{N} \sum\limits_{i=1}^{N} | m_i - \mu |,\end{equation}
 which is essentially the average distance between each of the data points and the mean.
 
-\litem{$\text{MAD}_{Q_{50}}, \text{MAD}_{Q_{50}}^\phi$ (Median absolute deviation)} The median absolute deviation of the magnitude, given by
-\begin{equation}\text{MAD}_{Q_{50}} = .\end{equation}\todo{Add equation}
+\litem{$\text{MAD}_{Q_{50}}, \text{MAD}_{Q_{50}}^\phi$ (Median absolute deviation)} The median absolute deviation of the magnitude, which is the median of $| m_i - \mu |$.
 
-\litem{$W_{\text{SW}}, p_{\text{SW}}$ (Shapiro--Wilk statistics)} The Shapiro--Wilk test \citep{shapiro1965} is used to test the null hypothesis that the data was drawn from a normal distribution. We the features
+\litem{$W_{\text{SW}}, p_{\text{SW}}$ (Shapiro--Wilk statistics)} The Shapiro--Wilk test \citep{shapiro1965} is used to test the null hypothesis that the data was drawn from a normal distribution. We add
 \begin{equation}W_{\text{SW}} = \big(\sum\limits_{i=1}^n \lambda_i m_{(i)}\big)^2 \, / \, \big(\sum\limits_{i=1}^n (m_i - \mu)^2\big).\end{equation}
-as features, where $\lambda_i$ are constants derived from means, and variances of a normally distributed sample of the same size, $m_{(i)}$ is the $i^\text{th}$ smallest value in $m$, and $p_{\text{SW}}$ is the $p$-value for the hypothesis test.
+as a feature, where $\lambda_i$ are constants derived from means, and variances of a normally distributed sample of the same size, $m_{(i)}$ is the $i^\text{th}$ smallest value in $m$.
 
 \litem{$\text{SF}$ (Structure function features)} We extract $A, \sigma_A, \gamma, \sigma_\gamma$ from the structure function power--law fit, $A \big(\frac{\Delta t}{1 \, \mathrm{yr}}\big)^\gamma$, where the structure function is defined as
 \begin{equation}\text{SF}(\Delta t) = \big\langle \sqrt{\frac{\pi}{2}} \big| \Delta m_{ij}  \big| - \sqrt{\sigma_{m_i}^2 + \sigma_{m_j}^2} \big\rangle_{\Delta \tau},\end{equation}
 where $\langle \cdot \rangle$ is the mean of the data points within the bin $\Delta \tau$.
 
-\litem{$\mathcal{F}$ (Fourier decomposition)} We fit standard fourier series with five terms to the phase--folded light curve.
+\litem{$\mathcal{F}$ (Fourier decomposition)} We fit a standard fourier series with five terms to the phase--folded light curve.
 \begin{equation}\label{eq:fourier-series-features}\mathcal{F}(t) = \frac{A_0}{2} + \sum_{k=1}^{\infty} ( A_k \cos(2 \pi k t) + B_k \sin(2 \pi k t) ).\end{equation}
-From this we the extract amplitude and phase features $A_0$, $A_i = \sqrt{a_i^2 + b_i^2}$ and $\varphi_i = \arctan(\frac{b_i}{a_i})$ features for $i = 1, \ldots, 5$.
+From this we extract the amplitude and phase features $A_0$, $A_i = \sqrt{a_i^2 + b_i^2}$ and $\varphi_i = \arctan(\frac{b_i}{a_i})$ features for $i = 1, \ldots, 5$.
 
-\litem{$T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}$ (CE periods)} We add three candidate periods with the lowest conditional entropy according to the CE periodogram, as introduced in section \ref{subsubsec:conditional-entropy}\todo{Mention filtering of aliases}. Furthermore, we also add the CE scores, $\text{CE}_1, \text{CE}_2, \text{CE}_3$, for each of the periods as features.
+\litem{$T_{\text{CE}_1}, T_{\text{CE}_2}, T_{\text{CE}_3}, \text{CE}_1, \text{CE}_2, \text{CE}_3$ (Conditional entropy)} We add three candidate periods with the lowest conditional entropy according to the CE periodogram, as introduced in section \ref{subsubsec:conditional-entropy}. In contrast to the \citeauthor{graham2013} implementation, we filter period aliases by masking multiples of $1 \, \unit{d}$ at the lower end of the periodogram. Furthermore, we also add the CE scores, $\text{CE}_1, \text{CE}_2, \text{CE}_3$, for each of the periods as features.
 
 \litem{$\delta_{\text{CE}_1}, \delta_{\text{CE}_2}$ ($\delta_{\text{CE}}$ features)} We add two more features comparing $T_{\text{LS}}$ and $T_{\text{CE}_1}$, which we define as
 \begin{equation}\delta_{\text{CE}_1} = T_{\text{LS}} - T_{\text{CE}_1}, \, \delta_{\text{CE}_2} = \frac{\delta_{\text{CE}_1}}{T_{\text{LS}}}.\end{equation}
@@ -129,113 +114,88 @@ From this we the extract amplitude and phase features $A_0$, $A_i = \sqrt{a_i^2 
 \litem{$K$ (Stetson $K$)} The Stetson K index \citep{stetson1996}, given by
 \begin{equation}K = \frac{1}{\sqrt{N}} \big( \sum\limits_{i=1}^N |\delta_i| \big) \, / \, \big( \sqrt{\sum\limits_{i=1}^N \delta_i^2} \big) \text{ with } \delta_i = \sqrt{\frac{N}{N-1}} \frac{m_i - \mu}{\sigma_i}.\end{equation}
 
-\todo{Check proper citing of all equations}
-
 \end{enumerate}
 
-This results in 64 features per band ($B_R, B_B, B_{R-B}$), so 192 features overall.\todo{Note that features are highly correllated}
+This results in 64 features per band ($R_E, B_E, R_E - B_E$). Some of the features are highly correlated, especially between $R_E$ and $B_E$, however, we decide not to do any feature selection for now, and train our models on all 192 features. We discuss the consequences of this decision, as well as various ways to de--correlate the feature set in section \ref{sec:discussion}. Figure \ref{fig:features-scatterplot} shows different scatterplots for some important features in the training set. In figure \ref{fig:features-periodograms} we can see a comparion of the periodograms for the Lomb--Scargle algorithm and the conditional entropy algorithm. Finally, figure \ref{fig:features-structure-function} visualizes the structure function features.
 
 \begin{figure}[h]
+	\centering
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\label{fig:periodogram-ls}
+		\includegraphics[width=\textwidth]{figures/periodograms/lm0012m20755-fasper.png}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\label{fig:periodogram-ce}
+		\includegraphics[width=\textwidth]{figures/periodograms/lm0012m20755-ce-adaptive.png}
+	\end{subfigure}
+	\caption[Lomb--Scargle and CE periodograms for EROS ID \emph{lm0012m20755}]{The left panel shows the Lomb--Scargle periodogram for EROS ID \emph{lm0012m20755}. The extracted period is $T_\text{LS} = 2.2383 \, \unit{d}$. The right panel shows the CE periodogram for the same source, which yields an identical result of $T_\text{CE} = 2.2383 \, \unit{d}$. Both periodograms are centred around the most significant peak.}
+	\label{fig:features-periodograms}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\label{fig:2e}
+		\includegraphics[width=\textwidth]{figures/sf/sf-fit.png}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\label{fig:2f}
+		\includegraphics[width=\textwidth]{figures/sf/sf-scatterplot.png}
+	\end{subfigure}
+	\caption[Visualization of the structure function features]{The left panel shows the structure function fit for a typical quasar in the training set (chosen at random). The right panel shows a scatterplot of 180 randomly sampled \emph{RR Lyrae} and 360 randomly sampled \emph{Others} in addition to the 180 quasars in the data set on the $A$-$\gamma$-plane. We can see that there is indeed some separation, especially in $\gamma$.}
+	\label{fig:features-structure-function}
+\end{figure}
+
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
 		\caption{$T_{\text{LS}}$ ($B_E$) vs. $\eta^\phi$ ($B_E$)}
 		\label{fig:2a}
-		\includegraphics[width=\textwidth]{figures/scatterplots/B-ls-period-B-phase-eta.png}				
+		\includegraphics[width=\textwidth]{figures/scatterplots/B-ls-period-B-phase-eta.png}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
 		\caption{$\eta$ ($B_E$) vs. $\Sigma^\phi$ ($B_E$)}
 		\label{fig:2b}
-		\includegraphics[width=\textwidth]{figures/scatterplots/B-eta-B-phase-cs.png}		
+		\includegraphics[width=\textwidth]{figures/scatterplots/B-eta-B-phase-cs.png}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
 		\caption{$\eta$ ($B_E$) vs. $\log(\eta_e)$ ($B_E$)}
 		\label{fig:2c}
-		\includegraphics[width=\textwidth]{figures/scatterplots/B-eta-B-eta-e.png}		
+		\includegraphics[width=\textwidth]{figures/scatterplots/B-eta-B-eta-e.png}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
 		\caption{$\mu$ ($B_E$) vs. $\mu$ ($R_E - B_E$)}
 		\label{fig:2d}
-		\includegraphics[width=\textwidth]{figures/scatterplots/B-mean-R-B-mean.png}		
+		\includegraphics[width=\textwidth]{figures/scatterplots/B-mean-R-B-mean.png}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
 		\caption{$\Sigma^\phi$ ($B_E$) vs. $\log(\text{IQR})$ ($R_E - B_E$)}
 		\label{fig:2e}
-		\includegraphics[width=\textwidth]{figures/scatterplots/B-phase-cs-R-B-IQR.png}		
+		\includegraphics[width=\textwidth]{figures/scatterplots/B-phase-cs-R-B-IQR.png}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
 		\caption{$\log(T_{\text{LS}})$ ($R_E$) vs. $Q_{25}^\phi$ ($R_E$)}
 		\label{fig:2f}
-		\includegraphics[width=\textwidth]{figures/scatterplots/R-ls-period-R-phase-q25.png}		
+		\includegraphics[width=\textwidth]{figures/scatterplots/R-ls-period-R-phase-q25.png}
 	\end{subfigure}
-	\caption[Scatterplots for different features with reasonable separation.]{This figure shows different scatterplots. $\cdots$\\\colorlegend}
+	\caption[Scatterplots for different features.]{This figure shows various scatterplots of different features, amongst others $\eta, \eta^\phi$, $\Sigma^\phi$, $T_\text{LS}$, $\text{IQR}$ and $Q_{25}^\phi$, which provide a decent separation in feature space. It is clear to see how the observations form clusters on the respective plane, which are generally contaminated by other sources, since perfect separation is hard to achieve.\\\colorlegend}
 	\label{fig:features-scatterplot}
 \end{figure}
-
-% State that feature are highly correlated
-% Show histogram of some features.
-% Show some scatterplots
-% More about period finding
-
-\todo[inline]{Add some histograms of the features}
-\todo[inline]{Add plots containing periodogram for LS and CE}
-
-\begin{figure}[h]
-	\centering
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\label{fig:2e}
-		\includegraphics[width=\textwidth]{figures/sf/sf-fit.png}		
-	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\label{fig:2f}
-		\includegraphics[width=\textwidth]{figures/sf/sf-scatterplot.png}		
-	\end{subfigure}
-	\caption[Structure function features]{The left panel shows the structure function fit for a typical quasar in the training set (chosen and random). The right panel shows a scatterplot of different variables on the $A$-$\gamma$-plane.}
-	\label{fig:features-scatterplot}
-\end{figure}
-
 
 \section{Performance of the Support Vector Machine}
 \label{sec:performance-svm}
 
-The first classifier we try is the Support Vector Machine (SVM) with the RBF kernel $\kernel_{\text{RBF}}$. Since the SVM is very sensitive to proper feature scaling, we normalize all features by subtracting the mean and dividing by the standard deviation. In the end, each features has zero--mean and unit--variance prior to the training. We optimize the models hyperparameters $C$ and $\gamma$ for the average, weighted $F_1$-score by performing a $5$-fold cross--validation on subsequently finer grids. The results are visualized in figure \ref{fig:gridsearch-svm-superclasses}. The optimal hyperparameters we find for the superclass classification are $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$.\\
-
-\begin{figure}[h]
-	\centering
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-01.png}				
-	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-02.png}		
-	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-03.png}				
-	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-04.png}		
-	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-05.png}				
-	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-06.png}		
-	\end{subfigure}
-	\caption[Hyperparameter optimization for the Support Vector Machine (SVM)]{This figure shows the average, weighted $F_1$ score on the $C$-$\gamma$-plane during the hyperparameter optimization for the Support Vector Machine. We start looking for global optima on a coarse grid with a wide range (upper left), and adjust the grid toward a finer stepwidth. At some point we find an optimum (lower right).}
-	\label{fig:gridsearch-svm-superclasses}
-\end{figure}
+The first classifier we try is the Support Vector Machine (SVM) with the RBF kernel $\kernel_{\text{RBF}}$\footnote{We make use of the \emph{scikit--learn} \citep{scikit-learn} Machine Learning library in Python for the implementations of SVM, Random Forest and Gradient Boosted Trees.}. Since SVM is very sensitive to proper feature scaling, we standardize all features by subtracting the mean and dividing by the standard deviation. We optimize the models hyperparameters $C$ and $\gamma$ for the average, weighted $F_1$-score by performing a $5$-fold cross--validation on subsequently finer grids. The results of this procedure are visualized in figure \ref{fig:gridsearch-svm-superclasses}, beginning with a coarse grid on the upper left corner, narrowing down the optimum on a finer grids (left to right, top to bottom) towards a global optimum (lower right). The optimal hyperparameters we find for the superclass classification are $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$. The confusion matrix is shown in table \ref{tab:svm-confusion-matrix-superclasses}, where the columns show the predicted labels, while the rows show the true label. Consequently, the diagonal shows \emph{true positives}. All confusion matrices in this report were generated by combining the $k$ confusion matrices of each individual model during $k$-fold cross--validation. The average, weighted $F_1$-score is $(97.25 \, \pm \, 0.25) \, \%$\footnote{The error estimate can be interpreted as \emph{generalization error}. More on this in the discussion (section \ref{sec:discussion}).}.\\
 
 \begin{table}[h]
 \centering
@@ -263,14 +223,42 @@ $F_1$ score ($\%$) &   95.31   &     96.92  &   88.65   &    94.26   &    99.24 
 
 \end{tabular}
 }
+\caption{This table shows the confusion matrix for the SVM superclass classification on the EROS--2 data set with $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$. The columns show the predicted labels, while the rows show the true label.}
 \label{tab:svm-confusion-matrix-superclasses}
-\caption{This table shows the confusion matrix for the SVM superclasses classification on the EROS--2 data set with $C = 4.67 \cdot 10^{2}$ and $\gamma = 1.69 \cdot 10^{-3}$. The columns show predicted labels, while rows show the true label.}
 \end{table}
 
-Furthermore, we also want the classifier to predict subclasses as well...
+\begin{figure}[ht!]
+	\centering
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-01.png}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-02.png}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-03.png}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-04.png}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-05.png}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridsearch/svm/superclasses/svm-superclasses-06.png}
+	\end{subfigure}
+	\caption[Hyperparameter optimization for the Support Vector Machine (SVM)]{This figure shows the average, weighted $F_1$ score on the $C$-$\gamma$-plane during the hyperparameter optimization for the Support Vector Machine. We start looking for global optima on a coarse grid with a wide range (upper left), and adjust the grid toward a finer stepwidth. At some point we find an optimum (lower right).}
+	\label{fig:gridsearch-svm-superclasses}
+\end{figure}
 
 \begin{landscape}
-\begin{table}[h]
+\begin{table}[ht!]
 \centering
 \resizebox{22cm}{!}{
 \begin{tabular}{C{3.1cm}|C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}C{.95cm}|c}
@@ -311,38 +299,55 @@ $F_1$-score ($\%$) &   95.33 &    82.63 &   92.70 &       72.15 &   87.51 &   55
 \bottomrule
 \end{tabular}
 }
+\caption{This table shows the confusion matrix for the SVM subclasses classification on the EROS--2 data set with $C = 9.83 \cdot 10^{2}$ and $\gamma = 9.22 \cdot 10^{-4}$. The columns show the predicted labels, while the rows show the true label.}
 \label{tab:svm-confusion-matrix-subclasses}
-\caption{This table shows the confusion matrix for the SVM subclasses classification on the EROS--2 data set with $C = 9.83 \cdot 10^{2}$ and $\gamma = 9.22 \cdot 10^{-4}$. The columns show predicted labels, while rows show the true label.}
-
 \end{table}
 \end{landscape}
+
+We then proceed to train the SVM for subclass classification\footnote{A complete list of the abbreviations used for the superclasses and subclasses can be found in the OGLE paper \citet{udalski2008}.}. Again, we optimize the hyperparameters $C$ and $\gamma$ using the same procedure as for the superclasses. The grid search results look fairly similar to figure \ref{fig:gridsearch-svm-superclasses}, so we don't include the individual results in the report. The optimal optimal hyperparameters for subclass classification are $C = 9.83 \cdot 10^{2}$ and $\gamma = 9.22 \cdot 10^{-4}$, leading to an average, weighted $F_1$-score of $(82.75 \, \pm \, 0.47) \, \%$.\\
 
 \section{Performance of the Random Forest Classifier}
 \label{sec:performance-rf}
 
-The second classifier to evaluate is the Random Forest classifier. Once again, for optimal classification performance, we have to optimize the model's hyperparameters $t$, the number of trees in the forest, and $m$, the maximum number of features to consider at each split. The results of the $5$-fold cross--validation grid search (superclasses), optimized for the average $F_1$-score, weighted by the number of observations per class, shown in figure \ref{fig:gridsearch-rf-superclasses}.
+The second classifier to evaluate is the Random Forest classifier. Once again, we optimize the model's hyperparameters $t$, the number of trees in the forest, and $m$, the maximum number of features to consider at each split. The individuals results on the grid can be inspected in figure \ref{fig:gridsearch-rf-superclasses}. It is clear to see that the scores are fluctuating on the finer grids, and we can not find one distinct optimum, but several local optima with a gradient in $t$. We discuss reasons for this in section \ref{sec:discussion}. Looking at the scores, we decide that $t = 1800$ and $m = 80$ seems like a justified choice. Table \ref{tab:rf-confusion-matrix-superclasses} shows the confusion matrix for the superclasses. The best average, weighted $F_1$-score is $(98.14 \, \pm \, 0.07) \, \%$.\\
 
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-01.png}				
+		\includegraphics[width=\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-01.png}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-02.png}		
+		\includegraphics[width=\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-02.png}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[h]
+\ContinuedFloat
+	\centering
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-03.png}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.49\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-03.png}				
+		\includegraphics[width=\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-04.png}
 	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{figures/gridsearch/rf/superclasses/rf-superclasses-04.png}		
-	\end{subfigure}		
 	\caption[Hyperparameter optimization for the Random Forest Classifier]{This figure shows the average, weighted $F_1$ score on the $m$-$t$-plane during the hyperparameter optimization for the Random Forest Classifier, where $t$ is the number of trees in the forest, and $m$ denotes the maximum number of features considered at each split.}
 	\label{fig:gridsearch-rf-superclasses}
 \end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/feature-importance/rf-superclasses-feature-importance.png}
+	\end{subfigure}
+	\caption[Feature importance from the Random Forest classifier]{This figure shows the Random Forest feature importance ranking for the 20 best features during superclass classification. Note that the $y$-axis is in logarithmic scale. We can see that the the Lomb--Scargle period $T_\text{LS}$ is the most important feature by far.}
+	\label{fig:rf-feature-importance}
+\end{figure}
+
+In figure \ref{fig:rf-feature-importance} we can see the feature importance ranking of the Random Forest algorithm for superclass classification. It is generated by averaging the normalized differences of the \emph{out--of--bag error} between a normal Random Forest models and a second model with \emph{randomly permuted} values of one feature over all trees \citep{dubath2011}. This could serve as a starting point as estimates for the feature importance, although one has to be very careful with this because it does not take feature correlations into account.\\
 
 \begin{table}[h]
 \centering
@@ -369,9 +374,31 @@ $F_1$ score ($\%$) &   96.32   &     98.04  &   97.25   &    95.36   &    99.41 
 \bottomrule
 \end{tabular}
 }
+\caption{This table shows the confusion matrix for the Random Forest superclasses classification on the EROS--2 data set with $m = 80$ and $t = 1800$. The columns show the predicted labels, while the rows show the true label.}
 \label{tab:rf-confusion-matrix-superclasses}
-\caption{This table shows the confusion matrix for the Random Forest superclasses classification on the EROS--2 data set with $m = 80$ and $t = 1800$. The columns show predicted labels, while rows show the true label.}
 \end{table}
+
+\begin{table}[hb!]
+\centering
+\resizebox{0.7\textwidth}{!}{
+\begin{tabular}{C{3cm}|C{3cm}C{3cm}|C{3cm}}
+\toprule
+ & Others  & QSO & $\Sigma $ \\
+\midrule
+Others & \bfseries 32501 & 2              & 32503 \\
+QSO    &           97    & \bfseries   83 & 180 \\
+\bottomrule
+Recall ($\%$)      &   99.99 & 46.11 & \\
+\hline
+Precision ($\%$)   &   99.70 & 97.65 & \\
+\bottomrule
+\end{tabular}
+}
+\caption{This table shows the confusion matrix for a Random Forest classifier trying to separate quasars from other sources. It uses $t = 3000, m = 5$ and was optimized for quasar precision, minimizing contamination. It manages to identify 83 out of 180 quasars in the data set among 32503 other sources.}
+\label{tab:rf-confusion-matrix-qso}
+\end{table}
+
+Futhermore, we trained the Random Forest classifier to do subclass classification. We settle for the hyperparameters $t = 1000, m = 100$, which leads to an average, weighted $F_1$-score of $(85.39 \, \pm \, 0.46) \, \%$. The respective confusion matrix is shown in table \ref{tab:rf-confusion-matrix-subclasses}.
 
 \begin{landscape}
 \begin{table}[h]
@@ -415,16 +442,26 @@ $F_1$-score ($\%$) &   96.58 &    91.28 &   97.18 &       72.73 &   96.56 &   56
 \bottomrule
 \end{tabular}
 }
+\caption{This table shows the confusion matrix for the Random Forest subclasses classification on the EROS--2 data set. The columns show the predicted labels, while the rows show the true label.}
 \label{tab:rf-confusion-matrix-subclasses}
-\caption{This table shows the confusion matrix for the Random Forest subclasses classification on the EROS--2 data set. The columns show predicted labels, while rows show the true label.}
 
 \end{table}
 \end{landscape}
 
-\improvement[inline]{Add figure for feature importance plot from RF}
-
-\section{Performance of the Gradient Boosted Classifier}
+\section{Performance of Gradient Boosted Trees}
 \label{sec:performance-gb}
+
+The third and last model we train is the Gradient Boosted classifier. In contrast to the previous two classifiers, we have three hyperparameters and a systematic way of finding the optimal combination is difficult. The hyperparameters are \emph{the number of trees}, \emph{number of features to use} and the \emph{learning rate}, where the latter controls the contribution of each iteration during boosting. However, we found that 10000 trees with 80 features and a learning rate of 0.02 provide decent results. Table \ref{tab:gb-confusion-matrix-superclasses} shows the confusion matrix for superclass classification, where we achieve an average, weighted $F_1$-score of $(98.43 \, \pm \, 0.07) \, \%$.\\
+
+%\begin{figure}[H]
+%	\centering
+%	\begin{subfigure}[t]{\textwidth}
+%		\centering
+%		\includegraphics[width=\textwidth]{figures/feature-importance/gb-superclasses-feature-importance.png}
+%	\end{subfigure}
+%	\caption[Feature importance from the Gradient Boosted Trees Classifier]{This figure shows the Gradient Boosted Trees feature importance ranking for the 20 best features during supercl%ass classification. Note that the $y$-axis is in logarithmic scale.}
+%	\label{fig:gb-feature-importance}
+%\end{figure}
 
 \begin{table}[h]
 \centering
@@ -452,10 +489,12 @@ $F_1$ score ($\%$) &   96.30   &     98.13  &   97.25   &    96.61   &    99.47 
 
 \end{tabular}
 }
+\caption{This table shows the confusion matrix for the Gradient Boosted Classifier superclasses classification on the EROS--2 data set. The columns show the predicted labels, while the rows show the true label.}
 \label{tab:gb-confusion-matrix-superclasses}
-\caption{This table shows the confusion matrix for the Gradient Boosted Classifier superclasses classification on the EROS--2 data set. The columns show predicted labels, while rows show the true label.}
 % 98.43% (+/-0.07%) for {'max_features': 80, 'n_estimators': 10000, 'learning_rate': 0.02, 'max_depth': 10, 'min_samples_leaf': 500}
 \end{table}
+
+The confusion matrix for subclass classification can be found in table \ref{tab:gb-confusion-matrix-subclasses}. For the subclasses, we used 6000 trees with 75 features and a learning rate of 0.01. The average, weighted $F_1$-score is $(86.30 \, \pm \, 0.37) \, \%$.
 
 \begin{landscape}
 \begin{table}[h]
@@ -500,8 +539,8 @@ $F_1$ score ($\%$) &   96.82 &    90.76 &    97.30 &       68.56 &   97.64 &   5
 
 \end{tabular}
 }
+\caption{This table shows the confusion matrix for the Gradient Boosted Classifier subclasses classification on the EROS--2 data set. The columns show the predicted labels, while the rows show the true label.}
 \label{tab:gb-confusion-matrix-subclasses}
-\caption{This table shows the confusion matrix for the Gradient Boosted Classifier subclasses classification on the EROS--2 data set. The columns show predicted labels, while rows show the true label.}
 
 % (1) 86.30% (+/-0.37%) for {'max_features': 75, 'n_estimators': 5000, 'learning_rate': 0.01, 'max_depth': 10, 'min_samples_leaf': 100}
 \end{table}
