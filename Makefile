@@ -4,7 +4,7 @@ all: bib thesis
 
 thesis:
 
-	pdflatex $(FILE)
+	pdflatex -shell-escape $(FILE)
 
 bib:
 
@@ -20,7 +20,7 @@ clean: delete
 
 delete:
 
-	rm -f *.aux *.lof *.log *.lot *.toc *.bbl *.blg *.dvi *.ps *.bcf .log
+	rm -f *.aux *.lof *.log *.lot *.toc *.bbl *.blg *.dvi *.ps *.bcf
 
 count:
 
