@@ -1,4 +1,61 @@
 \begin{appendices}
 \chapter{Python/Cython implementation of the CE algorithm}
-$\cdots$
+ 
+\begin{minted}[fontsize=\scriptsize]{python}
+
+#cython: boundscheck=False
+#cython: wraparound=False
+
+import numpy as np
+cimport numpy as np
+cimport cython
+
+cdef fasthistogram2d(np.ndarray data, np.ndarray edges):
+
+	x, y = np.digitize(data[:,0], edges[1:-1]), np.digitize(data[:,1], edges[1:-1])
+	nbins = len(edges) - 1
+	flatcount = np.bincount(x + y * nbins, minlength = nbins * nbins)
+	return flatcount.reshape((nbins, nbins)).T
+
+def ce(double period, np.ndarray t, np.ndarray m, unsigned int nbins = 10):
+
+	''' Returns the conditional entropy of the phase-folded signal. '''
+
+	cdef np.ndarray phase, phasedt
+	cdef np.ndarray histogram, edges
+	cdef np.ndarray normalized, positive, p
+	cdef double mmin, mmax, pmin, pmax
+
+	assert len(t) == len(m)
+	if len(t) == 0 or period <= 0:
+		return np.inf
+
+	# Phase-fold the lightcurve
+	phase = lambda t, period: np.divide(np.mod(t, period), period)
+	phasedt = phase(t, period)
+
+	# Rescale magnitude to be between 0.0 and 1.0
+	# We want the data to occupy a unit square in the phase-magnitude plane
+	mmin, mmax = np.min(m), np.max(m)
+	m = (m - mmin) / (mmax - mmin)
+
+	# Rescale phasedt to be between 0.0 and 1.0
+	phasedt = (phasedt - np.min(phasedt))
+	pmin, pmax = np.min(phasedt), np.max(phasedt)
+	phasedt = (phasedt - pmin) / (pmax - pmin)
+
+	# Bin the data in two dimensions
+	edges = np.linspace(0, 1, nbins + 1)
+	histogram = fasthistogram2d(np.vstack((phasedt, m)).T, edges)
+	# Normalizing the histogram leaves us with the occupation probability for every bin
+	normalized = histogram / float(len(phasedt))
+	positive = (normalized > 0)
+	# This will contain the sums of each column
+	p = nsum(normalized, axis = 0)
+	# Repeat the array row-wise, so that it can be sliced by mask
+	p = np.repeat(np.reshape(p, (1,-1)), nbins, axis = 0)
+	return nsum(normalized[positive] * np.log(p[positive] / normalized[positive]))
+  
+\end{minted}
+
 \end{appendices}
