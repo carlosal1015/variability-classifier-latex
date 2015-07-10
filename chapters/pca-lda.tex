@@ -1,0 +1,67 @@
+\section{Dimensionality reduction on high-dimensional datasets}
+\label{sec:dimensionality-reduction}
+
+Often we are confronted with high--dimensional datasets that presumably contain a lot of redundancy. This means that the interesting data can be embedded in a lower--dimensional manifold (\emph{almost everywhere}). Therefore, before tackling the actual problem to be solved, often a so called dimensionality reduction is performed on the dataset. That is trying to find a lower--dimensional shadow of the data, which still contains most of the (relevant) information. Reasons to do this are manifold, but the dominant motivation is certainly to cut down on computation time and memory usage, which is often the limiting factor --- even on sophisticated high--performance platforms. Also, some algorithms used in machine learning suffer from the \emph{curse of dimensionality}. Another reason is that visualization is generally easier in a low--dimensional subspace.\\
+
+In the following we give a brief description of two standard methods that are later used to do dimensionality reduction on our dataset.
+
+\subsection{Principal component analysis (PCA)}
+\label{sec:theory:pca}
+
+Principal component analysis\footnote{Sometimes also referred to as \emph{Karhunen-Loève transformation}.} (PCA) is a standard method to reduce the number of variables in a dataset by trying to find linear combinations of features that maximize the total variance in the data, allowing for minimal loss of information. Since it does not care of the labels, PCA is considered as unsupervised learning. In terms of vector spaces, PCA performs a linear transformation of the data from a $d$--dimensional space to a $k$--dimensional subspace (in any case $k < d$), where the data is most spread out. This subspace can be identified as the span of the $k$ orthogonal dominant components --- therefore called \emph{principal components} ---, defining a new coordinate system. Because of the orthogonality, we find that the new features are linearly uncorrelated. Evidently, $k$ is a free parameter, that we need to choose small enough to obtain a significant data reduction, but not so small that important information is lost. In general, we say that a subspace describes the data well, if the eigenvalues of the scatter matrix $S$ (that we computed during the PCA) are similar of magnitude.\\
+
+There are essentially two similar ways to perform the PCA, one using the scatter matrix, the other one using the covariance matrix. We provide an algorithmic description using the former \citep{duda2001}.
+
+\subsubsection{Algorithmic description of PCA}
+\label{par:pca-algorithm}
+\begin{enumerate}
+\item \footnote{Since PCA is sensitive to the scaling of the data, often also a normalization is performed in advance (e.g. z--score). However, we do not consider this as part of the algorithm itself.}Find the $d$--dimensional mean vector
+\begin{equation}
+\label{eq:mean-vector}
+\vec \mu = \frac{1}{n} \sum_{i = 1}^n \vec x_i
+\end{equation}
+of all features $\vec x_i$ in the $n \times d$--dimensional dataset.
+\item Find the scatter matrix\footnote{Note that because $S$ is symmetric and $S_{ij} \in \mathbb{R} \, \forall i,j$, the eigenvectors are orthogonal.}
+\begin{equation}
+S = \sum_{i=1}^n (\vec x_i - \vec \mu) \, (\vec x_i - \vec \mu)^T
+\end{equation}
+and calculate eigenvectors and the respective eigenvalues.
+\item Take the $k$ eigenvectors with the $k$ largest eigenvalues and construct a $d \times k$--dimensional matrix $P$.
+\item Project the data into the new subspace using the linear transformation:
+\begin{equation}
+\vec y = P^T \cdot \vec x
+\end{equation}
+\end{enumerate}
+
+PCA is one of the simpler methods for dimensionality reduction based on eigenvectors. It is very straightforward to perform, but has some drawbacks, as well. For our task (classification), PCA is not the first choice, because it is not designed to maintain class separability.
+
+\subsection{Linear Discriminant Analysis (LDA)}
+\label{sec:theory:lda}
+
+Linear Discriminant Analysis (LDA) is another way of performing dimensionality reduction, this time, in contrast to PCA, a supervised learning algorithm that takes the labels into account\footnote{Note that LDA is also commonly used for classification.}. Again we are trying to project into a lower--dimensional subspace, maximizing the scatter in feature space, but \emph{additionally} minimizing the in--class scatter, consequently keeping the class--discriminatory information. Ideally, each class degenerates to a cluster far away from other clusters in the new feature space with respect to an arbitrary metric.
+
+\subsubsection{Algorithmic description of LDA}
+\begin{enumerate}
+\item Find the $d$--dimensional mean vectors $\mu_i$ (see equation \eqref{eq:mean-vector}) for each class
+\item Find the within--class scatter matrix
+\begin{equation}
+S_W = \sum_{i = 1}^m S_i,
+\end{equation}
+\begin{equation}
+S_i = \sum_{\vec x \in D_i}^n (\vec x - \vec \mu_i) \, (\vec x - \vec \mu_i)^T,
+\end{equation}
+where $m$ is the number of classes and $S_i$ is the scatter matrix of the $i$--th class.
+\item Find the between--class scatter matrix
+\begin{equation}
+S_B = \sum_{i = 1}^m N_i (\vec \mu_i - \vec \mu) \, (\vec \mu_i - \vec \mu)^T,
+\end{equation}
+where $\vec \mu$ denotes the mean vector of the whole dataset.
+\item Find (generalized) eigenvectors and the respective eigenvalues for $S := S_W^{-1} S_B$. These will be used as linear discriminants.
+\item Take the $k$ eigenvectors with the $k$ largest eigenvalues and construct a $d \times k$--dimensional matrix $P$.
+\item Project the data into the new subspace using the linear transformation:
+\begin{equation}
+\vec y = P^T \cdot \vec x
+\end{equation}
+\end{enumerate}
+
+In practise, we see that very often a combination of both procedures is performed, e.g. PCA followed by LDA. This is because LDA is computationally more expensive than PCA.
